@@ -1,0 +1,79 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7f7fa;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 400px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 2rem 1.5rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.flag-emoji {
+  font-size: 5rem;
+  margin: 1.5rem 0 1rem 0;
+  text-align: center;
+}
+#guess {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1.1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+#submit, #next {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #0078d7;
+  color: #fff;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#submit:hover, #next:hover {
+  background: #005fa3;
+}
+#result {
+  min-height: 2rem;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+#wiki-link {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+footer {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #888;
+  text-align: center;
+}
+@media (max-width: 500px) {
+  .container {
+    max-width: 98vw;
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+  }
+  .flag-emoji {
+    font-size: 3.5rem;
+  }
+  h1 {
+    font-size: 1.3rem;
+  }
+}

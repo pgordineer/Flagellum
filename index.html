@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flagellum - Flag Guessing Game</title>
+  <meta name="description" content="A mobile-friendly flag guessing game using Wikipedia and emojis." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Flagellum 🇺🇳</h1>
+    <div id="game">
+      <div id="flag-emoji" class="flag-emoji">🏳️</div>
+      <input type="text" id="guess" placeholder="Guess the country..." autocomplete="off" />
+      <button id="submit">Guess</button>
+      <div id="result"></div>
+      <button id="next" style="display:none;">Next Flag</button>
+      <div id="wiki-link"></div>
+    </div>
+    <footer>
+      <p>Data from <a href="https://en.wikipedia.org/wiki/Emoji_flags" target="_blank">Wikipedia</a> &amp; Unicode</p>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
