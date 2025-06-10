@@ -1,42 +1,44 @@
 // List of countries and their flag emojis
 const flags = [
-  { country: "United States", emoji: "🇺🇸", wiki: "United_States" },
-  { country: "United Kingdom", emoji: "🇬🇧", wiki: "United_Kingdom" },
-  { country: "France", emoji: "🇫🇷", wiki: "France" },
-  { country: "Germany", emoji: "🇩🇪", wiki: "Germany" },
-  { country: "Italy", emoji: "🇮🇹", wiki: "Italy" },
-  { country: "Spain", emoji: "🇪🇸", wiki: "Spain" },
-  { country: "Japan", emoji: "🇯🇵", wiki: "Japan" },
-  { country: "Brazil", emoji: "🇧🇷", wiki: "Brazil" },
-  { country: "Canada", emoji: "🇨🇦", wiki: "Canada" },
-  { country: "Australia", emoji: "🇦🇺", wiki: "Australia" },
-  { country: "India", emoji: "🇮🇳", wiki: "India" },
-  { country: "South Korea", emoji: "🇰🇷", wiki: "South_Korea" },
-  { country: "Mexico", emoji: "🇲🇽", wiki: "Mexico" },
-  { country: "Russia", emoji: "🇷🇺", wiki: "Russia" },
-  { country: "China", emoji: "🇨🇳", wiki: "China" },
-  { country: "Sweden", emoji: "🇸🇪", wiki: "Sweden" },
-  { country: "Norway", emoji: "🇳🇴", wiki: "Norway" },
-  { country: "Finland", emoji: "🇫🇮", wiki: "Finland" },
-  { country: "Denmark", emoji: "🇩🇰", wiki: "Denmark" },
-  { country: "Argentina", emoji: "🇦🇷", wiki: "Argentina" },
-  { country: "South Africa", emoji: "🇿🇦", wiki: "South_Africa" },
-  { country: "Turkey", emoji: "🇹🇷", wiki: "Turkey" },
-  { country: "Greece", emoji: "🇬🇷", wiki: "Greece" },
-  { country: "Switzerland", emoji: "🇨🇭", wiki: "Switzerland" },
-  { country: "Netherlands", emoji: "🇳🇱", wiki: "Netherlands" },
-  { country: "Belgium", emoji: "🇧🇪", wiki: "Belgium" },
-  { country: "Portugal", emoji: "🇵🇹", wiki: "Portugal" },
-  { country: "Poland", emoji: "🇵🇱", wiki: "Poland" },
-  { country: "Ukraine", emoji: "🇺🇦", wiki: "Ukraine" },
-  { country: "Egypt", emoji: "🇪🇬", wiki: "Egypt" }
+  { country: "United States", code: "US", emoji: "🇺🇸", wiki: "United_States", img: "https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" },
+  { country: "United Kingdom", code: "GB", emoji: "🇬🇧", wiki: "United_Kingdom", img: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" },
+  { country: "France", code: "FR", emoji: "🇫🇷", wiki: "France", img: "https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" },
+  { country: "Germany", code: "DE", emoji: "🇩🇪", wiki: "Germany", img: "https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg" },
+  { country: "Italy", code: "IT", emoji: "🇮🇹", wiki: "Italy", img: "https://upload.wikimedia.org/wikipedia/en/0/03/Flag_of_Italy.svg" },
+  { country: "Spain", code: "ES", emoji: "🇪🇸", wiki: "Spain", img: "https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg" },
+  { country: "Japan", code: "JP", emoji: "🇯🇵", wiki: "Japan", img: "https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg" },
+  { country: "Brazil", code: "BR", emoji: "🇧🇷", wiki: "Brazil", img: "https://upload.wikimedia.org/wikipedia/en/0/05/Flag_of_Brazil.svg" },
+  { country: "Canada", code: "CA", emoji: "🇨🇦", wiki: "Canada", img: "https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg" },
+  { country: "Australia", code: "AU", emoji: "🇦🇺", wiki: "Australia", img: "https://upload.wikimedia.org/wikipedia/en/b/b9/Flag_of_Australia.svg" },
+  { country: "India", code: "IN", emoji: "🇮🇳", wiki: "India", img: "https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" },
+  { country: "South Korea", code: "KR", emoji: "🇰🇷", wiki: "South_Korea", img: "https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_South_Korea.svg" },
+  { country: "Mexico", code: "MX", emoji: "🇲🇽", wiki: "Mexico", img: "https://upload.wikimedia.org/wikipedia/commons/f/fc/Flag_of_Mexico.svg" },
+  { country: "Russia", code: "RU", emoji: "🇷🇺", wiki: "Russia", img: "https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" },
+  { country: "China", code: "CN", emoji: "🇨🇳", wiki: "China", img: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg" },
+  { country: "Sweden", code: "SE", emoji: "🇸🇪", wiki: "Sweden", img: "https://upload.wikimedia.org/wikipedia/en/4/4c/Flag_of_Sweden.svg" },
+  { country: "Norway", code: "NO", emoji: "🇳🇴", wiki: "Norway", img: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Norway.svg" },
+  { country: "Finland", code: "FI", emoji: "🇫🇮", wiki: "Finland", img: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Finland.svg" },
+  { country: "Denmark", code: "DK", emoji: "🇩🇰", wiki: "Denmark", img: "https://upload.wikimedia.org/wikipedia/commons/9/9c/Flag_of_Denmark.svg" },
+  { country: "Argentina", code: "AR", emoji: "🇦🇷", wiki: "Argentina", img: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg" },
+  { country: "South Africa", code: "ZA", emoji: "🇿🇦", wiki: "South_Africa", img: "https://upload.wikimedia.org/wikipedia/commons/a/af/Flag_of_South_Africa.svg" },
+  { country: "Turkey", code: "TR", emoji: "🇹🇷", wiki: "Turkey", img: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" },
+  { country: "Greece", code: "GR", emoji: "🇬🇷", wiki: "Greece", img: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Greece.svg" },
+  { country: "Switzerland", code: "CH", emoji: "🇨🇭", wiki: "Switzerland", img: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg" },
+  { country: "Netherlands", code: "NL", emoji: "🇳🇱", wiki: "Netherlands", img: "https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg" },
+  { country: "Belgium", code: "BE", emoji: "🇧🇪", wiki: "Belgium", img: "https://upload.wikimedia.org/wikipedia/commons/6/65/Flag_of_Belgium.svg" },
+  { country: "Portugal", code: "PT", emoji: "🇵🇹", wiki: "Portugal", img: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" },
+  { country: "Poland", code: "PL", emoji: "🇵🇱", wiki: "Poland", img: "https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg" },
+  { country: "Ukraine", code: "UA", emoji: "🇺🇦", wiki: "Ukraine", img: "https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" },
+  { country: "Egypt", code: "EG", emoji: "🇪🇬", wiki: "Egypt", img: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg" }
 ];
+
 
 let currentFlag = {};
 
 function pickRandomFlag() {
   currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  document.getElementById('flag-emoji').textContent = currentFlag.emoji;
+  // Show flag image and emoji
+  document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;"> <span style="font-size:2.2rem;">${currentFlag.emoji}</span>`;
   document.getElementById('guess').value = '';
   document.getElementById('result').textContent = '';
   document.getElementById('wiki-link').innerHTML = '';
@@ -48,7 +50,8 @@ function pickRandomFlag() {
 function checkGuess() {
   const guess = document.getElementById('guess').value.trim().toLowerCase();
   const answer = currentFlag.country.toLowerCase();
-  if (guess === answer) {
+  const code = currentFlag.code.toLowerCase();
+  if (guess === answer || guess === code) {
     document.getElementById('result').textContent = '✅ Correct!';
     document.getElementById('result').style.color = '#2e7d32';
     document.getElementById('wiki-link').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
