@@ -107,6 +107,7 @@ function showMainMenu(congratsMsg) {
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('study-page').style.display = 'none';
   document.getElementById('congrats').style.display = 'none';
 }
 
@@ -128,6 +129,46 @@ function showMCMode() {
   mcTried = [];
   updateScoreDisplays();
   pickRandomFlagMC();
+}
+
+function showStudyPage() {
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('game-entry').style.display = 'none';
+  document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('study-page').style.display = 'block';
+  renderStudyTable('country');
+}
+
+function renderStudyTable(sortKey, sortDir = 'asc') {
+  let sorted = [...flags];
+  sorted.sort((a, b) => {
+    let vA = a[sortKey] ? a[sortKey].toString().toLowerCase() : '';
+    let vB = b[sortKey] ? b[sortKey].toString().toLowerCase() : '';
+    if (vA < vB) return sortDir === 'asc' ? -1 : 1;
+    if (vA > vB) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  const tbody = document.getElementById('study-tbody');
+  tbody.innerHTML = '';
+  for (const flag of sorted) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${flag.country}</td>
+      <td>${flag.code}</td>
+      <td style="font-size:1.5em;">${flag.emoji}</td>
+      <td><a href="https://en.wikipedia.org/wiki/${flag.wiki}" target="_blank">Wiki</a></td>
+      <td><img src="${flag.img}" alt="Flag of ${flag.country}" /></td>
+    `;
+    tbody.appendChild(tr);
+  }
+  // Set up sorting buttons
+  const ths = document.querySelectorAll('.sort-btn');
+  ths.forEach(btn => {
+    btn.onclick = () => {
+      let newDir = sortKey === btn.dataset.sort && sortDir === 'asc' ? 'desc' : 'asc';
+      renderStudyTable(btn.dataset.sort, newDir);
+    };
+  });
 }
 
 function pickRandomFlag() {
@@ -297,6 +338,8 @@ function startGame() {
       // Main menu event listeners
       document.getElementById('entry-mode-btn').addEventListener('click', showEntryMode);
       document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);
+      document.getElementById('study-btn').addEventListener('click', showStudyPage);
+      document.getElementById('back-to-menu-study').onclick = showMainMenu;
       // Entry mode events
       document.getElementById('submit').onclick = checkGuess;
       document.getElementById('guess').addEventListener('keydown', function(e) {
