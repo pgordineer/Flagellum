@@ -97,7 +97,8 @@ function pickRandomFlag() {
   document.getElementById('submit').textContent = 'Guess';
   document.getElementById('submit').disabled = false;
   document.getElementById('guess').disabled = false;
-  document.getElementById('hint').style.display = 'none';
+  document.getElementById('hint').style.display = 'block';
+  document.getElementById('hint').textContent = 'Hint';
   document.getElementById('hint-text').textContent = '';
   // Restore Guess button event
   document.getElementById('submit').onclick = checkGuess;
@@ -108,25 +109,29 @@ function checkGuess() {
   const answer = currentFlag.country.toLowerCase();
   const code = currentFlag.code.toLowerCase();
   if (guess === answer || guess === code) {
-    document.getElementById('result').textContent = '✅ Correct!';
+    document.getElementById('result').textContent = `✅ Correct! ${currentFlag.country} (${currentFlag.code})`;
     document.getElementById('result').style.color = '#2e7d32';
     document.getElementById('wiki-link').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
     document.getElementById('submit').textContent = 'Next Flag';
     document.getElementById('guess').disabled = true;
     document.getElementById('submit').onclick = pickRandomFlag;
     document.getElementById('hint').style.display = 'none';
+    document.getElementById('hint-text').textContent = '';
   } else {
     document.getElementById('result').textContent = '❌ Try again!';
     document.getElementById('result').style.color = '#c62828';
     document.getElementById('hint').style.display = 'block';
-    // Keep Guess button event
+    document.getElementById('hint').textContent = 'Hint';
+    document.getElementById('hint-text').textContent = '';
     document.getElementById('submit').onclick = checkGuess;
   }
 }
 
 function showHint() {
-  document.getElementById('hint-text').textContent = `Country code: ${currentFlag.code}`;
-  document.getElementById('hint').style.display = 'none';
+  document.getElementById('hint').textContent = `Country code: ${currentFlag.code}`;
+  document.getElementById('hint').disabled = true;
+  document.getElementById('hint').style.display = 'block';
+  document.getElementById('hint-text').textContent = '';
 }
 
 function skipFlag() {
@@ -137,10 +142,10 @@ window.onload = function() {
   pickRandomFlag();
   document.getElementById('submit').onclick = checkGuess;
   document.getElementById('guess').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !document.getElementById('guess').disabled) {
+    if (e.key === 'Enter') {
       if (document.getElementById('submit').textContent === 'Next Flag') {
         pickRandomFlag();
-      } else {
+      } else if (!document.getElementById('guess').disabled) {
         checkGuess();
       }
     }
