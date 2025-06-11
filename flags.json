@@ -62,7 +62,7 @@
   { "country": "Serbia", "code": "RS", "emoji": "🇷🇸", "wiki": "Serbia", "img": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg" },
   { "country": "Bulgaria", "code": "BG", "emoji": "🇧🇬", "wiki": "Bulgaria", "img": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg" },
   { "country": "Ghana", "code": "GH", "emoji": "🇬🇭", "wiki": "Ghana", "img": "https://upload.wikimedia.org/wikipedia/commons/1/19/Flag_of_Ghana.svg" },
-  { "country": "Ivory Coast", "code": "CI", "emoji": "🇨🇮", "wiki": "Ivory_Coast", "img": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Cote_d%27Ivoire.svg" },
+  { "country": "Ivory Coast", "code": "CI", "emoji": "🇨🇮", "wiki": "Ivory_Coast", "img": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg" },
   { "country": "Algeria", "code": "DZ", "emoji": "🇩🇿", "wiki": "Algeria", "img": "https://upload.wikimedia.org/wikipedia/commons/7/77/Flag_of_Algeria.svg" },
   { "country": "Tunisia", "code": "TN", "emoji": "🇹🇳", "wiki": "Tunisia", "img": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Flag_of_Tunisia.svg" },
   { "country": "Jordan", "code": "JO", "emoji": "🇯🇴", "wiki": "Jordan", "img": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_of_Jordan.svg" },
@@ -77,7 +77,7 @@
   { "country": "Namibia", "code": "NA", "emoji": "🇳🇦", "wiki": "Namibia", "img": "https://upload.wikimedia.org/wikipedia/commons/0/00/Flag_of_Namibia.svg" },
   { "country": "Mozambique", "code": "MZ", "emoji": "🇲🇿", "wiki": "Mozambique", "img": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Flag_of_Mozambique.svg" },
   { "country": "Angola", "code": "AO", "emoji": "🇦🇴", "wiki": "Angola", "img": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Angola.svg" },
-  { "country": "Cameroon", "code": "CM", "emoji": "🇨🇲", "wiki": "Cameroon", "img": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Flag_of_Cameroon.svg" },
+  { "country": "Cameroon", "code": "CM", "emoji": "🇨🇲", "wiki": "Cameroon", "img": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Flag_of_Cameroon.svg" },
   { "country": "Uganda", "code": "UG", "emoji": "🇺🇬", "wiki": "Uganda", "img": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Flag_of_Uganda.svg" },
   { "country": "Tanzania", "code": "TZ", "emoji": "🇹🇿", "wiki": "Tanzania", "img": "https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Tanzania.svg" },
   { "country": "Zambia", "code": "ZM", "emoji": "🇿🇲", "wiki": "Zambia", "img": "https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Zambia.svg" }
