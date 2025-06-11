@@ -77,10 +77,11 @@ function showHint() {
   document.getElementById('hint').style.display = 'none';
 }
 
-document.getElementById('submit').onclick = checkGuess;
-document.getElementById('guess').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !document.getElementById('guess').disabled) checkGuess();
-});
-document.getElementById('hint').onclick = showHint;
-
-window.onload = pickRandomFlag;
+window.onload = function() {
+  pickRandomFlag();
+  document.getElementById('submit').onclick = checkGuess;
+  document.getElementById('guess').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !document.getElementById('guess').disabled) checkGuess();
+  });
+  document.getElementById('hint').onclick = showHint;
+};
