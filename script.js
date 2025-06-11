@@ -334,6 +334,7 @@ function setupAutocomplete() {
   const guessInput = document.getElementById('guess');
   const listDiv = document.getElementById('autocomplete-list');
   let currentFocus = -1;
+  let lastFiltered = [];
 
   function closeList() {
     listDiv.style.display = 'none';
@@ -341,7 +342,17 @@ function setupAutocomplete() {
     currentFocus = -1;
   }
 
+  function filterFlags(val) {
+    if (!val) return [];
+    // Respect spaces: match substring with exact spacing
+    const lowerVal = val.toLowerCase();
+    return flags.filter(f =>
+      (`${f.country} (${f.code})`).toLowerCase().includes(lowerVal)
+    ).slice(0, 15);
+  }
+
   function renderList(filtered) {
+    lastFiltered = filtered;
     if (!filtered.length) {
       closeList();
       return;
@@ -358,19 +369,29 @@ function setupAutocomplete() {
       };
       listDiv.appendChild(item);
     });
+    // Position below input
+    const rect = guessInput.getBoundingClientRect();
+    const parentRect = guessInput.parentElement.getBoundingClientRect();
+    listDiv.style.top = (guessInput.offsetTop + guessInput.offsetHeight + 2) + 'px';
+    listDiv.style.left = guessInput.offsetLeft + 'px';
+    listDiv.style.width = guessInput.offsetWidth + 'px';
     listDiv.style.display = 'block';
   }
 
   guessInput.addEventListener('input', function() {
-    const val = this.value.trim().toLowerCase();
-    if (!val || !document.getElementById('autocomplete-toggle').checked) {
+    if (!document.getElementById('autocomplete-toggle').checked) {
       closeList();
       return;
     }
-    const filtered = flags.filter(f =>
-      f.country.toLowerCase().includes(val) ||
-      f.code.toLowerCase().includes(val)
-    ).slice(0, 15); // limit to 15
+    const val = this.value;
+    const filtered = filterFlags(val);
+    renderList(filtered);
+  });
+
+  guessInput.addEventListener('focus', function() {
+    if (!document.getElementById('autocomplete-toggle').checked) return;
+    const val = this.value;
+    const filtered = filterFlags(val);
     renderList(filtered);
   });
 
@@ -414,6 +435,13 @@ function setupAutocomplete() {
   // Hide autocomplete if toggle is off
   document.getElementById('autocomplete-toggle').addEventListener('change', function() {
     if (!this.checked) closeList();
+    else {
+      // If toggled on and input has value, show list
+      if (guessInput.value) {
+        const filtered = filterFlags(guessInput.value);
+        renderList(filtered);
+      }
+    }
   });
 }
 
