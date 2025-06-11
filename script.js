@@ -470,21 +470,17 @@ function setupFlagImageModal() {
   }
 }
 function showFlagModal(imgUrl, alt) {
-  setupFlagImageModal();
   const modal = document.getElementById('flag-modal');
   const img = document.getElementById('flag-modal-img');
   img.src = imgUrl;
   img.alt = alt || 'Flag';
   modal.style.display = 'flex';
-  modal.style.alignItems = 'center';
-  modal.style.justifyContent = 'center';
 }
 function closeFlagModal() {
   const modal = document.getElementById('flag-modal');
   if (modal) modal.style.display = 'none';
 }
 
-// --- Add click handlers for all modes ---
 function addFlagClickHandlers() {
   // Entry mode
   const entryFlag = document.getElementById('flag-emoji');
@@ -526,9 +522,18 @@ function addFlagClickHandlers() {
       }
     };
   }
+  // Modal close events
+  const modal = document.getElementById('flag-modal');
+  if (modal) {
+    modal.onclick = function(e) {
+      if (e.target === modal) closeFlagModal();
+    };
+    const closeBtn = document.getElementById('flag-modal-close');
+    if (closeBtn) closeBtn.onclick = closeFlagModal;
+  }
 }
 
-// Ensure addFlagClickHandlers is called after every DOM update:
+// Ensure addFlagClickHandlers is called after every DOM update that changes flag images:
 function pickRandomFlag() {
   if (!flags.length) return;
   currentFlag = flags[Math.floor(Math.random() * flags.length)];
@@ -662,5 +667,5 @@ function startGame() {
 
 window.onload = function() {
   startGame();
-  setupFlagImageModal();
+  addFlagClickHandlers();
 };
