@@ -63,9 +63,20 @@ function updateScoreDisplays() {
   // Entry mode
   document.getElementById('score-entry').innerHTML = `Score: ${formatScore(entryScore)} of ${entryTotal}`;
   document.getElementById('highscore-entry').innerHTML = `High Score: ${formatScore(entryHighScore)} of ${entryHighTotal}`;
+  // Show 'New High Score!' if actively above high score
+  let nhs = '';
+  if (entryScore > entryHighScore || (entryScore === entryHighScore && entryTotal > entryHighTotal && entryHighScore > 0)) {
+    nhs = '<div class="new-highscore">New High Score!</div>';
+  }
+  document.getElementById('highscore-entry').innerHTML += nhs;
   // MC mode
   document.getElementById('score-mc').innerHTML = `Score: ${formatScore(mcScore)} of ${mcTotal}`;
   document.getElementById('highscore-mc').innerHTML = `High Score: ${formatScore(mcHighScore)} of ${mcHighTotal}`;
+  let nhsMC = '';
+  if (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal && mcHighScore > 0)) {
+    nhsMC = '<div class="new-highscore">New High Score!</div>';
+  }
+  document.getElementById('highscore-mc').innerHTML += nhsMC;
 }
 
 function formatScore(score) {
@@ -96,14 +107,7 @@ function showMainMenu(congratsMsg) {
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
-  // Show congrats if provided
-  const congratsDiv = document.getElementById('congrats');
-  if (congratsMsg) {
-    congratsDiv.textContent = congratsMsg;
-    congratsDiv.style.display = 'block';
-  } else {
-    congratsDiv.style.display = 'none';
-  }
+  document.getElementById('congrats').style.display = 'none';
 }
 
 function showEntryMode() {
@@ -140,6 +144,7 @@ function pickRandomFlag() {
   document.getElementById('hint').style.display = 'block';
   document.getElementById('hint').textContent = 'Hint';
   document.getElementById('hint').disabled = false;
+  document.getElementById('skip').style.display = 'inline-block';
   document.getElementById('hint-text').textContent = '';
   document.getElementById('submit').onclick = checkGuess;
 }
@@ -173,6 +178,7 @@ function checkGuess() {
       document.getElementById('guess').focus();
     };
     document.getElementById('hint').style.display = 'none';
+    document.getElementById('skip').style.display = 'none';
     document.getElementById('hint-text').textContent = '';
   } else {
     document.getElementById('result').textContent = '❌ Try again!';
@@ -180,6 +186,7 @@ function checkGuess() {
     document.getElementById('hint').style.display = 'block';
     document.getElementById('hint').textContent = 'Hint';
     document.getElementById('hint').disabled = false;
+    document.getElementById('skip').style.display = 'inline-block';
     document.getElementById('hint-text').textContent = '';
     document.getElementById('submit').onclick = checkGuess;
   }
@@ -304,6 +311,14 @@ function startGame() {
       document.getElementById('skip').onclick = skipEntryFlag;
       // MC mode events
       document.getElementById('next-mc').onclick = nextMCFlag;
+      document.getElementById('back-to-menu-entry').onclick = function() {
+        saveHighScores();
+        showMainMenu();
+      };
+      document.getElementById('back-to-menu-mc').onclick = function() {
+        saveHighScores();
+        showMainMenu();
+      };
       showMainMenu();
       updateScoreDisplays();
       updateMainMenuHighscores();
