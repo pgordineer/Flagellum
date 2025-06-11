@@ -47,6 +47,8 @@ function pickRandomFlag() {
   document.getElementById('guess').disabled = false;
   document.getElementById('hint').style.display = 'none';
   document.getElementById('hint-text').textContent = '';
+  // Restore Guess button event
+  document.getElementById('submit').onclick = checkGuess;
 }
 
 function checkGuess() {
@@ -65,6 +67,7 @@ function checkGuess() {
     document.getElementById('result').textContent = '❌ Try again!';
     document.getElementById('result').style.color = '#c62828';
     document.getElementById('hint').style.display = 'block';
+    // Keep Guess button event
     document.getElementById('submit').onclick = checkGuess;
   }
 }
