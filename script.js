@@ -147,9 +147,9 @@ function startGame() {
     .then(res => res.json())
     .then(data => {
       flags = data;
-      // Main menu event listeners
-      document.getElementById('entry-mode-btn').onclick = showEntryMode;
-      document.getElementById('mc-mode-btn').onclick = showMCMode;
+      // Main menu event listeners (fix: use addEventListener for reliability)
+      document.getElementById('entry-mode-btn').addEventListener('click', showEntryMode);
+      document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);
       document.getElementById('back-to-menu-entry').onclick = showMainMenu;
       document.getElementById('back-to-menu-mc').onclick = showMainMenu;
       // Entry mode events
