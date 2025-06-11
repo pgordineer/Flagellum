@@ -18,6 +18,7 @@
       <div id="congrats" style="display:none;"></div>
     </div>
     <div id="study-page" style="display:none; max-width:100vw;">
+      <button id="back-to-menu-study-top" style="margin-bottom:1rem;">Back to Menu</button>
       <h2 style="text-align:center;">Study All Flags</h2>
       <div style="overflow-x:auto;">
         <table id="study-table" class="study-table">
@@ -39,7 +40,7 @@
       <div id="score-entry"></div>
       <div id="highscore-entry"></div>
       <div id="flag-emoji" class="flag-emoji">🏳️</div>
-      <input type="text" id="guess" placeholder="Guess the country..." autocomplete="off" />
+      <input type="text" id="guess" placeholder="Guess the country..." autocomplete="on" />
       <button id="submit">Guess</button>
       <button id="hint" style="display:none;">Hint</button>
       <button id="skip">Skip</button>
@@ -47,6 +48,11 @@
       <div id="hint-text" style="color:#0078d7;margin-bottom:0.5rem;"></div>
       <div id="wiki-link"></div>
       <button id="back-to-menu-entry" style="margin-top:1rem;">Back to Menu</button>
+      <div style="margin-top:0.5rem;text-align:center;">
+        <label style="font-size:0.98em;">
+          <input type="checkbox" id="autocomplete-toggle" checked /> Autocomplete
+        </label>
+      </div>
     </div>
     <div id="game-mc" style="display:none;">
       <div id="score-mc"></div>

@@ -340,6 +340,7 @@ function startGame() {
       document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);
       document.getElementById('study-btn').addEventListener('click', showStudyPage);
       document.getElementById('back-to-menu-study').onclick = showMainMenu;
+      document.getElementById('back-to-menu-study-top').onclick = showMainMenu;
       // Entry mode events
       document.getElementById('submit').onclick = checkGuess;
       document.getElementById('guess').addEventListener('keydown', function(e) {
@@ -357,8 +358,17 @@ function startGame() {
       document.getElementById('skip').onclick = skipEntryFlag;
       // MC mode events
       document.getElementById('next-mc').onclick = nextMCFlag;
+      // Study mode events
+      document.getElementById('back-to-menu-study-top').onclick = showMainMenu;
+      // Autocomplete toggle
+      const autocompleteToggle = document.getElementById('autocomplete-toggle');
+      if (autocompleteToggle) {
+        autocompleteToggle.addEventListener('change', function() {
+          document.getElementById('guess').setAttribute('autocomplete', this.checked ? 'on' : 'off');
+        });
+      }
+      // End game: reset all game state for entry mode
       document.getElementById('back-to-menu-entry').onclick = function() {
-        // End game: reset all game state for entry mode
         usedHint = false;
         pickRandomFlag();
         entryScore = 0;
@@ -367,8 +377,8 @@ function startGame() {
         saveHighScores();
         showMainMenu();
       };
+      // End game: reset all game state for MC mode
       document.getElementById('back-to-menu-mc').onclick = function() {
-        // End game: reset all game state for MC mode
         mcScore = 0;
         mcTotal = 0;
         mcAttempts = 0;
