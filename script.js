@@ -1,6 +1,8 @@
+let flags = [];
 let currentFlag = {};
 
 function pickRandomFlag() {
+  if (!flags.length) return;
   currentFlag = flags[Math.floor(Math.random() * flags.length)];
   // Show flag image and emoji (emoji only on mobile)
   const isMobile = window.innerWidth < 700;
@@ -56,33 +58,24 @@ function skipFlag() {
 
 // Wait for flags.js to load before running the game logic
 function startGame() {
-  pickRandomFlag();
-  document.getElementById('submit').onclick = checkGuess;
-  document.getElementById('guess').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      if (document.getElementById('submit').textContent === 'Next Flag') {
-        pickRandomFlag();
-      } else if (!document.getElementById('guess').disabled) {
-        checkGuess();
-      }
-    }
-  });
-  document.getElementById('hint').onclick = showHint;
-  document.getElementById('skip').onclick = skipFlag;
+  fetch('flags.json')
+    .then(res => res.json())
+    .then(data => {
+      flags = data;
+      pickRandomFlag();
+      document.getElementById('submit').onclick = checkGuess;
+      document.getElementById('guess').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          if (document.getElementById('submit').textContent === 'Next Flag') {
+            pickRandomFlag();
+          } else if (!document.getElementById('guess').disabled) {
+            checkGuess();
+          }
+        }
+      });
+      document.getElementById('hint').onclick = showHint;
+      document.getElementById('skip').onclick = skipFlag;
+    });
 }
 
-if (typeof flags !== 'undefined') {
-  startGame();
-} else {
-  window.addEventListener('DOMContentLoaded', function() {
-    if (typeof flags !== 'undefined') {
-      startGame();
-    } else {
-      // Wait for flags.js to load
-      const script = document.querySelector('script[src="flags.js"]');
-      if (script) {
-        script.addEventListener('load', startGame);
-      }
-    }
-  });
-}
+window.onload = startGame;
