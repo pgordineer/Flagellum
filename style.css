@@ -50,6 +50,15 @@ h1 {
 #submit:hover, #hint:hover, #skip:hover {
   background: #005fa3;
 }
+#hint[style*="display:none"] {
+  display: none !important;
+}
+#skip {
+  background: #888;
+}
+#skip:hover {
+  background: #555;
+}
 #result {
   min-height: 2rem;
   font-size: 1.1rem;

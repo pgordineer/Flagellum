@@ -137,7 +137,13 @@ window.onload = function() {
   pickRandomFlag();
   document.getElementById('submit').onclick = checkGuess;
   document.getElementById('guess').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !document.getElementById('guess').disabled) checkGuess();
+    if (e.key === 'Enter' && !document.getElementById('guess').disabled) {
+      if (document.getElementById('submit').textContent === 'Next Flag') {
+        pickRandomFlag();
+      } else {
+        checkGuess();
+      }
+    }
   });
   document.getElementById('hint').onclick = showHint;
   document.getElementById('skip').onclick = skipFlag;
