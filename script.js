@@ -24,14 +24,38 @@ function loadHighScores() {
   mcHighTotal = parseInt(localStorage.getItem('flagellum_mc_hightotal')) || 0;
 }
 
-function saveHighScores() {
+function saveHighScores(showCongrats) {
+  let congratsMsg = null;
+  // Entry mode
+  if (
+    (entryScore > entryHighScore || (entryScore === entryHighScore && entryTotal > entryHighTotal)) &&
+    entryHighScore > 0
+  ) {
+    congratsMsg = '🎉 New Entry Mode High Score!';
+  }
   if (entryScore > entryHighScore || (entryScore === entryHighScore && entryTotal > entryHighTotal)) {
     localStorage.setItem('flagellum_entry_highscore', entryScore);
     localStorage.setItem('flagellum_entry_hightotal', entryTotal);
+    entryHighScore = entryScore;
+    entryHighTotal = entryTotal;
+  }
+  // MC mode
+  if (
+    (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal)) &&
+    mcHighScore > 0
+  ) {
+    congratsMsg = '🎉 New Multiple Choice High Score!';
   }
   if (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal)) {
     localStorage.setItem('flagellum_mc_highscore', mcScore);
     localStorage.setItem('flagellum_mc_hightotal', mcTotal);
+    mcHighScore = mcScore;
+    mcHighTotal = mcTotal;
+  }
+  if (showCongrats && congratsMsg) {
+    showMainMenu(congratsMsg);
+  } else if (showCongrats) {
+    showMainMenu();
   }
 }
 
@@ -46,19 +70,40 @@ function updateScoreDisplays() {
 
 function formatScore(score) {
   // Show as integer if whole, else as fraction (e.g. 1 2/3)
-  if (Number.isInteger(score)) return score;
+  if (Number.isInteger(score)) return score === 0 ? '0' : score;
   let intPart = Math.floor(score);
   let frac = score - intPart;
-  if (Math.abs(frac - 2/3) < 0.01) return `${intPart} <span class="fraction">2/3</span>`;
-  if (Math.abs(frac - 1/3) < 0.01) return `${intPart} <span class="fraction">1/3</span>`;
-  if (Math.abs(frac - 0.5) < 0.01) return `${intPart} <span class="fraction">1/2</span>`;
+  let fracStr = '';
+  if (Math.abs(frac - 2/3) < 0.01) fracStr = '<span class="fraction">2/3</span>';
+  else if (Math.abs(frac - 1/3) < 0.01) fracStr = '<span class="fraction">1/3</span>';
+  else if (Math.abs(frac - 0.5) < 0.01) fracStr = '<span class="fraction">1/2</span>';
+  else fracStr = score.toFixed(2);
+  if (intPart === 0 && fracStr) return fracStr;
+  if (fracStr && intPart > 0) return `${intPart} ${fracStr}`;
   return score.toFixed(2);
 }
 
-function showMainMenu() {
+function updateMainMenuHighscores() {
+  const mainHigh = document.getElementById('main-highscores');
+  mainHigh.innerHTML =
+    `<h2>Personal High Scores</h2>` +
+    `<div class="main-highscore-row">Entry Mode: <b>${formatScore(entryHighScore)} of ${entryHighTotal}</b></div>` +
+    `<div class="main-highscore-row">Multiple Choice: <b>${formatScore(mcHighScore)} of ${mcHighTotal}</b></div>`;
+}
+
+function showMainMenu(congratsMsg) {
+  updateMainMenuHighscores();
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
+  // Show congrats if provided
+  const congratsDiv = document.getElementById('congrats');
+  if (congratsMsg) {
+    congratsDiv.textContent = congratsMsg;
+    congratsDiv.style.display = 'block';
+  } else {
+    congratsDiv.style.display = 'none';
+  }
 }
 
 function showEntryMode() {
@@ -242,8 +287,6 @@ function startGame() {
       // Main menu event listeners
       document.getElementById('entry-mode-btn').addEventListener('click', showEntryMode);
       document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);
-      document.getElementById('back-to-menu-entry').onclick = showMainMenu;
-      document.getElementById('back-to-menu-mc').onclick = showMainMenu;
       // Entry mode events
       document.getElementById('submit').onclick = checkGuess;
       document.getElementById('guess').addEventListener('keydown', function(e) {
@@ -263,6 +306,7 @@ function startGame() {
       document.getElementById('next-mc').onclick = nextMCFlag;
       showMainMenu();
       updateScoreDisplays();
+      updateMainMenuHighscores();
     });
 }
 

@@ -168,6 +168,26 @@ footer {
 #back-to-menu-entry:hover, #back-to-menu-mc:hover {
   background: #555;
 }
+#main-highscores {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+#main-highscores h2 {
+  font-size: 1.1rem;
+  color: #0078d7;
+  margin-bottom: 0.5rem;
+}
+#main-highscores .main-highscore-row {
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+#congrats {
+  color: #2e7d32;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.7rem;
+  font-size: 1.1rem;
+}
 @media (max-width: 500px) {
   .container {
     max-width: 98vw;
