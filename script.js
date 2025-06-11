@@ -36,14 +36,17 @@ let currentFlag = {};
 
 function pickRandomFlag() {
   currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  // Show flag image and emoji
-  document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;"> <span style="font-size:2.2rem;">${currentFlag.emoji}</span>`;
+  // Show flag image and emoji (emoji only on mobile)
+  const isMobile = window.innerWidth < 700;
+  document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
   document.getElementById('guess').value = '';
   document.getElementById('result').textContent = '';
   document.getElementById('wiki-link').innerHTML = '';
-  document.getElementById('next').style.display = 'none';
-  document.getElementById('guess').disabled = false;
+  document.getElementById('submit').textContent = 'Guess';
   document.getElementById('submit').disabled = false;
+  document.getElementById('guess').disabled = false;
+  document.getElementById('hint').style.display = 'none';
+  document.getElementById('hint-text').textContent = '';
 }
 
 function checkGuess() {
@@ -54,20 +57,27 @@ function checkGuess() {
     document.getElementById('result').textContent = '✅ Correct!';
     document.getElementById('result').style.color = '#2e7d32';
     document.getElementById('wiki-link').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
-    document.getElementById('next').style.display = 'block';
+    document.getElementById('submit').textContent = 'Next Flag';
     document.getElementById('guess').disabled = true;
-    document.getElementById('submit').disabled = true;
+    document.getElementById('submit').onclick = pickRandomFlag;
+    document.getElementById('hint').style.display = 'none';
   } else {
     document.getElementById('result').textContent = '❌ Try again!';
     document.getElementById('result').style.color = '#c62828';
+    document.getElementById('hint').style.display = 'block';
+    document.getElementById('submit').onclick = checkGuess;
   }
 }
 
-document.getElementById('submit').addEventListener('click', checkGuess);
-document.getElementById('guess').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') checkGuess();
-});
-document.getElementById('next').addEventListener('click', pickRandomFlag);
+function showHint() {
+  document.getElementById('hint-text').textContent = `Country code: ${currentFlag.code}`;
+  document.getElementById('hint').style.display = 'none';
+}
 
-// Start game on load
+document.getElementById('submit').onclick = checkGuess;
+document.getElementById('guess').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !document.getElementById('guess').disabled) checkGuess();
+});
+document.getElementById('hint').onclick = showHint;
+
 window.onload = pickRandomFlag;
