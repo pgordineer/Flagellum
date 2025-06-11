@@ -485,29 +485,38 @@ function addFlagClickHandlers() {
   // Entry mode
   const entryFlag = document.getElementById('flag-emoji');
   if (entryFlag) {
-    entryFlag.onclick = function(e) {
-      // Find the <img> inside the flag-emoji div
-      const img = entryFlag.querySelector('img');
-      if (img && currentFlag && currentFlag.img) {
-        showFlagModal(currentFlag.img, `Flag of ${currentFlag.country}`);
-      }
-    };
+    // Remove previous img handler if any
+    const img = entryFlag.querySelector('img');
+    if (img) {
+      img.style.cursor = 'zoom-in';
+      img.onclick = function(e) {
+        e.stopPropagation();
+        if (currentFlag && currentFlag.img) {
+          showFlagModal(currentFlag.img, `Flag of ${currentFlag.country}`);
+        }
+      };
+    }
   }
   // MC mode
   const mcFlag = document.getElementById('flag-emoji-mc');
   if (mcFlag) {
-    mcFlag.onclick = function(e) {
-      const img = mcFlag.querySelector('img');
-      if (img && currentFlag && currentFlag.img) {
-        showFlagModal(currentFlag.img, `Flag of ${currentFlag.country}`);
-      }
-    };
+    const img = mcFlag.querySelector('img');
+    if (img) {
+      img.style.cursor = 'zoom-in';
+      img.onclick = function(e) {
+        e.stopPropagation();
+        if (currentFlag && currentFlag.img) {
+          showFlagModal(currentFlag.img, `Flag of ${currentFlag.country}`);
+        }
+      };
+    }
   }
   // Study mode: delegate to table
   const studyTable = document.getElementById('study-tbody');
   if (studyTable) {
     studyTable.onclick = function(e) {
       if (e.target && e.target.tagName === 'IMG') {
+        e.stopPropagation();
         showFlagModal(e.target.src, e.target.alt);
       }
     };
