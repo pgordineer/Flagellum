@@ -34,7 +34,7 @@ h1 {
   margin-bottom: 1rem;
   box-sizing: border-box;
 }
-#submit, #next {
+#submit, #hint, #skip {
   width: 100%;
   padding: 0.7rem;
   font-size: 1.1rem;
@@ -45,8 +45,9 @@ h1 {
   margin-bottom: 1rem;
   cursor: pointer;
   transition: background 0.2s;
+  display: block;
 }
-#submit:hover, #next:hover {
+#submit:hover, #hint:hover, #skip:hover {
   background: #005fa3;
 }
 #result {

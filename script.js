@@ -29,7 +29,59 @@ const flags = [
   { country: "Portugal", code: "PT", emoji: "🇵🇹", wiki: "Portugal", img: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" },
   { country: "Poland", code: "PL", emoji: "🇵🇱", wiki: "Poland", img: "https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg" },
   { country: "Ukraine", code: "UA", emoji: "🇺🇦", wiki: "Ukraine", img: "https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" },
-  { country: "Egypt", code: "EG", emoji: "🇪🇬", wiki: "Egypt", img: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg" }
+  { country: "Egypt", code: "EG", emoji: "🇪🇬", wiki: "Egypt", img: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg" },
+  { country: "Saudi Arabia", code: "SA", emoji: "🇸🇦", wiki: "Saudi_Arabia", img: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Saudi_Arabia.svg" },
+  { country: "Indonesia", code: "ID", emoji: "🇮🇩", wiki: "Indonesia", img: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg" },
+  { country: "Thailand", code: "TH", emoji: "🇹🇭", wiki: "Thailand", img: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg" },
+  { country: "Vietnam", code: "VN", emoji: "🇻🇳", wiki: "Vietnam", img: "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" },
+  { country: "Philippines", code: "PH", emoji: "🇵🇭", wiki: "Philippines", img: "https://upload.wikimedia.org/wikipedia/commons/9/99/Flag_of_the_Philippines.svg" },
+  { country: "Pakistan", code: "PK", emoji: "🇵🇰", wiki: "Pakistan", img: "https://upload.wikimedia.org/wikipedia/commons/3/32/Flag_of_Pakistan.svg" },
+  { country: "Bangladesh", code: "BD", emoji: "🇧🇩", wiki: "Bangladesh", img: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Flag_of_Bangladesh.svg" },
+  { country: "Nigeria", code: "NG", emoji: "🇳🇬", wiki: "Nigeria", img: "https://upload.wikimedia.org/wikipedia/commons/7/79/Flag_of_Nigeria.svg" },
+  { country: "Ethiopia", code: "ET", emoji: "🇪🇹", wiki: "Ethiopia", img: "https://upload.wikimedia.org/wikipedia/commons/7/71/Flag_of_Ethiopia.svg" },
+  { country: "Kenya", code: "KE", emoji: "🇰🇪", wiki: "Kenya", img: "https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Kenya.svg" },
+  { country: "Morocco", code: "MA", emoji: "🇲🇦", wiki: "Morocco", img: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Flag_of_Morocco.svg" },
+  { country: "Chile", code: "CL", emoji: "🇨🇱", wiki: "Chile", img: "https://upload.wikimedia.org/wikipedia/commons/7/78/Flag_of_Chile.svg" },
+  { country: "Colombia", code: "CO", emoji: "🇨🇴", wiki: "Colombia", img: "https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Colombia.svg" },
+  { country: "Peru", code: "PE", emoji: "🇵🇪", wiki: "Peru", img: "https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Peru.svg" },
+  { country: "Venezuela", code: "VE", emoji: "🇻🇪", wiki: "Venezuela", img: "https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Venezuela.svg" },
+  { country: "Cuba", code: "CU", emoji: "🇨🇺", wiki: "Cuba", img: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Flag_of_Cuba.svg" },
+  { country: "South Sudan", code: "SS", emoji: "🇸🇸", wiki: "South_Sudan", img: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Flag_of_South_Sudan.svg" },
+  { country: "Sudan", code: "SD", emoji: "🇸🇩", wiki: "Sudan", img: "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_Sudan.svg" },
+  { country: "Iraq", code: "IQ", emoji: "🇮🇶", wiki: "Iraq", img: "https://upload.wikimedia.org/wikipedia/commons/f/f6/Flag_of_Iraq.svg" },
+  { country: "Iran", code: "IR", emoji: "🇮🇷", wiki: "Iran", img: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg" },
+  { country: "Israel", code: "IL", emoji: "🇮🇱", wiki: "Israel", img: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Israel.svg" },
+  { country: "New Zealand", code: "NZ", emoji: "🇳🇿", wiki: "New_Zealand", img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Flag_of_New_Zealand.svg" },
+  { country: "Ireland", code: "IE", emoji: "🇮🇪", wiki: "Ireland", img: "https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Ireland.svg" },
+  { country: "Austria", code: "AT", emoji: "🇦🇹", wiki: "Austria", img: "https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_Austria.svg" },
+  { country: "Hungary", code: "HU", emoji: "🇭🇺", wiki: "Hungary", img: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" },
+  { country: "Romania", code: "RO", emoji: "🇷🇴", wiki: "Romania", img: "https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Romania.svg" },
+  { country: "Czech Republic", code: "CZ", emoji: "🇨🇿", wiki: "Czech_Republic", img: "https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_Czech_Republic.svg" },
+  { country: "Slovakia", code: "SK", emoji: "🇸🇰", wiki: "Slovakia", img: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Slovakia.svg" },
+  { country: "Croatia", code: "HR", emoji: "🇭🇷", wiki: "Croatia", img: "https://upload.wikimedia.org/wikipedia/commons/1/1b/Flag_of_Croatia.svg" },
+  { country: "Slovenia", code: "SI", emoji: "🇸🇮", wiki: "Slovenia", img: "https://upload.wikimedia.org/wikipedia/commons/f/f0/Flag_of_Slovenia.svg" },
+  { country: "Serbia", code: "RS", emoji: "🇷🇸", wiki: "Serbia", img: "https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg" },
+  { country: "Bulgaria", code: "BG", emoji: "🇧🇬", wiki: "Bulgaria", img: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg" },
+  { country: "Ghana", code: "GH", emoji: "🇬🇭", wiki: "Ghana", img: "https://upload.wikimedia.org/wikipedia/commons/1/19/Flag_of_Ghana.svg" },
+  { country: "Ivory Coast", code: "CI", emoji: "🇨🇮", wiki: "Ivory_Coast", img: "https://upload.wikimedia.org/wikipedia/commons/8/86/Flag_of_Cote_d%27Ivoire.svg" },
+  { country: "Algeria", code: "DZ", emoji: "🇩🇿", wiki: "Algeria", img: "https://upload.wikimedia.org/wikipedia/commons/7/77/Flag_of_Algeria.svg" },
+  { country: "Tunisia", code: "TN", emoji: "🇹🇳", wiki: "Tunisia", img: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Flag_of_Tunisia.svg" },
+  { country: "Jordan", code: "JO", emoji: "🇯🇴", wiki: "Jordan", img: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_of_Jordan.svg" },
+  { country: "Lebanon", code: "LB", emoji: "🇱🇧", wiki: "Lebanon", img: "https://upload.wikimedia.org/wikipedia/commons/5/59/Flag_of_Lebanon.svg" },
+  { country: "Qatar", code: "QA", emoji: "🇶🇦", wiki: "Qatar", img: "https://upload.wikimedia.org/wikipedia/commons/6/65/Flag_of_Qatar.svg" },
+  { country: "United Arab Emirates", code: "AE", emoji: "🇦🇪", wiki: "United_Arab_Emirates", img: "https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_United_Arab_Emirates.svg" },
+  { country: "Singapore", code: "SG", emoji: "🇸🇬", wiki: "Singapore", img: "https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Singapore.svg" },
+  { country: "Malaysia", code: "MY", emoji: "🇲🇾", wiki: "Malaysia", img: "https://upload.wikimedia.org/wikipedia/commons/6/66/Flag_of_Malaysia.svg" },
+  { country: "Swaziland", code: "SZ", emoji: "🇸🇿", wiki: "Eswatini", img: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Flag_of_Eswatini.svg" },
+  { country: "Zimbabwe", code: "ZW", emoji: "🇿🇼", wiki: "Zimbabwe", img: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Flag_of_Zimbabwe.svg" },
+  { country: "Botswana", code: "BW", emoji: "🇧🇼", wiki: "Botswana", img: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_Botswana.svg" },
+  { country: "Namibia", code: "NA", emoji: "🇳🇦", wiki: "Namibia", img: "https://upload.wikimedia.org/wikipedia/commons/0/00/Flag_of_Namibia.svg" },
+  { country: "Mozambique", code: "MZ", emoji: "🇲🇿", wiki: "Mozambique", img: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Flag_of_Mozambique.svg" },
+  { country: "Angola", code: "AO", emoji: "🇦🇴", wiki: "Angola", img: "https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Angola.svg" },
+  { country: "Cameroon", code: "CM", emoji: "🇨🇲", wiki: "Cameroon", img: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Flag_of_Cameroon.svg" },
+  { country: "Uganda", code: "UG", emoji: "🇺🇬", wiki: "Uganda", img: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Flag_of_Uganda.svg" },
+  { country: "Tanzania", code: "TZ", emoji: "🇹🇿", wiki: "Tanzania", img: "https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Tanzania.svg" },
+  { country: "Zambia", code: "ZM", emoji: "🇿🇲", wiki: "Zambia", img: "https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Zambia.svg" }
 ];
 
 let currentFlag = {};
@@ -77,6 +129,10 @@ function showHint() {
   document.getElementById('hint').style.display = 'none';
 }
 
+function skipFlag() {
+  pickRandomFlag();
+}
+
 window.onload = function() {
   pickRandomFlag();
   document.getElementById('submit').onclick = checkGuess;
@@ -84,4 +140,5 @@ window.onload = function() {
     if (e.key === 'Enter' && !document.getElementById('guess').disabled) checkGuess();
   });
   document.getElementById('hint').onclick = showHint;
+  document.getElementById('skip').onclick = skipFlag;
 };
