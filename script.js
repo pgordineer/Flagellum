@@ -15,9 +15,17 @@ function pickRandomFlag() {
   document.getElementById('guess').disabled = false;
   document.getElementById('hint').style.display = 'block';
   document.getElementById('hint').textContent = 'Hint';
+  document.getElementById('hint').disabled = false;
   document.getElementById('hint-text').textContent = '';
   // Restore Guess button event
   document.getElementById('submit').onclick = checkGuess;
+}
+
+function showHint() {
+  document.getElementById('hint').textContent = `Country code: ${currentFlag.code}`;
+  document.getElementById('hint').disabled = true;
+  document.getElementById('hint').style.display = 'block';
+  document.getElementById('hint-text').textContent = '';
 }
 
 function checkGuess() {
@@ -30,7 +38,10 @@ function checkGuess() {
     document.getElementById('wiki-link').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
     document.getElementById('submit').textContent = 'Next Flag';
     document.getElementById('guess').disabled = true;
-    document.getElementById('submit').onclick = pickRandomFlag;
+    document.getElementById('submit').onclick = function() {
+      pickRandomFlag();
+      document.getElementById('guess').focus();
+    };
     document.getElementById('hint').style.display = 'none';
     document.getElementById('hint-text').textContent = '';
   } else {
@@ -38,25 +49,12 @@ function checkGuess() {
     document.getElementById('result').style.color = '#c62828';
     document.getElementById('hint').style.display = 'block';
     document.getElementById('hint').textContent = 'Hint';
+    document.getElementById('hint').disabled = false;
     document.getElementById('hint-text').textContent = '';
     document.getElementById('submit').onclick = checkGuess;
   }
 }
 
-function showHint() {
-  document.getElementById('hint').textContent = `Country code: ${currentFlag.code}`;
-  document.getElementById('hint').disabled = true;
-  document.getElementById('hint').style.display = 'block';
-  document.getElementById('hint-text').textContent = '';
-}
-
-function skipFlag() {
-  pickRandomFlag();
-}
-
-// List of countries and their flag emojis is now in flags.js
-
-// Wait for flags.js to load before running the game logic
 function startGame() {
   fetch('flags.json')
     .then(res => res.json())
@@ -68,13 +66,17 @@ function startGame() {
         if (e.key === 'Enter') {
           if (document.getElementById('submit').textContent === 'Next Flag') {
             pickRandomFlag();
+            document.getElementById('guess').focus();
           } else if (!document.getElementById('guess').disabled) {
             checkGuess();
           }
         }
       });
       document.getElementById('hint').onclick = showHint;
-      document.getElementById('skip').onclick = skipFlag;
+      document.getElementById('skip').onclick = function() {
+        pickRandomFlag();
+        document.getElementById('guess').focus();
+      };
     });
 }
 
