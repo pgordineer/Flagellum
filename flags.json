@@ -71,7 +71,7 @@
   { "country": "United Arab Emirates", "code": "AE", "emoji": "🇦🇪", "wiki": "United_Arab_Emirates", "img": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_United_Arab_Emirates.svg" },
   { "country": "Singapore", "code": "SG", "emoji": "🇸🇬", "wiki": "Singapore", "img": "https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Singapore.svg" },
   { "country": "Malaysia", "code": "MY", "emoji": "🇲🇾", "wiki": "Malaysia", "img": "https://upload.wikimedia.org/wikipedia/commons/6/66/Flag_of_Malaysia.svg" },
-  { "country": "Swaziland", "code": "SZ", "emoji": "🇸🇿", "wiki": "Eswatini", "img": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Flag_of_Eswatini.svg" },
+  { "country": "Eswatini", "code": "SZ", "emoji": "🇸🇿", "wiki": "Eswatini", "img": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Flag_of_Eswatini.svg" },
   { "country": "Zimbabwe", "code": "ZW", "emoji": "🇿🇼", "wiki": "Zimbabwe", "img": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Flag_of_Zimbabwe.svg" },
   { "country": "Botswana", "code": "BW", "emoji": "🇧🇼", "wiki": "Botswana", "img": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_Botswana.svg" },
   { "country": "Namibia", "code": "NA", "emoji": "🇳🇦", "wiki": "Namibia", "img": "https://upload.wikimedia.org/wikipedia/commons/0/00/Flag_of_Namibia.svg" },

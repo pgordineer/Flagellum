@@ -167,7 +167,8 @@ function checkGuess() {
     entryTotal++;
     updateScoreDisplays();
     saveHighScores();
-    document.getElementById('result').textContent = `✅ Correct! ${currentFlag.country} (${currentFlag.code})`;
+    const pointStr = addScore === 1 ? '1 Point!' : (addScore === 0.5 ? '1/2 Point!' : `${addScore} Point!`);
+    document.getElementById('result').innerHTML = `✅ Correct! <span class='fraction'>${pointStr}</span> ${currentFlag.country} (${currentFlag.code})`;
     document.getElementById('result').style.color = '#2e7d32';
     document.getElementById('wiki-link').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
     document.getElementById('submit').textContent = 'Next Flag';
@@ -251,16 +252,18 @@ function checkMCAnswer(idx, options, btns) {
   mcTried[idx] = true;
   btns[idx].disabled = true;
   mcAttempts++;
+  let addScore = 0;
   if (idx === mcCorrectIndex) {
-    let addScore = 1;
-    if (mcAttempts === 2) addScore = 2/3;
+    if (mcAttempts === 1) addScore = 1;
+    else if (mcAttempts === 2) addScore = 2/3;
     else if (mcAttempts === 3) addScore = 1/3;
-    else if (mcAttempts > 3) addScore = 0;
+    else addScore = 0;
     mcScore += addScore;
     mcTotal++;
     updateScoreDisplays();
     saveHighScores();
-    document.getElementById('result-mc').textContent = `✅ Correct! ${currentFlag.country} (${currentFlag.code})`;
+    let pointStr = addScore === 1 ? '1 Point!' : (addScore === 2/3 ? '2/3 Point!' : (addScore === 1/3 ? '1/3 Point!' : '0 Point!'));
+    document.getElementById('result-mc').innerHTML = `✅ Correct! <span class='fraction'>${pointStr}</span> ${currentFlag.country} (${currentFlag.code})`;
     document.getElementById('result-mc').style.color = '#2e7d32';
     document.getElementById('wiki-link-mc').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
     btns.forEach(b => b.disabled = true);
@@ -312,10 +315,22 @@ function startGame() {
       // MC mode events
       document.getElementById('next-mc').onclick = nextMCFlag;
       document.getElementById('back-to-menu-entry').onclick = function() {
+        // End game: reset all game state for entry mode
+        usedHint = false;
+        pickRandomFlag();
+        entryScore = 0;
+        entryTotal = 0;
+        updateScoreDisplays();
         saveHighScores();
         showMainMenu();
       };
       document.getElementById('back-to-menu-mc').onclick = function() {
+        // End game: reset all game state for MC mode
+        mcScore = 0;
+        mcTotal = 0;
+        mcAttempts = 0;
+        mcTried = [];
+        updateScoreDisplays();
         saveHighScores();
         showMainMenu();
       };
