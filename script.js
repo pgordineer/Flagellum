@@ -32,7 +32,6 @@ const flags = [
   { country: "Egypt", code: "EG", emoji: "🇪🇬", wiki: "Egypt", img: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg" }
 ];
 
-
 let currentFlag = {};
 
 function pickRandomFlag() {
