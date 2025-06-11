@@ -453,18 +453,19 @@ function setupAutocomplete() {
 
 // --- Flag Image Modal ---
 function setupFlagImageModal() {
-  // Create modal if not present
   if (!document.getElementById('flag-modal')) {
     const modal = document.createElement('div');
     modal.id = 'flag-modal';
+    modal.style.display = 'none';
     modal.innerHTML = `
-      <div id="flag-modal-bg"></div>
-      <div id="flag-modal-content">
-        <img id="flag-modal-img" src="" alt="Flag" />
+      <div id="flag-modal-bg" style="position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);"></div>
+      <div id="flag-modal-content" style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;max-width:95vw;max-height:90vh;margin:auto;">
+        <img id="flag-modal-img" src="" alt="Flag" style="max-width:80vw;max-height:70vh;border-radius:0.5rem;box-shadow:0 2px 16px #0003;border:1px solid #ccc;background:#fff;" />
       </div>
     `;
     document.body.appendChild(modal);
     document.getElementById('flag-modal-bg').onclick = closeFlagModal;
+    document.getElementById('flag-modal-content').onclick = function(e) { e.stopPropagation(); };
     modal.onclick = function(e) { if (e.target === modal) closeFlagModal(); };
   }
 }
@@ -475,20 +476,23 @@ function showFlagModal(imgUrl, alt) {
   img.src = imgUrl;
   img.alt = alt || 'Flag';
   modal.style.display = 'flex';
+  modal.style.alignItems = 'center';
+  modal.style.justifyContent = 'center';
 }
 function closeFlagModal() {
   const modal = document.getElementById('flag-modal');
   if (modal) modal.style.display = 'none';
 }
+
 // --- Add click handlers for all modes ---
 function addFlagClickHandlers() {
   // Entry mode
   const entryFlag = document.getElementById('flag-emoji');
   if (entryFlag) {
-    // Remove previous img handler if any
     const img = entryFlag.querySelector('img');
     if (img) {
       img.style.cursor = 'zoom-in';
+      img.title = 'Click to enlarge';
       img.onclick = function(e) {
         e.stopPropagation();
         if (currentFlag && currentFlag.img) {
@@ -503,6 +507,7 @@ function addFlagClickHandlers() {
     const img = mcFlag.querySelector('img');
     if (img) {
       img.style.cursor = 'zoom-in';
+      img.title = 'Click to enlarge';
       img.onclick = function(e) {
         e.stopPropagation();
         if (currentFlag && currentFlag.img) {
@@ -521,6 +526,74 @@ function addFlagClickHandlers() {
       }
     };
   }
+}
+
+// Ensure addFlagClickHandlers is called after every DOM update:
+function pickRandomFlag() {
+  if (!flags.length) return;
+  currentFlag = flags[Math.floor(Math.random() * flags.length)];
+  const isMobile = window.innerWidth < 700;
+  document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
+  document.getElementById('guess').value = '';
+  document.getElementById('result').textContent = '';
+  document.getElementById('wiki-link').innerHTML = '';
+  document.getElementById('submit').textContent = 'Guess';
+  document.getElementById('submit').disabled = false;
+  document.getElementById('guess').disabled = false;
+  document.getElementById('hint').style.display = 'block';
+  document.getElementById('hint').textContent = 'Hint';
+  document.getElementById('hint').disabled = false;
+  document.getElementById('skip').style.display = 'inline-block';
+  document.getElementById('hint-text').textContent = '';
+  document.getElementById('submit').onclick = checkGuess;
+  addFlagClickHandlers(); // Ensure click handler is always set after DOM update
+}
+
+function pickRandomFlagMC() {
+  if (!flags.length) return;
+  // Pick correct flag
+  currentFlag = flags[Math.floor(Math.random() * flags.length)];
+  // Pick 3 other random, unique countries
+  let options = [currentFlag];
+  let used = new Set([currentFlag.country]);
+  while (options.length < 4) {
+    let f = flags[Math.floor(Math.random() * flags.length)];
+    if (!used.has(f.country)) {
+      options.push(f);
+      used.add(f.country);
+    }
+  }
+  // Shuffle options
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+  mcCorrectIndex = options.findIndex(f => f.country === currentFlag.country);
+  mcAttempts = 0;
+  mcTried = [false, false, false, false];
+  // Show flag and options
+  const isMobile = window.innerWidth < 700;
+  document.getElementById('flag-emoji-mc').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
+  const mcOptionsDiv = document.getElementById('mc-options');
+  mcOptionsDiv.innerHTML = '';
+  options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'mc-option-btn';
+    btn.textContent = `${opt.country} (${opt.code})`;
+    btn.disabled = false;
+    btn.onclick = () => checkMCAnswer(idx, options, btns);
+    mcOptionsDiv.appendChild(btn);
+  });
+  // Store buttons for disabling
+  let btns = Array.from(mcOptionsDiv.children);
+  btns.forEach((btn, idx) => {
+    btn.onclick = () => checkMCAnswer(idx, options, btns);
+  });
+  document.getElementById('result-mc').textContent = '';
+  document.getElementById('wiki-link-mc').innerHTML = '';
+  document.getElementById('hint-text-mc').textContent = '';
+  document.getElementById('next-mc').style.display = 'none';
+  addFlagClickHandlers(); // Ensure click handler is always set after DOM update
 }
 
 function startGame() {
@@ -590,5 +663,4 @@ function startGame() {
 window.onload = function() {
   startGame();
   setupFlagImageModal();
-  addFlagClickHandlers();
 };
