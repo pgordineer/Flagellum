@@ -95,56 +95,7 @@ footer {
   transition: background 0.2s;
   display: block;
 }
-#main-menu button:hover:not([disabled]) {
-  background: #005fa3;
-}
-#guide-btn {
-  background: #888;
-  color: #fff;
-  cursor: pointer;
-}
-#guide-btn:hover:not([disabled]) {
-  background: #555;
-}
-#guide-screen {
-  display: none;
-  background: #fff;
-  border-radius: 1.2rem;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-  padding: 2rem 1.5rem 1rem 1.5rem;
-  margin: 2rem auto 0 auto;
-  max-width: 400px;
-  text-align: left;
-  color: #222;
-}
-#guide-screen h2 {
-  color: #0078d7;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
-  text-align: center;
-}
-#guide-screen ul {
-  margin: 0 0 1.2rem 1.2rem;
-  padding: 0;
-}
-#guide-screen li {
-  margin-bottom: 0.7rem;
-  font-size: 1.05rem;
-}
-#close-guide-btn {
-  width: 100%;
-  padding: 0.7rem;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: #0078d7;
-  color: #fff;
-  margin-top: 1.2rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-#close-guide-btn:hover {
+#main-menu button:hover {
   background: #005fa3;
 }
 #score-entry, #score-mc, #highscore-entry, #highscore-mc {

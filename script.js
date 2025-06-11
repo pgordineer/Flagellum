@@ -107,49 +107,32 @@ function showMainMenu(congratsMsg) {
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('guide-screen').style.display = 'none';
   document.getElementById('congrats').style.display = 'none';
 }
 
-function showGuide() {
-  document.getElementById('main-menu').style.display = 'none';
-  document.getElementById('game-entry').style.display = 'none';
-  document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('guide-screen').style.display = 'block';
-}
-
 function showEntryMode() {
-  // Always start a new game
-  entryScore = 0;
-  entryTotal = 0;
-  usedHint = false;
-  updateScoreDisplays();
-  pickRandomFlag();
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'block';
   document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('guide-screen').style.display = 'none';
+  usedHint = false;
+  updateScoreDisplays();
+  pickRandomFlag();
   document.getElementById('guess').focus();
 }
 
 function showMCMode() {
-  // Always start a new game
-  mcScore = 0;
-  mcTotal = 0;
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('game-entry').style.display = 'none';
+  document.getElementById('game-mc').style.display = 'block';
   mcAttempts = 0;
   mcTried = [];
   updateScoreDisplays();
   pickRandomFlagMC();
-  document.getElementById('main-menu').style.display = 'none';
-  document.getElementById('game-entry').style.display = 'none';
-  document.getElementById('game-mc').style.display = 'block';
-  document.getElementById('guide-screen').style.display = 'none';
 }
 
 function pickRandomFlag() {
   if (!flags.length) return;
   currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  currentFlag._score = 1;
   const isMobile = window.innerWidth < 700;
   document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
   document.getElementById('guess').value = '';
@@ -166,19 +149,25 @@ function pickRandomFlag() {
   document.getElementById('submit').onclick = checkGuess;
 }
 
+function showHint() {
+  usedHint = true;
+  document.getElementById('hint').textContent = `Country code: ${currentFlag.code}`;
+  document.getElementById('hint').disabled = true;
+  document.getElementById('hint').style.display = 'block';
+  document.getElementById('hint-text').textContent = '';
+}
+
 function checkGuess() {
   const guess = document.getElementById('guess').value.trim().toLowerCase();
   const answer = currentFlag.country.toLowerCase();
   const code = currentFlag.code.toLowerCase();
-  // Entry mode scoring: lose 0.25 for each wrong, lose 0.5 for hint, min 0
-  if (!currentFlag._score) currentFlag._score = 1;
   if (guess === answer || guess === code) {
-    let addScore = Math.max(0, currentFlag._score);
+    let addScore = usedHint ? 0.5 : 1;
     entryScore += addScore;
     entryTotal++;
     updateScoreDisplays();
     saveHighScores();
-    const pointStr = addScore === 1 ? '1 Point!' : (addScore === 0.5 ? '1/2 Point!' : (addScore === 0.75 ? '3/4 Point!' : (addScore === 0.25 ? '1/4 Point!' : '0 Point!')));
+    const pointStr = addScore === 1 ? '1 Point!' : (addScore === 0.5 ? '1/2 Point!' : `${addScore} Point!`);
     document.getElementById('result').innerHTML = `✅ Correct! <span class='fraction'>${pointStr}</span> ${currentFlag.country} (${currentFlag.code})`;
     document.getElementById('result').style.color = '#2e7d32';
     document.getElementById('wiki-link').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
@@ -193,7 +182,6 @@ function checkGuess() {
     document.getElementById('skip').style.display = 'none';
     document.getElementById('hint-text').textContent = '';
   } else {
-    currentFlag._score = Math.max(0, (currentFlag._score || 1) - 0.25);
     document.getElementById('result').textContent = '❌ Try again!';
     document.getElementById('result').style.color = '#c62828';
     document.getElementById('hint').style.display = 'block';
@@ -205,13 +193,12 @@ function checkGuess() {
   }
 }
 
-function showHint() {
-  usedHint = true;
-  currentFlag._score = Math.max(0, (currentFlag._score || 1) - 0.5);
-  document.getElementById('hint').textContent = `Country code: ${currentFlag.code}`;
-  document.getElementById('hint').disabled = true;
-  document.getElementById('hint').style.display = 'block';
-  document.getElementById('hint-text').textContent = '';
+function skipEntryFlag() {
+  entryTotal++;
+  updateScoreDisplays();
+  saveHighScores();
+  pickRandomFlag();
+  document.getElementById('guess').focus();
 }
 
 function pickRandomFlagMC() {
@@ -347,9 +334,6 @@ function startGame() {
         saveHighScores();
         showMainMenu();
       };
-      document.getElementById('guide-btn').disabled = false;
-      document.getElementById('guide-btn').onclick = showGuide;
-      document.getElementById('close-guide-btn').onclick = showMainMenu;
       showMainMenu();
       updateScoreDisplays();
       updateMainMenuHighscores();
