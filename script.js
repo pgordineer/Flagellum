@@ -2,6 +2,59 @@ let flags = [];
 let currentFlag = {};
 let mcCorrectIndex = 0;
 
+// Entry Mode scoring
+let entryScore = 0;
+let entryTotal = 0;
+let entryHighScore = 0;
+let entryHighTotal = 0;
+let usedHint = false;
+
+// MC Mode scoring
+let mcScore = 0;
+let mcTotal = 0;
+let mcHighScore = 0;
+let mcHighTotal = 0;
+let mcAttempts = 0;
+let mcTried = [];
+
+function loadHighScores() {
+  entryHighScore = parseFloat(localStorage.getItem('flagellum_entry_highscore')) || 0;
+  entryHighTotal = parseInt(localStorage.getItem('flagellum_entry_hightotal')) || 0;
+  mcHighScore = parseFloat(localStorage.getItem('flagellum_mc_highscore')) || 0;
+  mcHighTotal = parseInt(localStorage.getItem('flagellum_mc_hightotal')) || 0;
+}
+
+function saveHighScores() {
+  if (entryScore > entryHighScore || (entryScore === entryHighScore && entryTotal > entryHighTotal)) {
+    localStorage.setItem('flagellum_entry_highscore', entryScore);
+    localStorage.setItem('flagellum_entry_hightotal', entryTotal);
+  }
+  if (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal)) {
+    localStorage.setItem('flagellum_mc_highscore', mcScore);
+    localStorage.setItem('flagellum_mc_hightotal', mcTotal);
+  }
+}
+
+function updateScoreDisplays() {
+  // Entry mode
+  document.getElementById('score-entry').innerHTML = `Score: ${formatScore(entryScore)} of ${entryTotal}`;
+  document.getElementById('highscore-entry').innerHTML = `High Score: ${formatScore(entryHighScore)} of ${entryHighTotal}`;
+  // MC mode
+  document.getElementById('score-mc').innerHTML = `Score: ${formatScore(mcScore)} of ${mcTotal}`;
+  document.getElementById('highscore-mc').innerHTML = `High Score: ${formatScore(mcHighScore)} of ${mcHighTotal}`;
+}
+
+function formatScore(score) {
+  // Show as integer if whole, else as fraction (e.g. 1 2/3)
+  if (Number.isInteger(score)) return score;
+  let intPart = Math.floor(score);
+  let frac = score - intPart;
+  if (Math.abs(frac - 2/3) < 0.01) return `${intPart} <span class="fraction">2/3</span>`;
+  if (Math.abs(frac - 1/3) < 0.01) return `${intPart} <span class="fraction">1/3</span>`;
+  if (Math.abs(frac - 0.5) < 0.01) return `${intPart} <span class="fraction">1/2</span>`;
+  return score.toFixed(2);
+}
+
 function showMainMenu() {
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';
@@ -12,6 +65,8 @@ function showEntryMode() {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'block';
   document.getElementById('game-mc').style.display = 'none';
+  usedHint = false;
+  updateScoreDisplays();
   pickRandomFlag();
   document.getElementById('guess').focus();
 }
@@ -20,13 +75,15 @@ function showMCMode() {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'block';
+  mcAttempts = 0;
+  mcTried = [];
+  updateScoreDisplays();
   pickRandomFlagMC();
 }
 
 function pickRandomFlag() {
   if (!flags.length) return;
   currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  // Show flag image and emoji (emoji only on mobile)
   const isMobile = window.innerWidth < 700;
   document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
   document.getElementById('guess').value = '';
@@ -39,11 +96,11 @@ function pickRandomFlag() {
   document.getElementById('hint').textContent = 'Hint';
   document.getElementById('hint').disabled = false;
   document.getElementById('hint-text').textContent = '';
-  // Restore Guess button event
   document.getElementById('submit').onclick = checkGuess;
 }
 
 function showHint() {
+  usedHint = true;
   document.getElementById('hint').textContent = `Country code: ${currentFlag.code}`;
   document.getElementById('hint').disabled = true;
   document.getElementById('hint').style.display = 'block';
@@ -55,12 +112,18 @@ function checkGuess() {
   const answer = currentFlag.country.toLowerCase();
   const code = currentFlag.code.toLowerCase();
   if (guess === answer || guess === code) {
+    let addScore = usedHint ? 0.5 : 1;
+    entryScore += addScore;
+    entryTotal++;
+    updateScoreDisplays();
+    saveHighScores();
     document.getElementById('result').textContent = `✅ Correct! ${currentFlag.country} (${currentFlag.code})`;
     document.getElementById('result').style.color = '#2e7d32';
     document.getElementById('wiki-link').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
     document.getElementById('submit').textContent = 'Next Flag';
     document.getElementById('guess').disabled = true;
     document.getElementById('submit').onclick = function() {
+      usedHint = false;
       pickRandomFlag();
       document.getElementById('guess').focus();
     };
@@ -75,6 +138,14 @@ function checkGuess() {
     document.getElementById('hint-text').textContent = '';
     document.getElementById('submit').onclick = checkGuess;
   }
+}
+
+function skipEntryFlag() {
+  entryTotal++;
+  updateScoreDisplays();
+  saveHighScores();
+  pickRandomFlag();
+  document.getElementById('guess').focus();
 }
 
 function pickRandomFlagMC() {
@@ -97,6 +168,8 @@ function pickRandomFlagMC() {
     [options[i], options[j]] = [options[j], options[i]];
   }
   mcCorrectIndex = options.findIndex(f => f.country === currentFlag.country);
+  mcAttempts = 0;
+  mcTried = [false, false, false, false];
   // Show flag and options
   const isMobile = window.innerWidth < 700;
   document.getElementById('flag-emoji-mc').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
@@ -106,48 +179,67 @@ function pickRandomFlagMC() {
     const btn = document.createElement('button');
     btn.className = 'mc-option-btn';
     btn.textContent = `${opt.country} (${opt.code})`;
-    btn.onclick = () => checkMCAnswer(idx, options);
+    btn.disabled = false;
+    btn.onclick = () => checkMCAnswer(idx, options, btns);
     mcOptionsDiv.appendChild(btn);
+  });
+  // Store buttons for disabling
+  let btns = Array.from(mcOptionsDiv.children);
+  btns.forEach((btn, idx) => {
+    btn.onclick = () => checkMCAnswer(idx, options, btns);
   });
   document.getElementById('result-mc').textContent = '';
   document.getElementById('wiki-link-mc').innerHTML = '';
-  document.getElementById('hint-mc').style.display = 'block';
-  document.getElementById('hint-mc').textContent = 'Hint';
-  document.getElementById('hint-mc').disabled = false;
   document.getElementById('hint-text-mc').textContent = '';
   document.getElementById('next-mc').style.display = 'none';
 }
 
-function showHintMC() {
-  document.getElementById('hint-mc').textContent = `Country code: ${currentFlag.code}`;
-  document.getElementById('hint-mc').disabled = true;
-  document.getElementById('hint-mc').style.display = 'block';
-  document.getElementById('hint-text-mc').textContent = '';
-}
-
-function checkMCAnswer(idx, options) {
-  const btns = document.querySelectorAll('.mc-option-btn');
-  btns.forEach(b => b.disabled = true);
+function checkMCAnswer(idx, options, btns) {
+  if (mcTried[idx]) return;
+  mcTried[idx] = true;
+  btns[idx].disabled = true;
+  mcAttempts++;
   if (idx === mcCorrectIndex) {
+    let addScore = 1;
+    if (mcAttempts === 2) addScore = 2/3;
+    else if (mcAttempts === 3) addScore = 1/3;
+    else if (mcAttempts > 3) addScore = 0;
+    mcScore += addScore;
+    mcTotal++;
+    updateScoreDisplays();
+    saveHighScores();
     document.getElementById('result-mc').textContent = `✅ Correct! ${currentFlag.country} (${currentFlag.code})`;
     document.getElementById('result-mc').style.color = '#2e7d32';
     document.getElementById('wiki-link-mc').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
+    btns.forEach(b => b.disabled = true);
+    document.getElementById('next-mc').style.display = 'block';
   } else {
-    document.getElementById('result-mc').textContent = `❌ Wrong! Correct: ${currentFlag.country} (${currentFlag.code})`;
-    document.getElementById('result-mc').style.color = '#c62828';
-    document.getElementById('wiki-link-mc').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
+    // If this was the last possible attempt, finish the round
+    if (mcAttempts >= 4 || mcTried.filter(Boolean).length === 4) {
+      mcScore += 0;
+      mcTotal++;
+      updateScoreDisplays();
+      saveHighScores();
+      document.getElementById('result-mc').textContent = `❌ Out of tries! Correct: ${currentFlag.country} (${currentFlag.code})`;
+      document.getElementById('result-mc').style.color = '#c62828';
+      document.getElementById('wiki-link-mc').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
+      btns.forEach(b => b.disabled = true);
+      document.getElementById('next-mc').style.display = 'block';
+    }
   }
-  document.getElementById('hint-mc').style.display = 'none';
-  document.getElementById('hint-text-mc').textContent = '';
-  document.getElementById('next-mc').style.display = 'block';
+}
+
+function nextMCFlag() {
+  pickRandomFlagMC();
 }
 
 function startGame() {
+  loadHighScores();
   fetch('flags.json')
     .then(res => res.json())
     .then(data => {
       flags = data;
-      // Main menu event listeners (fix: use addEventListener for reliability)
+      // Main menu event listeners
       document.getElementById('entry-mode-btn').addEventListener('click', showEntryMode);
       document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);
       document.getElementById('back-to-menu-entry').onclick = showMainMenu;
@@ -157,6 +249,7 @@ function startGame() {
       document.getElementById('guess').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
           if (document.getElementById('submit').textContent === 'Next Flag') {
+            usedHint = false;
             pickRandomFlag();
             document.getElementById('guess').focus();
           } else if (!document.getElementById('guess').disabled) {
@@ -165,19 +258,11 @@ function startGame() {
         }
       });
       document.getElementById('hint').onclick = showHint;
-      document.getElementById('skip').onclick = function() {
-        pickRandomFlag();
-        document.getElementById('guess').focus();
-      };
+      document.getElementById('skip').onclick = skipEntryFlag;
       // MC mode events
-      document.getElementById('hint-mc').onclick = showHintMC;
-      document.getElementById('skip-mc').onclick = function() {
-        pickRandomFlagMC();
-      };
-      document.getElementById('next-mc').onclick = function() {
-        pickRandomFlagMC();
-      };
+      document.getElementById('next-mc').onclick = nextMCFlag;
       showMainMenu();
+      updateScoreDisplays();
     });
 }
 

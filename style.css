@@ -98,6 +98,18 @@ footer {
 #main-menu button:hover {
   background: #005fa3;
 }
+#score-entry, #score-mc, #highscore-entry, #highscore-mc {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #0078d7;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.fraction {
+  font-variant-numeric: diagonal-fractions;
+  font-feature-settings: "frac";
+  font-size: 1.1em;
+}
 #game-mc #mc-options {
   display: flex;
   flex-direction: column;
@@ -122,6 +134,8 @@ footer {
 #game-mc .mc-option-btn[disabled] {
   opacity: 0.7;
   cursor: default;
+  background: #bbb;
+  color: #fff;
 }
 #next-mc {
   width: 100%;
