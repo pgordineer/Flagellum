@@ -52,7 +52,10 @@ function skipFlag() {
   pickRandomFlag();
 }
 
-window.onload = function() {
+// List of countries and their flag emojis is now in flags.js
+
+// Wait for flags.js to load before running the game logic
+function startGame() {
   pickRandomFlag();
   document.getElementById('submit').onclick = checkGuess;
   document.getElementById('guess').addEventListener('keydown', function(e) {
@@ -66,4 +69,20 @@ window.onload = function() {
   });
   document.getElementById('hint').onclick = showHint;
   document.getElementById('skip').onclick = skipFlag;
-};
+}
+
+if (typeof flags !== 'undefined') {
+  startGame();
+} else {
+  window.addEventListener('DOMContentLoaded', function() {
+    if (typeof flags !== 'undefined') {
+      startGame();
+    } else {
+      // Wait for flags.js to load
+      const script = document.querySelector('script[src="flags.js"]');
+      if (script) {
+        script.addEventListener('load', startGame);
+      }
+    }
+  });
+}
