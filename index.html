@@ -14,7 +14,18 @@
       <div id="main-highscores"></div>
       <button id="entry-mode-btn">Entry Mode</button>
       <button id="mc-mode-btn">Multiple Choice</button>
+      <button id="guide-btn" disabled>Guide</button>
       <div id="congrats" style="display:none;"></div>
+    </div>
+    <div id="guide-screen" style="display:none;">
+      <h2>How to Play</h2>
+      <ul>
+        <li><b>Entry Mode:</b> Type the country name or 2-letter code. Each incorrect guess reduces your possible score by <b>1/4 point</b> (minimum 0). Using a hint reduces your possible score by <b>1/2 point</b>. If you use a hint and have already lost 1/2 point or more, you get 0 for that flag. Skipping gives 0 points but counts as an attempt.</li>
+        <li><b>Multiple Choice:</b> Pick the correct country from 4 options. Each wrong answer reduces your possible score: <b>1 point</b> for first try, <b>2/3</b> for second, <b>1/3</b> for third, <b>0</b> for last or if all are wrong. Already tried answers are grayed out.</li>
+        <li>High scores are saved in your browser. A new high score is set if you get more points, or the same points in fewer attempts.</li>
+        <li>Click "Back to Menu" to end your current game and save your score.</li>
+      </ul>
+      <button id="close-guide-btn">Back to Menu</button>
     </div>
     <div id="game-entry" style="display:none;">
       <div id="score-entry"></div>

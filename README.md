@@ -2,7 +2,7 @@
 
 A beautiful, mobile-friendly flag guessing game for learning world flags. Guess the country by its flag (image from Wikipedia), using either the country name or its 2-letter code, or try the fun multiple choice mode!
 
-[![Flagellum Banner](https://raw.githubusercontent.com/pgordineer/Flagellum/main/banner.png)](https://pgordineer.github.io/Flagellum/)
+![Flagellum Sample](flagellumsample.png)
 
 ---
 
