@@ -7,6 +7,8 @@ let entryScore = 0;
 let entryTotal = 0;
 let entryHighScore = 0;
 let entryHighTotal = 0;
+let entryStreak = 0;
+let entryLongestStreak = 0;
 let usedHint = false;
 
 // MC Mode scoring
@@ -14,6 +16,8 @@ let mcScore = 0;
 let mcTotal = 0;
 let mcHighScore = 0;
 let mcHighTotal = 0;
+let mcStreak = 0;
+let mcLongestStreak = 0;
 let mcAttempts = 0;
 let mcTried = [];
 
@@ -22,6 +26,8 @@ let rcScore = 0;
 let rcTotal = 0;
 let rcHighScore = 0;
 let rcHighTotal = 0;
+let rcStreak = 0;
+let rcLongestStreak = 0;
 let rcAttempts = 0;
 let rcTried = [];
 let rcCorrectIndex = 0;
@@ -31,10 +37,13 @@ let rcCurrentFlag = {};
 function loadHighScores() {
   entryHighScore = parseFloat(localStorage.getItem('flagellum_entry_highscore')) || 0;
   entryHighTotal = parseInt(localStorage.getItem('flagellum_entry_hightotal')) || 0;
+  entryLongestStreak = parseInt(localStorage.getItem('flagellum_entry_longeststreak')) || 0;
   mcHighScore = parseFloat(localStorage.getItem('flagellum_mc_highscore')) || 0;
   mcHighTotal = parseInt(localStorage.getItem('flagellum_mc_hightotal')) || 0;
+  mcLongestStreak = parseInt(localStorage.getItem('flagellum_mc_longeststreak')) || 0;
   rcHighScore = parseFloat(localStorage.getItem('flagellum_rc_highscore')) || 0;
   rcHighTotal = parseInt(localStorage.getItem('flagellum_rc_hightotal')) || 0;
+  rcLongestStreak = parseInt(localStorage.getItem('flagellum_rc_longeststreak')) || 0;
 }
 
 function saveHighScores(showCongrats) {
@@ -52,6 +61,10 @@ function saveHighScores(showCongrats) {
     entryHighScore = entryScore;
     entryHighTotal = entryTotal;
   }
+  if (entryStreak > entryLongestStreak) {
+    entryLongestStreak = entryStreak;
+    localStorage.setItem('flagellum_entry_longeststreak', entryLongestStreak);
+  }
   // MC mode
   if (
     (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal)) &&
@@ -64,6 +77,10 @@ function saveHighScores(showCongrats) {
     localStorage.setItem('flagellum_mc_hightotal', mcTotal);
     mcHighScore = mcScore;
     mcHighTotal = mcTotal;
+  }
+  if (mcStreak > mcLongestStreak) {
+    mcLongestStreak = mcStreak;
+    localStorage.setItem('flagellum_mc_longeststreak', mcLongestStreak);
   }
   // Reverse Choice mode
   if (
@@ -78,6 +95,10 @@ function saveHighScores(showCongrats) {
     rcHighScore = rcScore;
     rcHighTotal = rcTotal;
   }
+  if (rcStreak > rcLongestStreak) {
+    rcLongestStreak = rcStreak;
+    localStorage.setItem('flagellum_rc_longeststreak', rcLongestStreak);
+  }
   if (showCongrats && congratsMsg) {
     showMainMenu(congratsMsg);
   } else if (showCongrats) {
@@ -87,7 +108,7 @@ function saveHighScores(showCongrats) {
 
 function updateScoreDisplays() {
   // Entry mode
-  document.getElementById('score-entry').innerHTML = `Score: ${formatScore(entryScore)} of ${entryTotal}`;
+  document.getElementById('score-entry').innerHTML = `Score: ${formatScore(entryScore)} of ${entryTotal}<br>Streak: ${entryStreak} <span class="score-streak">(Longest: ${entryLongestStreak})</span>`;
   document.getElementById('highscore-entry').innerHTML = `High Score: ${formatScore(entryHighScore)} of ${entryHighTotal}`;
   // Show 'New High Score!' if actively above high score
   let nhs = '';
@@ -96,7 +117,7 @@ function updateScoreDisplays() {
   }
   document.getElementById('highscore-entry').innerHTML += nhs;
   // MC mode
-  document.getElementById('score-mc').innerHTML = `Score: ${formatScore(mcScore)} of ${mcTotal}`;
+  document.getElementById('score-mc').innerHTML = `Score: ${formatScore(mcScore)} of ${mcTotal}<br>Streak: ${mcStreak} <span class="score-streak">(Longest: ${mcLongestStreak})</span>`;
   document.getElementById('highscore-mc').innerHTML = `High Score: ${formatScore(mcHighScore)} of ${mcHighTotal}`;
   let nhsMC = '';
   if (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal && mcHighScore > 0)) {
@@ -104,7 +125,7 @@ function updateScoreDisplays() {
   }
   document.getElementById('highscore-mc').innerHTML += nhsMC;
   // Reverse Choice mode
-  document.getElementById('score-rc').innerHTML = `Score: ${formatScore(rcScore)} of ${rcTotal}`;
+  document.getElementById('score-rc').innerHTML = `Score: ${formatScore(rcScore)} of ${rcTotal}<br>Streak: ${rcStreak} <span class="score-streak">(Longest: ${rcLongestStreak})</span>`;
   document.getElementById('highscore-rc').innerHTML = `High Score: ${formatScore(rcHighScore)} of ${rcHighTotal}`;
   let nhsRC = '';
   if (rcScore > rcHighScore || (rcScore === rcHighScore && rcTotal > rcHighTotal && rcHighScore > 0)) {
@@ -132,9 +153,9 @@ function updateMainMenuHighscores() {
   const mainHigh = document.getElementById('main-highscores');
   mainHigh.innerHTML =
     `<h2>Personal High Scores</h2>` +
-    `<div class="main-highscore-row">Entry Mode: <b>${formatScore(entryHighScore)} of ${entryHighTotal}</b></div>` +
-    `<div class="main-highscore-row">Multiple Choice: <b>${formatScore(mcHighScore)} of ${mcHighTotal}</b></div>` +
-    `<div class="main-highscore-row">Reverse Choice: <b>${formatScore(rcHighScore)} of ${rcHighTotal}</b></div>`;
+    `<div class="main-highscore-row">Entry Mode: <b>${formatScore(entryHighScore)} of ${entryHighTotal}</b> <span class="score-streak">Longest Streak: ${entryLongestStreak}</span></div>` +
+    `<div class="main-highscore-row">Multiple Choice: <b>${formatScore(mcHighScore)} of ${mcHighTotal}</b> <span class="score-streak">Longest Streak: ${mcLongestStreak}</span></div>` +
+    `<div class="main-highscore-row">Reverse Choice: <b>${formatScore(rcHighScore)} of ${rcHighTotal}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak}</span></div>`;
 }
 
 function showMainMenu(congratsMsg) {
@@ -153,6 +174,7 @@ function showEntryMode() {
   document.getElementById('game-mc').style.display = 'none';
   document.getElementById('game-rc').style.display = 'none';
   usedHint = false;
+  entryStreak = 0;
   updateScoreDisplays();
   pickRandomFlag();
   document.getElementById('guess').focus();
@@ -167,6 +189,7 @@ function showMCMode() {
   document.getElementById('game-rc').style.display = 'none';
   mcAttempts = 0;
   mcTried = [];
+  mcStreak = 0;
   updateScoreDisplays();
   pickRandomFlagMC();
   addFlagClickHandlers();
@@ -179,6 +202,7 @@ function showRCMode() {
   document.getElementById('game-rc').style.display = 'block';
   rcAttempts = 0;
   rcTried = [];
+  rcStreak = 0;
   updateScoreDisplays();
   pickRandomFlagRC();
   addFlagClickHandlers();
@@ -262,6 +286,13 @@ function checkGuess() {
     let addScore = usedHint ? 0.5 : 1;
     entryScore += addScore;
     entryTotal++;
+    // Streak logic
+    if (!usedHint && addScore === 1) {
+      entryStreak++;
+      if (entryStreak > entryLongestStreak) entryLongestStreak = entryStreak;
+    } else {
+      entryStreak = 0;
+    }
     updateScoreDisplays();
     saveHighScores();
     const pointStr = addScore === 1 ? '1 Point!' : (addScore === 0.5 ? '1/2 Point!' : `${addScore} Point!`);
@@ -279,6 +310,7 @@ function checkGuess() {
     document.getElementById('skip').style.display = 'none';
     document.getElementById('hint-text').textContent = '';
   } else {
+    entryStreak = 0;
     document.getElementById('result').textContent = '❌ Try again!';
     document.getElementById('result').style.color = '#c62828';
     document.getElementById('hint').style.display = 'block';
@@ -292,6 +324,7 @@ function checkGuess() {
 
 function skipEntryFlag() {
   entryTotal++;
+  entryStreak = 0;
   updateScoreDisplays();
   saveHighScores();
   pickRandomFlag();
@@ -358,6 +391,13 @@ function checkMCAnswer(idx, options, btns) {
     else addScore = 0;
     mcScore += addScore;
     mcTotal++;
+    // Streak logic
+    if (mcAttempts === 1 && addScore === 1) {
+      mcStreak++;
+      if (mcStreak > mcLongestStreak) mcLongestStreak = mcStreak;
+    } else {
+      mcStreak = 0;
+    }
     updateScoreDisplays();
     saveHighScores();
     let pointStr = addScore === 1 ? '1 Point!' : (addScore === 2/3 ? '2/3 Point!' : (addScore === 1/3 ? '1/3 Point!' : '0 Point!'));
@@ -367,6 +407,7 @@ function checkMCAnswer(idx, options, btns) {
     btns.forEach(b => b.disabled = true);
     document.getElementById('next-mc').style.display = 'block';
   } else {
+    mcStreak = 0;
     // If this was the last possible attempt, finish the round
     if (mcAttempts >= 4 || mcTried.filter(Boolean).length === 4) {
       mcScore += 0;
@@ -450,6 +491,13 @@ function checkRCAnswer(idx, options, btns) {
     else addScore = 0;
     rcScore += addScore;
     rcTotal++;
+    // Streak logic
+    if (rcAttempts === 1 && addScore === 1) {
+      rcStreak++;
+      if (rcStreak > rcLongestStreak) rcLongestStreak = rcStreak;
+    } else {
+      rcStreak = 0;
+    }
     updateScoreDisplays();
     saveHighScores();
     let pointStr = addScore === 1 ? '1 Point!' : (addScore === 2/3 ? '2/3 Point!' : (addScore === 1/3 ? '1/3 Point!' : '0 Point!'));
@@ -459,6 +507,7 @@ function checkRCAnswer(idx, options, btns) {
     btns.forEach(b => b.disabled = true);
     document.getElementById('next-rc').style.display = 'block';
   } else {
+    rcStreak = 0;
     // If this was the last possible attempt, finish the round
     if (rcAttempts >= 4 || rcTried.filter(Boolean).length === 4) {
       rcScore += 0;

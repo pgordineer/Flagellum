@@ -453,6 +453,11 @@ footer {
   width: 192px !important;
   height: 132px !important;
 }
+.score-streak {
+  font-size: 0.98em;
+  color: #2e7d32;
+  margin-left: 0.3em;
+}
 @media (max-width: 500px) {
   .container {
     max-width: 98vw;
