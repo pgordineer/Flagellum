@@ -469,8 +469,8 @@ footer {
     gap: 0.4em;
   }
   .rc-option-btn img {
-    width: 86px !important;
-    height: 55px !important;
+    width: 112px !important;
+    height: 72px !important;
   }
 }
 @media (max-width: 700px) {
@@ -494,7 +494,7 @@ footer {
     max-height: 60vh;
   }
   .rc-option-btn img {
-    width: 122px !important;
-    height: 79px !important;
+    width: 159px !important;
+    height: 103px !important;
   }
 }
