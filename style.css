@@ -340,11 +340,14 @@ footer {
 .rc-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1em;
+  gap: 1.3em;
   width: 100%;
-  max-width: 350px;
+  max-width: 440px;
   margin-bottom: 1em;
   justify-items: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 .rc-option-btn {
   background: #fff;
@@ -459,7 +462,11 @@ footer {
   }
   .rc-grid {
     max-width: 99vw;
-    gap: 0.5em;
+    gap: 0.4em;
+  }
+  .rc-option-btn img {
+    width: 60px !important;
+    height: 38px !important;
   }
 }
 @media (max-width: 700px) {
@@ -483,7 +490,7 @@ footer {
     max-height: 60vh;
   }
   .rc-option-btn img {
-    width: 70px !important;
-    height: 45px !important;
+    width: 85px !important;
+    height: 55px !important;
   }
 }
