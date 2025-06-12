@@ -46,15 +46,8 @@ function loadHighScores() {
   rcLongestStreak = parseInt(localStorage.getItem('flagellum_rc_longeststreak')) || 0;
 }
 
-function saveHighScores(showCongrats) {
-  let congratsMsg = null;
+function saveHighScores() {
   // Entry mode
-  if (
-    (entryScore > entryHighScore || (entryScore === entryHighScore && entryTotal > entryHighTotal)) &&
-    entryHighScore > 0
-  ) {
-    congratsMsg = '🎉 New Entry Mode High Score!';
-  }
   if (entryScore > entryHighScore || (entryScore === entryHighScore && entryTotal > entryHighTotal)) {
     localStorage.setItem('flagellum_entry_highscore', entryScore);
     localStorage.setItem('flagellum_entry_hightotal', entryTotal);
@@ -66,12 +59,6 @@ function saveHighScores(showCongrats) {
     localStorage.setItem('flagellum_entry_longeststreak', entryLongestStreak);
   }
   // MC mode
-  if (
-    (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal)) &&
-    mcHighScore > 0
-  ) {
-    congratsMsg = '🎉 New Multiple Choice High Score!';
-  }
   if (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal)) {
     localStorage.setItem('flagellum_mc_highscore', mcScore);
     localStorage.setItem('flagellum_mc_hightotal', mcTotal);
@@ -83,12 +70,6 @@ function saveHighScores(showCongrats) {
     localStorage.setItem('flagellum_mc_longeststreak', mcLongestStreak);
   }
   // Reverse Choice mode
-  if (
-    (rcScore > rcHighScore || (rcScore === rcHighScore && rcTotal > rcHighTotal)) &&
-    rcHighScore > 0
-  ) {
-    congratsMsg = '🎉 New Reverse Choice High Score!';
-  }
   if (rcScore > rcHighScore || (rcScore === rcHighScore && rcTotal > rcHighTotal)) {
     localStorage.setItem('flagellum_rc_highscore', rcScore);
     localStorage.setItem('flagellum_rc_hightotal', rcTotal);
@@ -99,39 +80,42 @@ function saveHighScores(showCongrats) {
     rcLongestStreak = rcStreak;
     localStorage.setItem('flagellum_rc_longeststreak', rcLongestStreak);
   }
-  if (showCongrats && congratsMsg) {
-    showMainMenu(congratsMsg);
-  } else if (showCongrats) {
-    showMainMenu();
-  }
 }
 
 function updateScoreDisplays() {
   // Entry mode
   document.getElementById('score-entry').innerHTML = `Score: ${formatScore(entryScore)} of ${entryTotal}<br>Streak: ${entryStreak} <span class="score-streak">(Longest: ${entryLongestStreak})</span>`;
-  document.getElementById('highscore-entry').innerHTML = `High Score: ${formatScore(entryHighScore)} of ${entryHighTotal}`;
-  // Show 'New High Score!' if actively above high score
+  let entryHS = `High Score: ${formatScore(entryHighScore)} of ${entryHighTotal}`;
   let nhs = '';
-  if (entryScore > entryHighScore || (entryScore === entryHighScore && entryTotal > entryHighTotal && entryHighScore > 0)) {
+  if (
+    entryScore > entryHighScore ||
+    (entryScore === entryHighScore && entryTotal > entryHighTotal && entryHighScore > 0)
+  ) {
     nhs = '<div class="new-highscore">New High Score!</div>';
   }
-  document.getElementById('highscore-entry').innerHTML += nhs;
+  document.getElementById('highscore-entry').innerHTML = entryHS + nhs;
   // MC mode
   document.getElementById('score-mc').innerHTML = `Score: ${formatScore(mcScore)} of ${mcTotal}<br>Streak: ${mcStreak} <span class="score-streak">(Longest: ${mcLongestStreak})</span>`;
-  document.getElementById('highscore-mc').innerHTML = `High Score: ${formatScore(mcHighScore)} of ${mcHighTotal}`;
+  let mcHS = `High Score: ${formatScore(mcHighScore)} of ${mcHighTotal}`;
   let nhsMC = '';
-  if (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal && mcHighScore > 0)) {
+  if (
+    mcScore > mcHighScore ||
+    (mcScore === mcHighScore && mcTotal > mcHighTotal && mcHighScore > 0)
+  ) {
     nhsMC = '<div class="new-highscore">New High Score!</div>';
   }
-  document.getElementById('highscore-mc').innerHTML += nhsMC;
+  document.getElementById('highscore-mc').innerHTML = mcHS + nhsMC;
   // Reverse Choice mode
   document.getElementById('score-rc').innerHTML = `Score: ${formatScore(rcScore)} of ${rcTotal}<br>Streak: ${rcStreak} <span class="score-streak">(Longest: ${rcLongestStreak})</span>`;
-  document.getElementById('highscore-rc').innerHTML = `High Score: ${formatScore(rcHighScore)} of ${rcHighTotal}`;
+  let rcHS = `High Score: ${formatScore(rcHighScore)} of ${rcHighTotal}`;
   let nhsRC = '';
-  if (rcScore > rcHighScore || (rcScore === rcHighScore && rcTotal > rcHighTotal && rcHighScore > 0)) {
+  if (
+    rcScore > rcHighScore ||
+    (rcScore === rcHighScore && rcTotal > rcHighTotal && rcHighScore > 0)
+  ) {
     nhsRC = '<div class="new-highscore">New High Score!</div>';
   }
-  document.getElementById('highscore-rc').innerHTML += nhsRC;
+  document.getElementById('highscore-rc').innerHTML = rcHS + nhsRC;
 }
 
 function formatScore(score) {
@@ -140,9 +124,10 @@ function formatScore(score) {
   let intPart = Math.floor(score);
   let frac = score - intPart;
   let fracStr = '';
-  if (Math.abs(frac - 2/3) < 0.01) fracStr = '<span class="fraction">2/3</span>';
-  else if (Math.abs(frac - 1/3) < 0.01) fracStr = '<span class="fraction">1/3</span>';
-  else if (Math.abs(frac - 0.5) < 0.01) fracStr = '<span class="fraction">1/2</span>';
+  // Use normal font size for fractions
+  if (Math.abs(frac - 2/3) < 0.01) fracStr = '2/3';
+  else if (Math.abs(frac - 1/3) < 0.01) fracStr = '1/3';
+  else if (Math.abs(frac - 0.5) < 0.01) fracStr = '1/2';
   else fracStr = score.toFixed(2);
   if (intPart === 0 && fracStr) return fracStr;
   if (fracStr && intPart > 0) return `${intPart} ${fracStr}`;
@@ -158,7 +143,7 @@ function updateMainMenuHighscores() {
     `<div class="main-highscore-row">Reverse Choice: <b>${formatScore(rcHighScore)} of ${rcHighTotal}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak}</span></div>`;
 }
 
-function showMainMenu(congratsMsg) {
+function showMainMenu() {
   updateMainMenuHighscores();
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';

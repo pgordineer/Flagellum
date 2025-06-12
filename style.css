@@ -110,7 +110,7 @@ footer {
 .fraction {
   font-variant-numeric: diagonal-fractions;
   font-feature-settings: "frac";
-  font-size: 1.1em;
+  font-size: 1em;
 }
 #game-mc #mc-options {
   display: flex;
