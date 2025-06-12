@@ -449,6 +449,10 @@ footer {
   margin-bottom: 0.5rem;
   text-align: center;
 }
+.rc-option-btn img {
+  width: 192px !important;
+  height: 132px !important;
+}
 @media (max-width: 500px) {
   .container {
     max-width: 98vw;
@@ -465,8 +469,8 @@ footer {
     gap: 0.4em;
   }
   .rc-option-btn img {
-    width: 60px !important;
-    height: 38px !important;
+    width: 72px !important;
+    height: 46px !important;
   }
 }
 @media (max-width: 700px) {
@@ -490,7 +494,7 @@ footer {
     max-height: 60vh;
   }
   .rc-option-btn img {
-    width: 85px !important;
-    height: 55px !important;
+    width: 102px !important;
+    height: 66px !important;
   }
 }
