@@ -34,13 +34,6 @@ let rcCorrectIndex = 0;
 let rcOptions = [];
 let rcCurrentFlag = {};
 
-// --- Saviour Mode ---
-let savGrid = [];
-let savTargetIndex = 12; // 5x5 grid, center is index 12
-let savActions = 0;
-let savHighActions = 0;
-let savEliminated = [];
-
 function loadHighScores() {
   entryHighScore = parseFloat(localStorage.getItem('flagellum_entry_highscore')) || 0;
   entryHighTotal = parseInt(localStorage.getItem('flagellum_entry_hightotal')) || 0;
@@ -208,16 +201,6 @@ function showRCMode() {
   updateScoreDisplays();
   pickRandomFlagRC();
   addFlagClickHandlers();
-}
-
-function showSaviourMode() {
-  document.getElementById('main-menu').style.display = 'none';
-  document.getElementById('game-entry').style.display = 'none';
-  document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('game-rc').style.display = 'none';
-  document.getElementById('game-saviour').style.display = 'block';
-  setupSaviourGrid();
-  updateSaviourDisplay();
 }
 
 function showStudyPage() {
@@ -535,48 +518,127 @@ function checkRCAnswer(idx, options, btns) {
   }
 }
 
-function setupSaviourGrid() {
-  // Pick 25 unique flags
-  let shuffled = [...flags];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  savGrid = shuffled.slice(0, 25);
-  savEliminated = Array(25).fill(false);
-  savActions = 0;
+function nextMCFlag() {
+  pickRandomFlagMC();
 }
 
-function updateSaviourDisplay() {
-  // Render grid
-  const gridDiv = document.getElementById('saviour-grid');
-  gridDiv.innerHTML = '';
-  for (let i = 0; i < 25; i++) {
-    const flag = savGrid[i];
-    const btn = document.createElement('button');
-    btn.className = 'saviour-flag-btn';
-    if (i === savTargetIndex) btn.classList.add('saviour-target');
-    if (savEliminated[i]) btn.classList.add('saviour-eliminated');
-    btn.innerHTML = `<img src="${flag.img}" alt="Flag of ${flag.country}" />`;
-    btn.disabled = savEliminated[i] || i === savTargetIndex;
-    btn.onclick = () => {};
-    gridDiv.appendChild(btn);
+function nextRCFlag() {
+  pickRandomFlagRC();
+}
+
+function setupAutocomplete() {
+  const guessInput = document.getElementById('guess');
+  const listDiv = document.getElementById('autocomplete-list');
+  let currentFocus = -1;
+  let lastFiltered = [];
+
+  function closeList() {
+    listDiv.style.display = 'none';
+    listDiv.innerHTML = '';
+    currentFocus = -1;
   }
-  // Render actions
-  const actionsDiv = document.getElementById('saviour-actions');
-  actionsDiv.innerHTML = `
-    <button class="saviour-action-btn" title="Freeze Ray">❄️</button>
-    <button class="saviour-action-btn" title="Shrink Ray">🔽</button>
-    <button class="saviour-action-btn" title="Heat Ray">🔥</button>
-    <button class="saviour-action-btn" title="Gamma Burst">☢️</button>
-    <button class="saviour-action-btn" title="Tailor">🧵</button>
-    <button class="saviour-action-btn" title="Penny Pincher">🪙</button>
-    <button class="saviour-action-btn" title="Baby Boomer">👶</button>
-    <button class="saviour-action-btn" title="Tidal Force">🌊</button>
-    <button class="saviour-action-btn" title="Landlocked">🏜️</button>
-  `;
-  // Score display
-  document.getElementById('score-saviour').innerHTML = `Actions: ${savActions}`;
+
+  function filterFlags(val) {
+    if (!val) return [];
+    // Respect spaces: match substring with exact spacing
+    const lowerVal = val.toLowerCase();
+    return flags.filter(f =>
+      (`${f.country} (${f.code})`).toLowerCase().includes(lowerVal)
+    ).slice(0, 15);
+  }
+
+  function renderList(filtered) {
+    lastFiltered = filtered;
+    if (!filtered.length) {
+      closeList();
+      return;
+    }
+    listDiv.innerHTML = '';
+    filtered.forEach((flag, idx) => {
+      const item = document.createElement('div');
+      item.className = 'autocomplete-item';
+      item.innerHTML = `${flag.country} <span style='color:#888;'>(${flag.code})</span>`;
+      item.onclick = function() {
+        guessInput.value = `${flag.country}`;
+        closeList();
+        guessInput.focus();
+      };
+      listDiv.appendChild(item);
+    });
+    // Position below input
+    const rect = guessInput.getBoundingClientRect();
+    const parentRect = guessInput.parentElement.getBoundingClientRect();
+    listDiv.style.top = (guessInput.offsetTop + guessInput.offsetHeight + 2) + 'px';
+    listDiv.style.left = guessInput.offsetLeft + 'px';
+    listDiv.style.width = guessInput.offsetWidth + 'px';
+    listDiv.style.display = 'block';
+  }
+
+  guessInput.addEventListener('input', function() {
+    if (!document.getElementById('autocomplete-toggle').checked) {
+      closeList();
+      return;
+    }
+    const val = this.value;
+    const filtered = filterFlags(val);
+    renderList(filtered);
+  });
+
+  guessInput.addEventListener('focus', function() {
+    if (!document.getElementById('autocomplete-toggle').checked) return;
+    const val = this.value;
+    const filtered = filterFlags(val);
+    renderList(filtered);
+  });
+
+  guessInput.addEventListener('keydown', function(e) {
+    const items = listDiv.querySelectorAll('.autocomplete-item');
+    if (!items.length || listDiv.style.display === 'none') return;
+    if (e.key === 'ArrowDown') {
+      currentFocus++;
+      if (currentFocus >= items.length) currentFocus = 0;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      currentFocus--;
+      if (currentFocus < 0) currentFocus = items.length - 1;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === 'Enter') {
+      if (currentFocus > -1) {
+        items[currentFocus].click();
+        e.preventDefault();
+      }
+    } else if (e.key === 'Escape') {
+      closeList();
+    }
+  });
+
+  function setActive(items, idx) {
+    items.forEach(i => i.classList.remove('active'));
+    if (idx >= 0 && idx < items.length) {
+      items[idx].classList.add('active');
+      items[idx].scrollIntoView({block:'nearest'});
+    }
+  }
+
+  document.addEventListener('click', function(e) {
+    if (e.target !== guessInput && e.target.parentNode !== listDiv) {
+      closeList();
+    }
+  });
+
+  // Hide autocomplete if toggle is off
+  document.getElementById('autocomplete-toggle').addEventListener('change', function() {
+    if (!this.checked) closeList();
+    else {
+      // If toggled on and input has value, show list
+      if (guessInput.value) {
+        const filtered = filterFlags(guessInput.value);
+        renderList(filtered);
+      }
+    }
+  });
 }
 
 // --- Flag Image Modal ---
@@ -740,13 +802,8 @@ function startGame() {
       document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);
       document.getElementById('rc-mode-btn').addEventListener('click', showRCMode);
       document.getElementById('study-btn').addEventListener('click', showStudyPage);
-      document.getElementById('saviour-mode-btn').addEventListener('click', showSaviourMode);
       document.getElementById('back-to-menu-study').onclick = showMainMenu;
       document.getElementById('back-to-menu-study-top').onclick = showMainMenu;
-      document.getElementById('back-to-menu-saviour').onclick = function() {
-        showMainMenu();
-        document.getElementById('game-saviour').style.display = 'none';
-      };
       // Entry mode events
       document.getElementById('submit').onclick = checkGuess;
       document.getElementById('guess').addEventListener('keydown', function(e) {
@@ -804,11 +861,6 @@ function startGame() {
         updateScoreDisplays();
         saveHighScores();
         showMainMenu();
-      };
-      // End game: reset all game state for Saviour mode
-      document.getElementById('back-to-menu-saviour').onclick = function() {
-        showMainMenu();
-        document.getElementById('game-saviour').style.display = 'none';
       };
       showMainMenu();
       updateScoreDisplays();
