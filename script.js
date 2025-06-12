@@ -50,7 +50,7 @@ function saveHighScores() {
   // Entry mode
   if (
     entryScore > entryHighScore ||
-    (entryScore === entryHighScore && entryTotal > entryHighTotal)
+    (entryScore === entryHighScore && entryTotal < entryHighTotal)
   ) {
     // Only update if this is a better score (higher score, or same score but fewer total)
     localStorage.setItem('flagellum_entry_highscore', entryScore);
@@ -65,7 +65,7 @@ function saveHighScores() {
   // MC mode
   if (
     mcScore > mcHighScore ||
-    (mcScore === mcHighScore && mcTotal > mcHighTotal)
+    (mcScore === mcHighScore && mcTotal < mcHighTotal)
   ) {
     localStorage.setItem('flagellum_mc_highscore', mcScore);
     localStorage.setItem('flagellum_mc_hightotal', mcTotal);
@@ -79,7 +79,7 @@ function saveHighScores() {
   // Reverse Choice mode
   if (
     rcScore > rcHighScore ||
-    (rcScore === rcHighScore && rcTotal > rcHighTotal)
+    (rcScore === rcHighScore && rcTotal < rcHighTotal)
   ) {
     localStorage.setItem('flagellum_rc_highscore', rcScore);
     localStorage.setItem('flagellum_rc_hightotal', rcTotal);
@@ -99,7 +99,7 @@ function updateScoreDisplays() {
   let nhs = '';
   if (
     entryScore > entryHighScore ||
-    (entryScore === entryHighScore && entryTotal > entryHighTotal && entryHighScore > 0)
+    (entryScore === entryHighScore && entryTotal < entryHighTotal && entryHighScore > 0)
   ) {
     nhs = '<div class="new-highscore">New High Score!</div>';
   }
@@ -110,7 +110,7 @@ function updateScoreDisplays() {
   let nhsMC = '';
   if (
     mcScore > mcHighScore ||
-    (mcScore === mcHighScore && mcTotal > mcHighTotal && mcHighScore > 0)
+    (mcScore === mcHighScore && mcTotal < mcHighTotal && mcHighScore > 0)
   ) {
     nhsMC = '<div class="new-highscore">New High Score!</div>';
   }
@@ -121,7 +121,7 @@ function updateScoreDisplays() {
   let nhsRC = '';
   if (
     rcScore > rcHighScore ||
-    (rcScore === rcHighScore && rcTotal > rcHighTotal && rcHighScore > 0)
+    (rcScore === rcHighScore && rcTotal < rcHighTotal && rcHighScore > 0)
   ) {
     nhsRC = '<div class="new-highscore">New High Score!</div>';
   }
