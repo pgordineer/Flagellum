@@ -17,11 +17,24 @@ let mcHighTotal = 0;
 let mcAttempts = 0;
 let mcTried = [];
 
+// Reverse Choice Mode scoring
+let rcScore = 0;
+let rcTotal = 0;
+let rcHighScore = 0;
+let rcHighTotal = 0;
+let rcAttempts = 0;
+let rcTried = [];
+let rcCorrectIndex = 0;
+let rcOptions = [];
+let rcCurrentFlag = {};
+
 function loadHighScores() {
   entryHighScore = parseFloat(localStorage.getItem('flagellum_entry_highscore')) || 0;
   entryHighTotal = parseInt(localStorage.getItem('flagellum_entry_hightotal')) || 0;
   mcHighScore = parseFloat(localStorage.getItem('flagellum_mc_highscore')) || 0;
   mcHighTotal = parseInt(localStorage.getItem('flagellum_mc_hightotal')) || 0;
+  rcHighScore = parseFloat(localStorage.getItem('flagellum_rc_highscore')) || 0;
+  rcHighTotal = parseInt(localStorage.getItem('flagellum_rc_hightotal')) || 0;
 }
 
 function saveHighScores(showCongrats) {
@@ -52,6 +65,19 @@ function saveHighScores(showCongrats) {
     mcHighScore = mcScore;
     mcHighTotal = mcTotal;
   }
+  // Reverse Choice mode
+  if (
+    (rcScore > rcHighScore || (rcScore === rcHighScore && rcTotal > rcHighTotal)) &&
+    rcHighScore > 0
+  ) {
+    congratsMsg = '🎉 New Reverse Choice High Score!';
+  }
+  if (rcScore > rcHighScore || (rcScore === rcHighScore && rcTotal > rcHighTotal)) {
+    localStorage.setItem('flagellum_rc_highscore', rcScore);
+    localStorage.setItem('flagellum_rc_hightotal', rcTotal);
+    rcHighScore = rcScore;
+    rcHighTotal = rcTotal;
+  }
   if (showCongrats && congratsMsg) {
     showMainMenu(congratsMsg);
   } else if (showCongrats) {
@@ -77,6 +103,14 @@ function updateScoreDisplays() {
     nhsMC = '<div class="new-highscore">New High Score!</div>';
   }
   document.getElementById('highscore-mc').innerHTML += nhsMC;
+  // Reverse Choice mode
+  document.getElementById('score-rc').innerHTML = `Score: ${formatScore(rcScore)} of ${rcTotal}`;
+  document.getElementById('highscore-rc').innerHTML = `High Score: ${formatScore(rcHighScore)} of ${rcHighTotal}`;
+  let nhsRC = '';
+  if (rcScore > rcHighScore || (rcScore === rcHighScore && rcTotal > rcHighTotal && rcHighScore > 0)) {
+    nhsRC = '<div class="new-highscore">New High Score!</div>';
+  }
+  document.getElementById('highscore-rc').innerHTML += nhsRC;
 }
 
 function formatScore(score) {
@@ -99,7 +133,8 @@ function updateMainMenuHighscores() {
   mainHigh.innerHTML =
     `<h2>Personal High Scores</h2>` +
     `<div class="main-highscore-row">Entry Mode: <b>${formatScore(entryHighScore)} of ${entryHighTotal}</b></div>` +
-    `<div class="main-highscore-row">Multiple Choice: <b>${formatScore(mcHighScore)} of ${mcHighTotal}</b></div>`;
+    `<div class="main-highscore-row">Multiple Choice: <b>${formatScore(mcHighScore)} of ${mcHighTotal}</b></div>` +
+    `<div class="main-highscore-row">Reverse Choice: <b>${formatScore(rcHighScore)} of ${rcHighTotal}</b></div>`;
 }
 
 function showMainMenu(congratsMsg) {
@@ -107,6 +142,7 @@ function showMainMenu(congratsMsg) {
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('game-rc').style.display = 'none';
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('congrats').style.display = 'none';
 }
@@ -115,6 +151,7 @@ function showEntryMode() {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'block';
   document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('game-rc').style.display = 'none';
   usedHint = false;
   updateScoreDisplays();
   pickRandomFlag();
@@ -127,10 +164,23 @@ function showMCMode() {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'block';
+  document.getElementById('game-rc').style.display = 'none';
   mcAttempts = 0;
   mcTried = [];
   updateScoreDisplays();
   pickRandomFlagMC();
+  addFlagClickHandlers();
+}
+
+function showRCMode() {
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('game-entry').style.display = 'none';
+  document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('game-rc').style.display = 'block';
+  rcAttempts = 0;
+  rcTried = [];
+  updateScoreDisplays();
+  pickRandomFlagRC();
   addFlagClickHandlers();
 }
 
@@ -332,8 +382,94 @@ function checkMCAnswer(idx, options, btns) {
   }
 }
 
+function pickRandomFlagRC() {
+  if (!flags.length) return;
+  rcCurrentFlag = flags[Math.floor(Math.random() * flags.length)];
+  // Pick 3 other random, unique countries
+  rcOptions = [rcCurrentFlag];
+  let used = new Set([rcCurrentFlag.country]);
+  while (rcOptions.length < 4) {
+    let f = flags[Math.floor(Math.random() * flags.length)];
+    if (!used.has(f.country)) {
+      rcOptions.push(f);
+      used.add(f.country);
+    }
+  }
+  // Shuffle options
+  for (let i = rcOptions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rcOptions[i], rcOptions[j]] = [rcOptions[j], rcOptions[i]];
+  }
+  rcCorrectIndex = rcOptions.findIndex(f => f.country === rcCurrentFlag.country);
+  rcAttempts = 0;
+  rcTried = [false, false, false, false];
+  // Show country and code
+  document.getElementById('rc-country').innerHTML = `${rcCurrentFlag.country} <span style="color:#888;">(${rcCurrentFlag.code})</span>`;
+  // Show flag image options
+  const rcOptionsDiv = document.getElementById('rc-options');
+  rcOptionsDiv.innerHTML = '';
+  rcOptions.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'rc-option-btn';
+    btn.innerHTML = `<img src="${opt.img}" alt="Flag of ${opt.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;" />`;
+    btn.disabled = false;
+    btn.onclick = () => checkRCAnswer(idx, rcOptions, btns);
+    rcOptionsDiv.appendChild(btn);
+  });
+  // Store buttons for disabling
+  let btns = Array.from(rcOptionsDiv.children);
+  btns.forEach((btn, idx) => {
+    btn.onclick = () => checkRCAnswer(idx, rcOptions, btns);
+  });
+  document.getElementById('result-rc').textContent = '';
+  document.getElementById('wiki-link-rc').innerHTML = '';
+  document.getElementById('next-rc').style.display = 'none';
+  addFlagClickHandlers();
+}
+
+function checkRCAnswer(idx, options, btns) {
+  if (rcTried[idx]) return;
+  rcTried[idx] = true;
+  btns[idx].disabled = true;
+  rcAttempts++;
+  let addScore = 0;
+  if (idx === rcCorrectIndex) {
+    if (rcAttempts === 1) addScore = 1;
+    else if (rcAttempts === 2) addScore = 2/3;
+    else if (rcAttempts === 3) addScore = 1/3;
+    else addScore = 0;
+    rcScore += addScore;
+    rcTotal++;
+    updateScoreDisplays();
+    saveHighScores();
+    let pointStr = addScore === 1 ? '1 Point!' : (addScore === 2/3 ? '2/3 Point!' : (addScore === 1/3 ? '1/3 Point!' : '0 Point!'));
+    document.getElementById('result-rc').innerHTML = `✅ Correct! <span class='fraction'>${pointStr}</span> ${rcCurrentFlag.country} (${rcCurrentFlag.code})`;
+    document.getElementById('result-rc').style.color = '#2e7d32';
+    document.getElementById('wiki-link-rc').innerHTML = `<a href="https://en.wikipedia.org/wiki/${rcCurrentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
+    btns.forEach(b => b.disabled = true);
+    document.getElementById('next-rc').style.display = 'block';
+  } else {
+    // If this was the last possible attempt, finish the round
+    if (rcAttempts >= 4 || rcTried.filter(Boolean).length === 4) {
+      rcScore += 0;
+      rcTotal++;
+      updateScoreDisplays();
+      saveHighScores();
+      document.getElementById('result-rc').textContent = `❌ Out of tries! Correct: ${rcCurrentFlag.country} (${rcCurrentFlag.code})`;
+      document.getElementById('result-rc').style.color = '#c62828';
+      document.getElementById('wiki-link-rc').innerHTML = `<a href="https://en.wikipedia.org/wiki/${rcCurrentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
+      btns.forEach(b => b.disabled = true);
+      document.getElementById('next-rc').style.display = 'block';
+    }
+  }
+}
+
 function nextMCFlag() {
   pickRandomFlagMC();
+}
+
+function nextRCFlag() {
+  pickRandomFlagRC();
 }
 
 function setupAutocomplete() {
@@ -610,6 +746,7 @@ function startGame() {
       // Main menu event listeners
       document.getElementById('entry-mode-btn').addEventListener('click', showEntryMode);
       document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);
+      document.getElementById('rc-mode-btn').addEventListener('click', showRCMode);
       document.getElementById('study-btn').addEventListener('click', showStudyPage);
       document.getElementById('back-to-menu-study').onclick = showMainMenu;
       document.getElementById('back-to-menu-study-top').onclick = showMainMenu;
@@ -630,6 +767,8 @@ function startGame() {
       document.getElementById('skip').onclick = skipEntryFlag;
       // MC mode events
       document.getElementById('next-mc').onclick = nextMCFlag;
+      // RC mode events
+      document.getElementById('next-rc').onclick = nextRCFlag;
       // Study mode events
       document.getElementById('back-to-menu-study-top').onclick = showMainMenu;
       // Autocomplete toggle
@@ -655,6 +794,16 @@ function startGame() {
         mcTotal = 0;
         mcAttempts = 0;
         mcTried = [];
+        updateScoreDisplays();
+        saveHighScores();
+        showMainMenu();
+      };
+      // End game: reset all game state for RC mode
+      document.getElementById('back-to-menu-rc').onclick = function() {
+        rcScore = 0;
+        rcTotal = 0;
+        rcAttempts = 0;
+        rcTried = [];
         updateScoreDisplays();
         saveHighScores();
         showMainMenu();

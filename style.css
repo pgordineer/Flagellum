@@ -337,6 +337,63 @@ footer {
 #flag-modal-close:hover {
   color: #ffb3b3;
 }
+.rc-option-btn {
+  background: #fff;
+  border: 2px solid #1976d2;
+  border-radius: 0.5em;
+  box-shadow: 0 2px 8px #0001;
+  margin: 0.5em;
+  padding: 0.2em 0.2em;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  outline: none;
+  min-width: 100px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rc-option-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.rc-option-btn:hover:not(:disabled), .rc-option-btn:focus:not(:disabled) {
+  background: #e3f2fd;
+  box-shadow: 0 4px 16px #1976d233;
+}
+#game-rc .score-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+}
+#game-rc #rc-country {
+  font-weight: bold;
+  text-align: center;
+}
+#game-rc #rc-options {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: center;
+  margin-bottom: 1em;
+}
+#game-rc #result-rc {
+  font-size: 1.2em;
+  min-height: 1.5em;
+  text-align: center;
+}
+#game-rc #wiki-link-rc {
+  text-align: center;
+  margin-bottom: 1em;
+}
+#game-rc #next-rc {
+  margin-bottom: 1em;
+}
+#game-rc #back-to-menu-rc {
+  margin-bottom: 1em;
+}
 @media (max-width: 500px) {
   .container {
     max-width: 98vw;
@@ -368,5 +425,9 @@ footer {
   #flag-modal-img {
     max-width: 98vw;
     max-height: 60vh;
+  }
+  .rc-option-btn img {
+    width: 70px !important;
+    height: 45px !important;
   }
 }
