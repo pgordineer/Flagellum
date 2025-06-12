@@ -48,7 +48,11 @@ function loadHighScores() {
 
 function saveHighScores() {
   // Entry mode
-  if (entryScore > entryHighScore || (entryScore === entryHighScore && entryTotal > entryHighTotal)) {
+  if (
+    entryScore > entryHighScore ||
+    (entryScore === entryHighScore && entryTotal > entryHighTotal)
+  ) {
+    // Only update if this is a better score (higher score, or same score but fewer total)
     localStorage.setItem('flagellum_entry_highscore', entryScore);
     localStorage.setItem('flagellum_entry_hightotal', entryTotal);
     entryHighScore = entryScore;
@@ -59,7 +63,10 @@ function saveHighScores() {
     localStorage.setItem('flagellum_entry_longeststreak', entryLongestStreak);
   }
   // MC mode
-  if (mcScore > mcHighScore || (mcScore === mcHighScore && mcTotal > mcHighTotal)) {
+  if (
+    mcScore > mcHighScore ||
+    (mcScore === mcHighScore && mcTotal > mcHighTotal)
+  ) {
     localStorage.setItem('flagellum_mc_highscore', mcScore);
     localStorage.setItem('flagellum_mc_hightotal', mcTotal);
     mcHighScore = mcScore;
@@ -70,7 +77,10 @@ function saveHighScores() {
     localStorage.setItem('flagellum_mc_longeststreak', mcLongestStreak);
   }
   // Reverse Choice mode
-  if (rcScore > rcHighScore || (rcScore === rcHighScore && rcTotal > rcHighTotal)) {
+  if (
+    rcScore > rcHighScore ||
+    (rcScore === rcHighScore && rcTotal > rcHighTotal)
+  ) {
     localStorage.setItem('flagellum_rc_highscore', rcScore);
     localStorage.setItem('flagellum_rc_hightotal', rcTotal);
     rcHighScore = rcScore;
