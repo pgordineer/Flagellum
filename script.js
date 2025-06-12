@@ -535,6 +535,61 @@ function checkRCAnswer(idx, options, btns) {
   }
 }
 
+function nextMCFlag() {
+  pickRandomFlagMC();
+}
+
+function nextRCFlag() {
+  pickRandomFlagRC();
+}
+
+function setupAutocomplete() {
+  const guessInput = document.getElementById('guess');
+  const listDiv = document.getElementById('autocomplete-list');
+  let currentFocus = -1;
+  let lastFiltered = [];
+
+  function closeList() {
+    listDiv.style.display = 'none';
+    listDiv.innerHTML = '';
+    currentFocus = -1;
+  }
+
+  function filterFlags(val) {
+    if (!val) return [];
+    // Respect spaces: match substring with exact spacing
+    const lowerVal = val.toLowerCase();
+    return flags.filter(f =>
+      (`${f.country} (${f.code})`).toLowerCase().includes(lowerVal)
+    ).slice(0, 15);
+  }
+
+  function renderList(filtered) {
+    lastFiltered = filtered;
+    if (!filtered.length) {
+      closeList();
+      return;
+    }
+    listDiv.innerHTML = '';
+    filtered.forEach((flag, idx) => {
+      const item = document.createElement('div');
+      item.className = 'autocomplete-item';
+      item.innerHTML = `${flag.country} <span style='color:#888;'>(${flag.code})</span>`;
+      item.onclick = function() {
+        guessInput.value = `${flag.country}`;
+        closeList();
+        guessInput.focus();
+      };
+      listDiv.appendChild(item);
+    });
+    // Position below input
+    const rect = guessInput.getBoundingClientRect();
+    const parentRect = guessInput.parentElement.getBoundingClientRect();
+    listDiv.style.top = (guessInput.offsetTop + guessInput.offsetHeight + 2) + 'px';
+    listDiv.style.left = guessInput.offsetLeft + 'px';
+    listDiv.style.width = guessInput.offsetWidth + 'px';
+    listDiv.style.display = 'block';
+
 function setupSaviourGrid() {
   // Pick 25 unique flags
   let shuffled = [...flags];
@@ -546,6 +601,53 @@ function setupSaviourGrid() {
   savEliminated = Array(25).fill(false);
   savActions = 0;
 }
+
+  guessInput.addEventListener('input', function() {
+    if (!document.getElementById('autocomplete-toggle').checked) {
+      closeList();
+      return;
+    }
+    const val = this.value;
+    const filtered = filterFlags(val);
+    renderList(filtered);
+  });
+
+  guessInput.addEventListener('focus', function() {
+    if (!document.getElementById('autocomplete-toggle').checked) return;
+    const val = this.value;
+    const filtered = filterFlags(val);
+    renderList(filtered);
+  });
+
+  guessInput.addEventListener('keydown', function(e) {
+    const items = listDiv.querySelectorAll('.autocomplete-item');
+    if (!items.length || listDiv.style.display === 'none') return;
+    if (e.key === 'ArrowDown') {
+      currentFocus++;
+      if (currentFocus >= items.length) currentFocus = 0;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      currentFocus--;
+      if (currentFocus < 0) currentFocus = items.length - 1;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === 'Enter') {
+      if (currentFocus > -1) {
+        items[currentFocus].click();
+        e.preventDefault();
+      }
+    } else if (e.key === 'Escape') {
+      closeList();
+    }
+  });
+
+  function setActive(items, idx) {
+    items.forEach(i => i.classList.remove('active'));
+    if (idx >= 0 && idx < items.length) {
+      items[idx].classList.add('active');
+      items[idx].scrollIntoView({block:'nearest'});
+    }
 
 function updateSaviourDisplay() {
   // Render grid
@@ -562,6 +664,25 @@ function updateSaviourDisplay() {
     btn.onclick = () => {};
     gridDiv.appendChild(btn);
   }
+
+    document.addEventListener('click', function(e) {
+    if (e.target !== guessInput && e.target.parentNode !== listDiv) {
+      closeList();
+    }
+  });
+
+  // Hide autocomplete if toggle is off
+  document.getElementById('autocomplete-toggle').addEventListener('change', function() {
+    if (!this.checked) closeList();
+    else {
+      // If toggled on and input has value, show list
+      if (guessInput.value) {
+        const filtered = filterFlags(guessInput.value);
+        renderList(filtered);
+      }
+    }
+  });
+
   // Render actions
   const actionsDiv = document.getElementById('saviour-actions');
   actionsDiv.innerHTML = `
