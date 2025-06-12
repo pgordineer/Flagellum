@@ -70,15 +70,15 @@
     <!-- Reverse Choice Mode -->
     <div id="game-rc" style="display:none;flex-direction:column;align-items:center;">
       <div class="score-row">
-        <span id="score-rc"></span>
-        <span id="highscore-rc"></span>
+        <span id="score-rc" class="score-label"></span>
+        <span id="highscore-rc" class="score-label"></span>
       </div>
       <div id="rc-country" style="font-size:2rem;margin:1em 0 1em 0;"></div>
-      <div id="rc-options" style="display:flex;flex-wrap:wrap;gap:1em;justify-content:center;margin-bottom:1em;"></div>
+      <div id="rc-options" class="rc-grid"></div>
       <div id="result-rc" style="margin:0.5em 0 0.5em 0;"></div>
       <div id="wiki-link-rc" style="margin-bottom:1em;"></div>
-      <button id="next-rc" class="main-btn" style="display:none;margin-bottom:1em;">Next</button>
-      <button id="back-to-menu-rc" class="main-btn" style="margin-bottom:1em;">Back to Menu</button>
+      <button id="next-rc" class="main-btn rc-btn" style="display:none;">Next</button>
+      <button id="back-to-menu-rc" class="main-btn rc-btn">Back to Menu</button>
     </div>
     <div id="flag-modal" style="display:none;position:fixed;z-index:1000;left:0;top:0;right:0;bottom:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);">
       <div id="flag-modal-content" style="position:relative;max-width:95vw;max-height:90vh;display:flex;align-items:center;justify-content:center;">

@@ -405,22 +405,32 @@ function pickRandomFlagRC() {
   rcTried = [false, false, false, false];
   // Show country and code
   document.getElementById('rc-country').innerHTML = `${rcCurrentFlag.country} <span style="color:#888;">(${rcCurrentFlag.code})</span>`;
-  // Show flag image options
+  // Show flag image options in a 2x2 grid with zoom button
   const rcOptionsDiv = document.getElementById('rc-options');
   rcOptionsDiv.innerHTML = '';
   rcOptions.forEach((opt, idx) => {
     const btn = document.createElement('button');
     btn.className = 'rc-option-btn';
-    btn.innerHTML = `<img src="${opt.img}" alt="Flag of ${opt.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;" />`;
     btn.disabled = false;
-    btn.onclick = () => checkRCAnswer(idx, rcOptions, btns);
+    btn.tabIndex = 0;
+    btn.innerHTML = `
+      <img src="${opt.img}" alt="Flag of ${opt.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;" />
+      <span class="rc-zoom-btn" title="Enlarge flag" tabindex="-1">+</span>
+    `;
+    btn.onclick = (e) => {
+      // Only trigger answer if not clicking zoom
+      if (e.target.classList.contains('rc-zoom-btn')) return;
+      checkRCAnswer(idx, rcOptions, btns);
+    };
+    // Zoom button event
+    btn.querySelector('.rc-zoom-btn').onclick = (e) => {
+      e.stopPropagation();
+      showFlagModal(opt.img, `Flag of ${opt.country}`);
+    };
     rcOptionsDiv.appendChild(btn);
   });
   // Store buttons for disabling
   let btns = Array.from(rcOptionsDiv.children);
-  btns.forEach((btn, idx) => {
-    btn.onclick = () => checkRCAnswer(idx, rcOptions, btns);
-  });
   document.getElementById('result-rc').textContent = '';
   document.getElementById('wiki-link-rc').innerHTML = '';
   document.getElementById('next-rc').style.display = 'none';
