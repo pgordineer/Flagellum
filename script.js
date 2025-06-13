@@ -1092,6 +1092,21 @@ function setupSaviourGrid() {
 function renderSaviourGrid(gameOver = false) {
   const gridDiv = document.getElementById('saviour-grid');
   gridDiv.innerHTML = '';
+  let activeCount = 0;
+  let lastActiveIdx = -1;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i]) {
+      activeCount++;
+      lastActiveIdx = i;
+    }
+  }
+  // Win detection: only the highlighted flag remains
+  if (activeCount === 1 && lastActiveIdx === saviourHighlightIndex && !gameOver) {
+    saviourGameOver = true;
+    renderSaviourGrid(true);
+    document.getElementById('result-saviour').innerHTML = `<span style="color:#2e7d32;font-weight:bold;">🎉 Congratulations! You saved ${saviourGrid[saviourHighlightIndex].country} (${saviourGrid[saviourHighlightIndex].code}) and won Saviour Mode!</span>`;
+    return;
+  }
   for (let i = 0; i < saviourGrid.length; i++) {
     const flag = saviourGrid[i];
     const btn = document.createElement('button');
@@ -1116,7 +1131,6 @@ function renderSaviourGrid(gameOver = false) {
   }
 }
 
-// --- Saviour Mode Flag Entry Modal ---
 function showSaviourFlagEntryModal(idx) {
   // Remove existing modal if present
   let existing = document.getElementById('saviour-flag-entry-modal');
@@ -1309,6 +1323,7 @@ function renderSaviourActions() {
       const btn = document.createElement('button');
       btn.className = 'saviour-action-btn';
       btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
+      // Only disable if already used or game over
       btn.disabled = !!saviourUsedActions[idx] || saviourGameOver;
       // Action handlers
       let handler = null;
@@ -1489,6 +1504,7 @@ function pennyPincherAction(idx) {
 function moneyBagsAction(idx) {
   if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Money Bags');
+ 
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
     if (saviourActive[i] && saviourGrid[i].gdp >= 25000000000) {
