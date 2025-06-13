@@ -210,6 +210,7 @@ function showMainMenu() {
   document.getElementById('game-rc').style.display = 'none';
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('congrats').style.display = 'none';
+  document.getElementById('game-saviour').style.display = 'none'; // Hide Saviour mode when returning to menu
 }
 
 function showEntryMode() {
