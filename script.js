@@ -81,7 +81,7 @@ function saveSaviourActionState(actionName) {
     total: saviourTotal,
     longestStreak: saviourLongestStreak
   });
-  saviourActionPointer++;
+  saviourActionPointer = saviourActionHistory.length - 1;
   renderSaviourUndoRedo();
 }
 
@@ -1175,7 +1175,7 @@ function saveSaviourActionState(actionName) {
     total: saviourTotal,
     longestStreak: saviourLongestStreak
   });
-  saviourActionPointer++;
+  saviourActionPointer = saviourActionHistory.length - 1;
   renderSaviourUndoRedo();
 }
 
