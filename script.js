@@ -1109,7 +1109,7 @@ function restoreSaviourActionState(state) {
   saviourUsedActions = [...state.saviourUsedActions];
   saviourScore = state.saviourScore;
   saviourGameOver = state.saviourGameOver;
-  renderSaviourGrid();
+  renderSaviourGrid(saviourGameOver);
   updateSaviourScoreDisplays();
   renderSaviourActions();
   if (saviourGameOver) showSaviourGameOver();
