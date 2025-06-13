@@ -366,6 +366,14 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
       <td style="font-size:1.5em;">${flag.emoji}</td>
       <td><a href="https://en.wikipedia.org/wiki/${flag.wiki}" target="_blank">Wiki</a></td>
       <td><img src="${flag.img}" alt="Flag of ${flag.country}" /></td>
+      <td>${flag.gdp ? (flag.gdp/1e6).toLocaleString(undefined, {maximumFractionDigits:0}) : ''}</td>
+      <td>${flag.area ? flag.area.toLocaleString() : ''}</td>
+      <td>${flag.coastline_km !== undefined ? flag.coastline_km.toLocaleString() : ''}</td>
+      <td>${flag.nuclear_arms ? 'Yes' : 'No'}</td>
+      <td>${flag.min_lat !== undefined ? flag.min_lat : ''}</td>
+      <td>${flag.max_lat !== undefined ? flag.max_lat : ''}</td>
+      <td>${flag.min_lng !== undefined ? flag.min_lng : ''}</td>
+      <td>${flag.max_lng !== undefined ? flag.max_lng : ''}</td>
     `;
     tbody.appendChild(tr);
   }
@@ -378,6 +386,13 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
     };
   });
   addFlagClickHandlers(); // Ensure click handler is always set after DOM update
+  // Scroll table to show new columns by default
+  const studyDiv = document.querySelector('#study-page > div[style*="overflow-x:auto"]');
+  if (studyDiv) {
+    studyDiv.scrollLeft = studyDiv.scrollWidth; // scroll to rightmost
+    // Optionally, scroll to a specific column (e.g., GDP) if desired
+    // studyDiv.scrollLeft = studyDiv.scrollWidth * 0.45;
+  }
 }
 
 function pickRandomFlag() {
