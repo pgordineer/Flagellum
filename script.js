@@ -65,8 +65,10 @@ let saviourGameOver = false;
 
 // --- Saviour Mode Undo/Redo Implementation ---
 function saveSaviourActionState(actionName) {
-  // Save a deep copy of the current state for undo/redo
-  saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
+  // If we are not at the end, slice off redo history
+  if (saviourActionPointer < saviourActionHistory.length - 1) {
+    saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
+  }
   saviourActionHistory.push({
     saviourActive: JSON.parse(JSON.stringify(saviourActive)),
     saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
@@ -79,7 +81,7 @@ function saveSaviourActionState(actionName) {
     total: saviourTotal,
     longestStreak: saviourLongestStreak
   });
-  saviourActionPointer = saviourActionHistory.length - 1;
+  saviourActionPointer++;
   renderSaviourUndoRedo();
 }
 
@@ -1157,8 +1159,10 @@ function gammaBurstAction() {
 }
 
 function saveSaviourActionState(actionName) {
-  // Save a deep copy of the current state for undo/redo
-  saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
+  // If we are not at the end, slice off redo history
+  if (saviourActionPointer < saviourActionHistory.length - 1) {
+    saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
+  }
   saviourActionHistory.push({
     saviourActive: JSON.parse(JSON.stringify(saviourActive)),
     saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
@@ -1171,7 +1175,7 @@ function saveSaviourActionState(actionName) {
     total: saviourTotal,
     longestStreak: saviourLongestStreak
   });
-  saviourActionPointer = saviourActionHistory.length - 1;
+  saviourActionPointer++;
   renderSaviourUndoRedo();
 }
 
