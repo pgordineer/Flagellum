@@ -817,18 +817,27 @@ function setupFlagImageModal() {
     modal.onclick = function(e) { if (e.target === modal) closeFlagModal(); };
   }
 }
-function showFlagModal(imgUrl, alt) {
-  const modal = document.getElementById('flag-modal');
-  const img = document.getElementById('flag-modal-img');
-  img.src = imgUrl;
-  img.alt = alt || 'Flag';
-  modal.style.display = 'flex';
-}
-function closeFlagModal() {
-  const modal = document.getElementById('flag-modal');
-  if (modal) modal.style.display = 'none';
+function showFlagModal(imgSrc, altText) {
+  // Remove any existing modal
+  let oldModal = document.getElementById('flag-modal');
+  if (oldModal) oldModal.remove();
+  // Modal HTML for zoom only
+  const modal = document.createElement('div');
+  modal.id = 'flag-modal';
+  modal.innerHTML = `
+    <div id="flag-modal-bg" style="position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);"></div>
+    <div id="flag-modal-content" style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;max-width:95vw;max-height:90vh;margin:auto;">
+      <img id="flag-modal-img" src="${imgSrc}" alt="${altText}" style="max-width:80vw;max-height:70vh;border-radius:0.5rem;box-shadow:0 2px 16px #0003;border:1px solid #ccc;background:#fff;" />
+      <button id="flag-modal-close" style="position:absolute;top:0.5rem;right:0.5rem;font-size:2rem;background:none;border:none;color:#fff;cursor:pointer;z-index:2;">&times;</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  document.getElementById('flag-modal-bg').onclick = closeFlagModal;
+  document.getElementById('flag-modal-close').onclick = closeFlagModal;
+  document.getElementById('flag-modal-content').onclick = function(e) { e.stopPropagation(); };
 }
 
+// ...existing code...
 function addFlagClickHandlers() {
   // Entry mode
   const entryFlag = document.getElementById('flag-emoji');
