@@ -34,7 +34,16 @@ let rcCorrectIndex = 0;
 let rcOptions = [];
 let rcCurrentFlag = {};
 
-// --- Saviour Mode Modularization ---
+// --- Saviour Mode ---
+let saviourScore = 0;
+let saviourTotal = 0;
+let saviourHighScore = 0;
+let saviourHighTotal = 0;
+let saviourStreak = 0;
+let saviourLongestStreak = 0;
+let saviourGrid = [];
+let saviourHighlightIndex = 12; // Center of 5x5 grid
+let saviourActive = [];
 const SAVIOUR_GRID_SIZE = 5;
 const SAVIOUR_ACTIONS = [
   { name: 'Freeze Ray', icon: '❄️' },
@@ -49,150 +58,82 @@ const SAVIOUR_ACTIONS = [
   { name: 'Gamma Burst', icon: '☢️' }
 ];
 
-function seededRandom(seed) {
-  let x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
-}
-function getDailySeed() {
-  const now = new Date();
-  return parseInt(`${now.getFullYear()}${now.getMonth()+1}${now.getDate()}`);
-}
-function seededShuffle(array, seed) {
-  let arr = array.slice();
-  let m = arr.length, t, i;
-  while (m) {
-    i = Math.floor(seededRandom(seed + m) * m--);
-    t = arr[m];
-    arr[m] = arr[i];
-    arr[i] = t;
-  }
-  return arr;
-}
-
-const SaviourModes = {
-  normal: {
-    key: 'normal',
-    getGrid: () => {
-      let shuffled = [...flags].sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, 25);
-    },
-    highScoreKey: 'flagellum_saviour_highscore',
-    highTotalKey: 'flagellum_saviour_hightotal',
-    longestStreakKey: 'flagellum_saviour_longeststreak',
-    displayName: 'Saviour Mode',
-  },
-  daily: {
-    key: 'daily',
-    getGrid: () => {
-      let shuffled = seededShuffle(flags, getDailySeed());
-      return shuffled.slice(0, 25);
-    },
-    highScoreKey: 'flagellum_saviour_daily_highscore',
-    highTotalKey: 'flagellum_saviour_daily_hightotal',
-    longestStreakKey: 'flagellum_saviour_daily_longeststreak',
-    displayName: 'Saviour Mode (Daily)',
-  }
-};
-let currentSaviourMode = SaviourModes.normal;
-let saviourState = {
-  normal: {},
-  daily: {}
-};
-function getSaviourState() {
-  return saviourState[currentSaviourMode.key];
-}
-function resetSaviourState(modeKey) {
-  saviourState[modeKey] = {
-    score: 0,
-    total: 0,
-    highScore: 0,
-    highTotal: 0,
-    streak: 0,
-    longestStreak: 0,
-    grid: [],
-    highlightIndex: 12,
-    active: [],
-    usedActions: [],
-    actionHistory: [],
-    actionPointer: -1,
-    gameOver: false
-  };
-}
-resetSaviourState('normal');
-resetSaviourState('daily');
+// --- Saviour Mode Undo/Redo State ---
+let saviourActionHistory = [];
+let saviourActionPointer = -1;
+let saviourUsedActions = [];
+let saviourGameOver = false;
 
 // --- Saviour Mode Undo/Redo Implementation ---
 function saveSaviourActionState(actionName) {
-  const state = getSaviourState();
-  if (state.actionPointer < state.actionHistory.length - 1) {
-    state.actionHistory = state.actionHistory.slice(0, state.actionPointer + 1);
+  // If we are not at the end, slice off redo history
+  if (saviourActionPointer < saviourActionHistory.length - 1) {
+    saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
   }
-  state.actionHistory.push({
-    active: JSON.parse(JSON.stringify(state.active)),
-    usedActions: JSON.parse(JSON.stringify(state.usedActions)),
-    score: state.score,
-    gameOver: state.gameOver,
+  saviourActionHistory.push({
+    saviourActive: JSON.parse(JSON.stringify(saviourActive)),
+    saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
+    saviourScore,
+    saviourGameOver,
     actionName,
-    grid: JSON.parse(JSON.stringify(state.grid)),
-    highlight: state.highlightIndex,
-    streak: state.streak,
-    total: state.total,
-    longestStreak: state.longestStreak
+    grid: JSON.parse(JSON.stringify(saviourGrid)),
+    highlight: saviourHighlightIndex,
+    streak: saviourStreak,
+    total: saviourTotal,
+    longestStreak: saviourLongestStreak
   });
-  state.actionPointer = state.actionHistory.length - 1;
+  saviourActionPointer = saviourActionHistory.length - 1;
   renderSaviourUndoRedo();
 }
 
 function handleGameOverAction(actionName) {
   saveSaviourActionState(actionName);
-  getSaviourState().gameOver = true;
+  saviourGameOver = true;
 }
 
 function undoSaviourAction() {
-  const state = getSaviourState();
-  if (state.actionPointer <= 0) return;
-  state.actionPointer--;
-  restoreSaviourActionState(state.actionHistory[state.actionPointer]);
+  if (saviourActionPointer <= 0) return;
+  saviourActionPointer--;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
 }
+
 function redoSaviourAction() {
-  const state = getSaviourState();
-  if (state.actionPointer >= state.actionHistory.length - 1) return;
-  state.actionPointer++;
-  restoreSaviourActionState(state.actionHistory[state.actionPointer]);
+  if (saviourActionPointer >= saviourActionHistory.length - 1) return;
+  saviourActionPointer++;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
 }
-function restoreSaviourActionState(saved) {
-  const state = getSaviourState();
-  state.active = JSON.parse(JSON.stringify(saved.active));
-  state.usedActions = JSON.parse(JSON.stringify(saved.usedActions));
-  state.score = saved.score;
-  state.gameOver = saved.gameOver;
-  state.grid = JSON.parse(JSON.stringify(saved.grid));
-  state.highlightIndex = saved.highlight;
-  state.streak = saved.streak;
-  state.total = saved.total;
-  state.longestStreak = saved.longestStreak;
-  renderSaviourGrid(state.gameOver);
+
+function restoreSaviourActionState(state) {
+  saviourActive = JSON.parse(JSON.stringify(state.saviourActive));
+  saviourUsedActions = JSON.parse(JSON.stringify(state.saviourUsedActions));
+  saviourScore = state.saviourScore;
+  saviourGameOver = state.saviourGameOver;
+  saviourGrid = JSON.parse(JSON.stringify(state.grid));
+  saviourHighlightIndex = state.highlight;
+  saviourStreak = state.streak;
+  saviourTotal = state.total;
+  saviourLongestStreak = state.longestStreak;
+  renderSaviourGrid(saviourGameOver);
   updateSaviourScoreDisplays();
   renderSaviourActions();
   renderSaviourUndoRedo();
-  if (state.gameOver) showSaviourGameOver();
+  if (saviourGameOver) showSaviourGameOver();
   else document.getElementById('result-saviour').innerHTML = '';
 }
 
 function renderSaviourUndoRedo() {
-  const state = getSaviourState();
   const undoRedoDiv = document.getElementById('saviour-undo-redo');
   if (!undoRedoDiv) return;
   undoRedoDiv.innerHTML = '';
   const undoBtn = document.createElement('button');
   undoBtn.className = 'back-to-menu-study';
   undoBtn.textContent = 'Undo';
-  undoBtn.disabled = state.actionPointer <= 0;
+  undoBtn.disabled = saviourActionPointer <= 0;
   undoBtn.onclick = undoSaviourAction;
   const redoBtn = document.createElement('button');
   redoBtn.className = 'back-to-menu-study';
   redoBtn.textContent = 'Redo';
-  redoBtn.disabled = state.actionPointer >= state.actionHistory.length - 1;
+  redoBtn.disabled = saviourActionPointer >= saviourActionHistory.length - 1;
   redoBtn.onclick = redoSaviourAction;
   // Place on same line
   undoRedoDiv.style.display = 'flex';
@@ -212,22 +153,19 @@ function loadHighScores() {
   rcHighScore = parseFloat(localStorage.getItem('flagellum_rc_highscore')) || 0;
   rcHighTotal = parseInt(localStorage.getItem('flagellum_rc_hightotal')) || 0;
   rcLongestStreak = parseInt(localStorage.getItem('flagellum_rc_longeststreak')) || 0;
-  // Saviour Mode (modular)
-  for (const modeKey of Object.keys(SaviourModes)) {
-    const mode = SaviourModes[modeKey];
-    const state = saviourState[modeKey];
-    state.highScore = parseInt(localStorage.getItem(mode.highScoreKey)) || 0;
-    state.highTotal = parseInt(localStorage.getItem(mode.highTotalKey)) || 0;
-    state.longestStreak = parseInt(localStorage.getItem(mode.longestStreakKey)) || 0;
-  }
+  saviourHighScore = parseInt(localStorage.getItem('flagellum_saviour_highscore')) || 0;
+  saviourHighTotal = parseInt(localStorage.getItem('flagellum_saviour_hightotal')) || 0;
+  saviourLongestStreak = parseInt(localStorage.getItem('flagellum_saviour_longeststreak')) || 0;
 }
 
+// Update: Saviour mode high score is lowest number of actions (minimum, not maximum)
 function saveHighScores() {
   // Entry mode
   if (
     entryScore > entryHighScore ||
     (entryScore === entryHighScore && entryTotal < entryHighTotal)
   ) {
+    // Only update if this is a better score (higher score, or same score but fewer total)
     localStorage.setItem('flagellum_entry_highscore', entryScore);
     localStorage.setItem('flagellum_entry_hightotal', entryTotal);
     entryHighScore = entryScore;
@@ -265,23 +203,19 @@ function saveHighScores() {
     rcLongestStreak = rcStreak;
     localStorage.setItem('flagellum_rc_longeststreak', rcLongestStreak);
   }
-  // Saviour modes (modular)
-  for (const modeKey of Object.keys(SaviourModes)) {
-    const mode = SaviourModes[modeKey];
-    const state = saviourState[modeKey];
-    if (
-      (state.score > 0 && (state.highScore === 0 || state.score < state.highScore)) ||
-      (state.score === state.highScore && state.total < state.highTotal && state.score > 0)
-    ) {
-      localStorage.setItem(mode.highScoreKey, state.score);
-      localStorage.setItem(mode.highTotalKey, state.total);
-      state.highScore = state.score;
-      state.highTotal = state.total;
-    }
-    if (state.streak > state.longestStreak) {
-      state.longestStreak = state.streak;
-      localStorage.setItem(mode.longestStreakKey, state.longestStreak);
-    }
+  // Saviour mode (lower is better, but must be >0)
+  if (
+    (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
+    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourScore > 0)
+  ) {
+    localStorage.setItem('flagellum_saviour_highscore', saviourScore);
+    localStorage.setItem('flagellum_saviour_hightotal', saviourTotal);
+    saviourHighScore = saviourScore;
+    saviourHighTotal = saviourTotal;
+  }
+  if (saviourStreak > saviourLongestStreak) {
+    saviourLongestStreak = saviourStreak;
+    localStorage.setItem('flagellum_saviour_longeststreak', saviourLongestStreak);
   }
 }
 
@@ -353,15 +287,12 @@ function formatScore(score) {
 
 function updateMainMenuHighscores() {
   const mainHigh = document.getElementById('main-highscores');
-  const normal = saviourState.normal;
-  const daily = saviourState.daily;
   mainHigh.innerHTML =
     `<h2>Personal High Scores</h2>` +
     `<div class="main-highscore-row">Entry Mode: <b>${entryHighScore > 0 ? formatScore(entryHighScore) : '-'} of ${entryHighTotal > 0 ? entryHighTotal : '-'}</b> <span class="score-streak">Longest Streak: ${entryLongestStreak > 0 ? entryLongestStreak : '-'}</span></div>` +
     `<div class="main-highscore-row">Multiple Choice: <b>${mcHighScore > 0 ? formatScore(mcHighScore) : '-'} of ${mcHighTotal > 0 ? mcHighTotal : '-'}</b> <span class="score-streak">Longest Streak: ${mcLongestStreak > 0 ? mcLongestStreak : '-'}</span></div>` +
     `<div class="main-highscore-row">Reverse Choice: <b>${rcHighScore > 0 ? formatScore(rcHighScore) : '-'} of ${rcHighTotal > 0 ? rcHighTotal : '-'}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak > 0 ? rcLongestStreak : '-'}</span></div>` +
-    `<div class="main-highscore-row">Saviour Mode: <b>${normal.highScore > 0 ? normal.highScore : '-'} of ${normal.highTotal > 0 ? normal.highTotal : '-'}</b> <span class="score-streak">Longest Streak: ${normal.longestStreak > 0 ? normal.longestStreak : '-'}</span></div>` +
-    `<div class="main-highscore-row">Saviour Mode (Daily): <b>${daily.highScore > 0 ? daily.highScore : '-'} of ${daily.highTotal > 0 ? daily.highTotal : '-'}</b> <span class="score-streak">Longest Streak: ${daily.longestStreak > 0 ? daily.longestStreak : '-'}</span></div>`;
+    `<div class="main-highscore-row">Saviour Mode: <b>${saviourHighScore > 0 ? saviourHighScore : '-'} of ${saviourHighTotal > 0 ? saviourHighTotal : '-'}</b> <span class="score-streak">Longest Streak: ${saviourLongestStreak > 0 ? saviourLongestStreak : '-'}</span></div>`;
 }
 
 function showMainMenu() {
@@ -1121,26 +1052,22 @@ window.onload = function() {
   addFlagClickHandlers();
   // Saviour mode button event
   const savBtn = document.getElementById('saviour-mode-btn');
-  if (savBtn) savBtn.onclick = () => showSaviourMode('normal');
-  // Saviour mode (Daily) button event
-  const savDailyBtn = document.getElementById('saviour-mode-daily-btn');
-  if (savDailyBtn) savDailyBtn.onclick = () => showSaviourMode('daily');
+  if (savBtn) savBtn.onclick = showSaviourMode;
   const backSavBtn = document.getElementById('back-to-menu-saviour');
   if (backSavBtn) backSavBtn.onclick = showMainMenu;
 };
 
 window.showSaviourMode = showSaviourMode;
 
-// --- Saviour Mode (modular) ---
-function showSaviourMode(modeKey = 'normal') {
-  currentSaviourMode = SaviourModes[modeKey];
-  resetSaviourState(modeKey);
+// --- Saviour Mode ---
+function showSaviourMode() {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
   document.getElementById('game-rc').style.display = 'none';
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('game-saviour').style.display = 'flex';
+  saviourStreak = 0;
   updateSaviourScoreDisplays();
   // --- NEW: Clear result message on new game ---
   const resultDiv = document.getElementById('result-saviour');
