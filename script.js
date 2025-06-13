@@ -1146,7 +1146,8 @@ function renderSaviourGrid(gameOver = false) {
       btn.style.background = '#ffdddd';
       btn.style.borderColor = '#c62828';
     }
-    btn.innerHTML = `<img src="${flag.img}" alt="Flag of ${flag.country}" title="${flag.country}" />`;
+    // Remove title attribute to prevent hover country name
+    btn.innerHTML = `<img src="${flag.img}" alt="Flag" />`;
     // Add click handler for popout entry
     if (saviourActive[i] && !gameOver) {
       btn.onclick = function() {
@@ -1469,10 +1470,6 @@ function pennyPincherAction(idx) {
 function moneyBagsAction(idx) {
   processSaviourAction(idx, 'Money Bags', flag => flag.gdp >= 25000000000);
 }
-
-
-
-
 
 function babyBoomerAction(idx) {
 
