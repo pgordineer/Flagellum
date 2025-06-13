@@ -117,25 +117,16 @@ function restoreSaviourActionState(state) {
 }
 
 function renderSaviourUndoRedo() {
-  const gridDiv = document.getElementById('saviour-grid');
-  let undoRedoDiv = document.getElementById('saviour-undo-redo');
-  if (!undoRedoDiv) {
-    undoRedoDiv = document.createElement('div');
-    undoRedoDiv.id = 'saviour-undo-redo';
-    undoRedoDiv.style.display = 'flex';
-    undoRedoDiv.style.justifyContent = 'center';
-    undoRedoDiv.style.gap = '0.7em';
-    undoRedoDiv.style.marginBottom = '0.7em';
-    gridDiv.parentNode.insertBefore(undoRedoDiv, gridDiv);
-  }
+  const undoRedoDiv = document.getElementById('saviour-undo-redo');
+  if (!undoRedoDiv) return;
   undoRedoDiv.innerHTML = '';
   const undoBtn = document.createElement('button');
-  undoBtn.className = 'main-btn saviour-btn';
+  undoBtn.className = 'back-to-menu-study'; // Use same style as other nav buttons
   undoBtn.textContent = 'Undo';
   undoBtn.disabled = saviourActionPointer <= 0;
   undoBtn.onclick = undoSaviourAction;
   const redoBtn = document.createElement('button');
-  redoBtn.className = 'main-btn saviour-btn';
+  redoBtn.className = 'back-to-menu-study';
   redoBtn.textContent = 'Redo';
   redoBtn.disabled = saviourActionPointer >= saviourActionHistory.length - 1;
   redoBtn.onclick = redoSaviourAction;
@@ -1067,8 +1058,9 @@ function showSaviourMode() {
 }
 
 function updateSaviourScoreDisplays() {
-  document.getElementById('score-saviour').innerHTML = `Actions: ${saviourScore} of ${saviourTotal}<br>Streak: ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
-  let savHS = `High Score: ${saviourHighScore} of ${saviourHighTotal}`;
+  // Styled like other score rows
+  document.getElementById('score-saviour').innerHTML = `<span style="color:#0078d7;font-weight:500;">Actions:</span> <span class="fraction">${saviourScore} of ${saviourTotal}</span> &nbsp; <span style="color:#0078d7;font-weight:500;">Streak:</span> ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
+  let savHS = `<span style="color:#0078d7;font-weight:500;">High Score:</span> <span class="fraction">${saviourHighScore} of ${saviourHighTotal}</span>`;
   let nhs = '';
   if (
     saviourScore > saviourHighScore ||
