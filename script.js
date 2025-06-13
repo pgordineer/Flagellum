@@ -1280,7 +1280,7 @@ function setupSaviourFlagEntryAutocomplete(idx) {
 }
 
 function handleSaviourFlagEntrySubmit(idx) {
-  if (saviourGameOver) return; // Prevent processing after game over
+  if (saviourGameOver) return;
   const input = document.getElementById('saviour-flag-entry-input');
   const resultDiv = document.getElementById('saviour-flag-entry-result');
   const guess = input.value.trim().toLowerCase();
@@ -1291,14 +1291,15 @@ function handleSaviourFlagEntrySubmit(idx) {
     return;
   }
   if (guess === flag.country.toLowerCase() || guess === flag.code.toLowerCase()) {
-    // Eliminate this flag (count as action)
     saveSaviourActionState('Click and Entry');
     saviourActive[idx] = false;
     saviourScore++;
-    // --- NEW: If eliminated flag is the saviour, trigger game over ---
     if (idx === saviourHighlightIndex) {
       saviourGameOver = true;
       resultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ You eliminated the saviour flag (${flag.country})!</span>`;
+      // Always show in main game screen
+      const mainResultDiv = document.getElementById('result-saviour');
+      if (mainResultDiv) mainResultDiv.innerHTML = `<span style="color:#c62828;font-weight:bold;">❌ Game Over! The saviour flag (${flag.country}) was eliminated.</span>`;
       setTimeout(() => {
         let modal = document.getElementById('saviour-flag-entry-modal');
         if (modal) modal.remove();
