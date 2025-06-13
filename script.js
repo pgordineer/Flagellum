@@ -800,23 +800,6 @@ function setupAutocomplete() {
 }
 
 // --- Flag Image Modal ---
-function setupFlagImageModal() {
-  if (!document.getElementById('flag-modal')) {
-    const modal = document.createElement('div');
-    modal.id = 'flag-modal';
-    modal.style.display = 'none';
-    modal.innerHTML = `
-      <div id="flag-modal-bg" style="position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);"></div>
-      <div id="flag-modal-content" style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;max-width:90vw;max-height:90vh;margin:auto;">
-        <img id="flag-modal-img" src="" alt="Flag" style="max-width:80vw;max-height:70vh;border-radius:0.5rem;box-shadow:0 2px 16px #0003;border:1px solid #ccc;background:#fff;" />
-      </div>
-    `;
-    document.body.appendChild(modal);
-    document.getElementById('flag-modal-bg').onclick = closeFlagModal;
-    document.getElementById('flag-modal-content').onclick = function(e) { e.stopPropagation(); };
-    modal.onclick = function(e) { if (e.target === modal) closeFlagModal(); };
-  }
-}
 function showFlagModal(imgSrc, altText) {
   // Remove any existing modal
   let oldModal = document.getElementById('flag-modal');
@@ -836,6 +819,9 @@ function showFlagModal(imgSrc, altText) {
   document.getElementById('flag-modal-close').onclick = closeFlagModal;
   document.getElementById('flag-modal-content').onclick = function(e) { e.stopPropagation(); };
 }
+
+// Remove setupFlagImageModal and any code that creates a hidden modal on page load
+// Only use showFlagModal and showSaviourFlagModal to create modals dynamically
 
 // ...existing code...
 function addFlagClickHandlers() {
@@ -1474,24 +1460,6 @@ function showSaviourGameOver() {
 }
 
 // --- Saviour Flag Modal ---
-function setupSaviourFlagModal() {
-  if (!document.getElementById('saviour-flag-modal')) {
-    const modal = document.createElement('div');
-    modal.id = 'saviour-flag-modal';
-    modal.style.display = 'none';
-    modal.innerHTML = `
-      <div id="saviour-flag-modal-bg" style="position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.75);"></div>
-      <div id="saviour-flag-modal-content" style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;max-width:90vw;max-height:90vh;margin:auto;">
-        <img id="saviour-flag-modal-img" src="" alt="Flag" style="max-width:80vw;max-height:80vh;border-radius:0.5rem;box-shadow:0 2px 16px #0003;border:1px solid #ccc;background:#fff;" />
-        <div id="saviour-flag-modal-info" style="color:#fff;max-width:80vw;text-align:center;position:absolute;bottom:1em;left:50%;transform:translateX(-50%);font-size:0.9em;"></div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-    document.getElementById('saviour-flag-modal-bg').onclick = closeSaviourFlagModal;
-    document.getElementById('saviour-flag-modal-content').onclick = function(e) { e.stopPropagation(); };
-    modal.onclick = function(e) { if (e.target === modal) closeSaviourFlagModal(); };
-  }
-}
 function showSaviourFlagModal(flagIdx) {
   const flag = saviourGrid[flagIdx];
   // Remove any existing modal
