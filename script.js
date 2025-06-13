@@ -1379,12 +1379,12 @@ function renderSaviourActions() {
   }
 }
 
-function gammaBurstAction(idx) {
+function processSaviourAction(idx, actionName, eliminationCondition) {
   if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Gamma Burst');
+  saveSaviourActionState(actionName);
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].nuclear_arms) {
+    if (saviourActive[i] && eliminationCondition(saviourGrid[i])) {
       saviourActive[i] = false;
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
@@ -1393,192 +1393,47 @@ function gammaBurstAction(idx) {
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
+    const mainResultDiv = document.getElementById('result-saviour');
+    if (mainResultDiv) {
+      mainResultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ Game Over! The saviour flag was eliminated.</span>`;
+    }
     showSaviourGameOver();
-    return; // Prevent further UI updates
+    return;
   }
   renderSaviourGrid();
   updateSaviourScoreDisplays();
   renderSaviourActions();
+}
+
+function gammaBurstAction(idx) {
+  processSaviourAction(idx, 'Gamma Burst', flag => flag.nuclear_arms);
 }
 
 function freezeRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Freeze Ray');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && (saviourGrid[i].max_lat > 66.5 || saviourGrid[i].min_lat < -66.5)) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-    return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
+  processSaviourAction(idx, 'Freeze Ray', flag => flag.max_lat > 66.5 || flag.min_lat < -66.5);
 }
 
 function heatRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Heat Ray');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && (saviourGrid[i].min_lat > 23.5 || saviourGrid[i].max_lat < -23.5)) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-    return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
+  processSaviourAction(idx, 'Heat Ray', flag => flag.min_lat > 23.5 || flag.max_lat < -23.5);
 }
 
 function tidalForceAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Tidal Force');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].coastline_km > 0) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-    return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
+  processSaviourAction(idx, 'Tidal Force', flag => flag.coastline_km > 0);
 }
 
 function landlockedAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Landlocked');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].coastline_km === 0) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-    return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
+  processSaviourAction(idx, 'Landlocked', flag => flag.coastline_km === 0);
 }
 
 function tailorAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Tailor');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-
-    if (saviourActive[i] && saviourGrid[i].area >= 83879) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-    return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
-}
-
-function pennyPincherAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Penny Pincher');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].gdp < 25000000000) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-    return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
-}
-
-function moneyBagsAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Money Bags');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].gdp >= 25000000000) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-    return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
+  processSaviourAction(idx, 'Tailor', flag => flag.area >= 83879);
 }
 
 function shrinkRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Shrink Ray');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].area < 83879) { // Shrink Ray effect: area < 83,879 km²
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-    return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
+  processSaviourAction(idx, 'Shrink Ray', flag => flag.area < 83879);
 }
 
-function babyBoomerAction(idx) {
+function pennyBoomerAction(idx) {
   // Placeholder for future implementation
   alert('Baby Boomer action is not yet implemented.');
 }
