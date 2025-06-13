@@ -1112,6 +1112,7 @@ function restoreSaviourActionState(state) {
   renderSaviourGrid(saviourGameOver);
   updateSaviourScoreDisplays();
   renderSaviourActions();
+  renderSaviourUndoRedo(); // Ensure undo/redo buttons update
   if (saviourGameOver) showSaviourGameOver();
   else document.getElementById('result-saviour').innerHTML = '';
 }
