@@ -1289,13 +1289,27 @@ function handleSaviourFlagEntrySubmit(idx) {
   if (saviourGameOver) return;
   const input = document.getElementById('saviour-flag-entry-input');
   const resultDiv = document.getElementById('saviour-flag-entry-result');
+  const hintBtn = document.getElementById('saviour-hint-btn');
   const guess = input.value.trim().toLowerCase();
   const flag = saviourGrid[idx];
+
+  if (hintBtn) {
+    hintBtn.onclick = () => {
+      saveSaviourActionState('Hint Used');
+      saviourScore++;
+      usedHint = true;
+      resultDiv.textContent = `Hint: Country code is '${flag.code}'.`;
+      resultDiv.style.color = '#0078d7';
+      updateSaviourScoreDisplays();
+    };
+  }
+
   if (!guess) {
     resultDiv.textContent = 'Please enter a country or code.';
     resultDiv.style.color = '#c62828';
     return;
   }
+
   if (guess === flag.country.toLowerCase() || guess === flag.code.toLowerCase()) {
     saveSaviourActionState('Click and Entry');
     saviourActive[idx] = false;
@@ -1303,7 +1317,6 @@ function handleSaviourFlagEntrySubmit(idx) {
     if (idx === saviourHighlightIndex) {
       saviourGameOver = true;
       resultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ You eliminated the saviour flag (${flag.country})!</span>`;
-      // Always show in main game screen
       const mainResultDiv = document.getElementById('result-saviour');
       if (mainResultDiv) mainResultDiv.innerHTML = `<span style="color:#c62828;font-weight:bold;">❌ Game Over! The saviour flag (${flag.country}) was eliminated.</span>`;
       setTimeout(() => {
@@ -1445,6 +1458,7 @@ function moneyBagsAction(idx) {
 }
 
 function babyBoomerAction(idx) {
+
   // Placeholder for future implementation
   alert('Baby Boomer action is not yet implemented.');
 }
