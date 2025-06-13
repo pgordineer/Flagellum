@@ -16,6 +16,7 @@
       <button id="mc-mode-btn" class="main-menu-btn">Multiple Choice Mode</button>
       <button id="rc-mode-btn" class="main-menu-btn">Reverse Choice Mode</button>
       <button id="study-btn" class="main-menu-btn">Study Mode</button>
+      <button id="saviour-mode-btn" class="main-menu-btn">Saviour Mode</button>
       <div id="congrats" style="display:none;"></div>
     </div>
     <div id="study-page" style="display:none; max-width:100vw;">
@@ -79,6 +80,21 @@
       <div id="wiki-link-rc" style="margin-bottom:1em;"></div>
       <button id="next-rc" class="main-btn rc-btn" style="display:none;">Next</button>
       <button id="back-to-menu-rc" class="main-btn rc-btn">Back to Menu</button>
+    </div>
+    <!-- Saviour Mode -->
+    <div id="game-saviour" style="display:none;flex-direction:column;align-items:center;">
+      <div class="score-row" style="flex-direction:column;align-items:center;gap:0;">
+        <span id="score-saviour" class="score-label"></span>
+        <span id="highscore-saviour" class="score-label"></span>
+      </div>
+      <div id="saviour-instructions" style="text-align:center;margin:1em 0 1em 0;">
+        <b>Save the highlighted flag!</b> Use actions to eliminate all but the green-bordered flag.
+      </div>
+      <div id="saviour-grid" class="saviour-grid"></div>
+      <div id="saviour-actions" class="saviour-actions"></div>
+      <div id="result-saviour" style="margin:0.5em 0 0.5em 0;"></div>
+      <button id="next-saviour" class="main-btn saviour-btn" style="display:none;">Next</button>
+      <button id="back-to-menu-saviour" class="main-btn saviour-btn">Back to Menu</button>
     </div>
     <div id="flag-modal" style="display:none;position:fixed;z-index:1000;left:0;top:0;right:0;bottom:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);">
       <div id="flag-modal-content" style="position:relative;max-width:95vw;max-height:90vh;display:flex;align-items:center;justify-content:center;">

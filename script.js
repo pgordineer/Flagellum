@@ -34,6 +34,29 @@ let rcCorrectIndex = 0;
 let rcOptions = [];
 let rcCurrentFlag = {};
 
+// --- Saviour Mode ---
+let saviourScore = 0;
+let saviourTotal = 0;
+let saviourHighScore = 0;
+let saviourHighTotal = 0;
+let saviourStreak = 0;
+let saviourLongestStreak = 0;
+let saviourGrid = [];
+let saviourHighlightIndex = 12; // Center of 5x5 grid
+let saviourActive = [];
+const SAVIOUR_GRID_SIZE = 5;
+const SAVIOUR_ACTIONS = [
+  { name: 'Freeze Ray', icon: '❄️' },
+  { name: 'Shrink Ray', icon: '🔬' },
+  { name: 'Heat Ray', icon: '🔥' },
+  { name: 'Gamma Burst', icon: '☢️' },
+  { name: 'Tailor', icon: '✂️' },
+  { name: 'Penny Pincher', icon: '🪙' },
+  { name: 'Baby Boomer', icon: '👶' },
+  { name: 'Tidal Force', icon: '🌊' },
+  { name: 'Landlocked', icon: '🏜️' }
+];
+
 function loadHighScores() {
   entryHighScore = parseFloat(localStorage.getItem('flagellum_entry_highscore')) || 0;
   entryHighTotal = parseInt(localStorage.getItem('flagellum_entry_hightotal')) || 0;
@@ -90,6 +113,20 @@ function saveHighScores() {
     rcLongestStreak = rcStreak;
     localStorage.setItem('flagellum_rc_longeststreak', rcLongestStreak);
   }
+  // Saviour mode
+  if (
+    saviourScore > saviourHighScore ||
+    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal)
+  ) {
+    localStorage.setItem('flagellum_saviour_highscore', saviourScore);
+    localStorage.setItem('flagellum_saviour_hightotal', saviourTotal);
+    saviourHighScore = saviourScore;
+    saviourHighTotal = saviourTotal;
+  }
+  if (saviourStreak > saviourLongestStreak) {
+    saviourLongestStreak = saviourStreak;
+    localStorage.setItem('flagellum_saviour_longeststreak', saviourLongestStreak);
+  }
 }
 
 function updateScoreDisplays() {
@@ -126,6 +163,17 @@ function updateScoreDisplays() {
     nhsRC = '<div class="new-highscore">New High Score!</div>';
   }
   document.getElementById('highscore-rc').innerHTML = rcHS + nhsRC;
+  // Saviour mode
+  document.getElementById('score-saviour').innerHTML = `Actions: ${saviourScore} of ${saviourTotal}<br>Streak: ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
+  let savHS = `High Score: ${saviourHighScore} of ${saviourHighTotal}`;
+  let nhsSaviour = '';
+  if (
+    saviourScore > saviourHighScore ||
+    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourHighScore > 0)
+  ) {
+    nhsSaviour = '<div class="new-highscore">New High Score!</div>';
+  }
+  document.getElementById('highscore-saviour').innerHTML = savHS + nhsSaviour;
 }
 
 function formatScore(score) {
@@ -150,7 +198,8 @@ function updateMainMenuHighscores() {
     `<h2>Personal High Scores</h2>` +
     `<div class="main-highscore-row">Entry Mode: <b>${formatScore(entryHighScore)} of ${entryHighTotal}</b> <span class="score-streak">Longest Streak: ${entryLongestStreak}</span></div>` +
     `<div class="main-highscore-row">Multiple Choice: <b>${formatScore(mcHighScore)} of ${mcHighTotal}</b> <span class="score-streak">Longest Streak: ${mcLongestStreak}</span></div>` +
-    `<div class="main-highscore-row">Reverse Choice: <b>${formatScore(rcHighScore)} of ${rcHighTotal}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak}</span></div>`;
+    `<div class="main-highscore-row">Reverse Choice: <b>${formatScore(rcHighScore)} of ${rcHighTotal}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak}</span></div>` +
+    `<div class="main-highscore-row">Saviour Mode: <b>${formatScore(saviourHighScore)} of ${saviourHighTotal}</b> <span class="score-streak">Longest Streak: ${saviourLongestStreak}</span></div>`;
 }
 
 function showMainMenu() {
@@ -862,6 +911,15 @@ function startGame() {
         saveHighScores();
         showMainMenu();
       };
+      // End game: reset all game state for Saviour mode
+      document.getElementById('back-to-menu-saviour').onclick = function() {
+        saviourScore = 0;
+        saviourTotal = 0;
+        saviourStreak = 0;
+        updateSaviourScoreDisplays();
+        saveHighScores();
+        showMainMenu();
+      };
       showMainMenu();
       updateScoreDisplays();
       updateMainMenuHighscores();
@@ -871,4 +929,9 @@ function startGame() {
 window.onload = function() {
   startGame();
   addFlagClickHandlers();
+  // Saviour mode button event
+  const savBtn = document.getElementById('saviour-mode-btn');
+  if (savBtn) savBtn.onclick = showSaviourMode;
+  const backSavBtn = document.getElementById('back-to-menu-saviour');
+  if (backSavBtn) backSavBtn.onclick = showMainMenu;
 };
