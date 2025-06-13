@@ -1057,6 +1057,9 @@ function showSaviourMode() {
   document.getElementById('game-saviour').style.display = 'flex';
   saviourStreak = 0;
   updateSaviourScoreDisplays();
+  // --- NEW: Clear result message on new game ---
+  const resultDiv = document.getElementById('result-saviour');
+  if (resultDiv) resultDiv.innerHTML = '';
   setupSaviourGrid();
   setupSaviourActions();
 }
@@ -1103,6 +1106,18 @@ function renderSaviourGrid(gameOver = false) {
   // Win detection: only the highlighted flag remains
   if (activeCount === 1 && lastActiveIdx === saviourHighlightIndex && !gameOver) {
     saviourGameOver = true;
+    // --- NEW: Save high score on win ---
+    if (
+      saviourScore > saviourHighScore ||
+      (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal) ||
+      saviourHighScore === 0
+    ) {
+      saviourHighScore = saviourScore;
+      saviourHighTotal = saviourGrid.length;
+      localStorage.setItem('flagellum_saviour_highscore', saviourHighScore);
+      localStorage.setItem('flagellum_saviour_hightotal', saviourHighTotal);
+    }
+    updateSaviourScoreDisplays();
     renderSaviourGrid(true);
     document.getElementById('result-saviour').innerHTML = `<span style="color:#2e7d32;font-weight:bold;">🎉 Congratulations! You saved ${saviourGrid[saviourHighlightIndex].country} (${saviourGrid[saviourHighlightIndex].code}) and won Saviour Mode!</span>`;
     return;
@@ -1132,6 +1147,7 @@ function renderSaviourGrid(gameOver = false) {
 }
 
 function showSaviourFlagEntryModal(idx) {
+  if (saviourGameOver) return; // Prevent opening modal after game over
   // Remove existing modal if present
   let existing = document.getElementById('saviour-flag-entry-modal');
   if (existing) existing.remove();
@@ -1264,6 +1280,7 @@ function setupSaviourFlagEntryAutocomplete(idx) {
 }
 
 function handleSaviourFlagEntrySubmit(idx) {
+  if (saviourGameOver) return; // Prevent processing after game over
   const input = document.getElementById('saviour-flag-entry-input');
   const resultDiv = document.getElementById('saviour-flag-entry-result');
   const guess = input.value.trim().toLowerCase();
@@ -1278,6 +1295,17 @@ function handleSaviourFlagEntrySubmit(idx) {
     saveSaviourActionState('Click and Entry');
     saviourActive[idx] = false;
     saviourScore++;
+    // --- NEW: If eliminated flag is the saviour, trigger game over ---
+    if (idx === saviourHighlightIndex) {
+      saviourGameOver = true;
+      resultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ You eliminated the saviour flag (${flag.country})!</span>`;
+      setTimeout(() => {
+        let modal = document.getElementById('saviour-flag-entry-modal');
+        if (modal) modal.remove();
+        showSaviourGameOver();
+      }, 700);
+      return;
+    }
     resultDiv.innerHTML = `<span style='color:#2e7d32;font-weight:bold;'>✅ Eliminated ${flag.country} (${flag.code})</span>`;
     setTimeout(() => {
       let modal = document.getElementById('saviour-flag-entry-modal');
@@ -1348,7 +1376,7 @@ function renderSaviourActions() {
 }
 
 function gammaBurstAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Gamma Burst');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1362,15 +1390,15 @@ function gammaBurstAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return; // Prevent further UI updates
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function freezeRayAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Freeze Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1384,15 +1412,15 @@ function freezeRayAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return;
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function heatRayAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Heat Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1406,15 +1434,15 @@ function heatRayAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return;
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function tidalForceAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Tidal Force');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1428,15 +1456,15 @@ function tidalForceAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return;
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function landlockedAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Landlocked');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1450,18 +1478,19 @@ function landlockedAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return;
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function tailorAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Tailor');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
+
     if (saviourActive[i] && saviourGrid[i].area >= 83879) {
       saviourActive[i] = false;
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
@@ -1472,15 +1501,15 @@ function tailorAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return;
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function pennyPincherAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Penny Pincher');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1494,15 +1523,15 @@ function pennyPincherAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return;
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function moneyBagsAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Money Bags');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1516,15 +1545,15 @@ function moneyBagsAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return;
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function shrinkRayAction(idx) {
-  if (saviourUsedActions[idx]) return;
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Shrink Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1538,11 +1567,11 @@ function shrinkRayAction(idx) {
   if (eliminatedSaviour) {
     saviourGameOver = true;
     showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
+    return;
   }
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
 }
 
 function babyBoomerAction(idx) {
@@ -1601,6 +1630,9 @@ showSaviourMode = function() {
   document.getElementById('game-saviour').style.display = 'flex';
   saviourStreak = 0;
   updateSaviourScoreDisplays();
+  // --- NEW: Clear result message on new game ---
+  const resultDiv = document.getElementById('result-saviour');
+  if (resultDiv) resultDiv.innerHTML = '';
   setupSaviourGrid();
   setupSaviourActions();
 };
