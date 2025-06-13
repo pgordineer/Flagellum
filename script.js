@@ -1290,6 +1290,7 @@ function handleSaviourFlagEntrySubmit(idx) {
   const input = document.getElementById('saviour-flag-entry-input');
   const resultDiv = document.getElementById('saviour-flag-entry-result');
   const hintBtn = document.getElementById('saviour-hint-btn');
+  const hintDisplay = document.getElementById('saviour-hint-display');
   const guess = input.value.trim().toLowerCase();
   const flag = saviourGrid[idx];
 
@@ -1298,8 +1299,8 @@ function handleSaviourFlagEntrySubmit(idx) {
       saveSaviourActionState('Hint Used');
       saviourScore++;
       usedHint = true;
-      resultDiv.textContent = `Hint: Country code is '${flag.code}'.`;
-      resultDiv.style.color = '#0078d7';
+      hintDisplay.textContent = `Hint: Country code is '${flag.code}'.`;
+      hintDisplay.style.display = 'block';
       updateSaviourScoreDisplays();
     };
   }
@@ -1456,6 +1457,10 @@ function pennyPincherAction(idx) {
 function moneyBagsAction(idx) {
   processSaviourAction(idx, 'Money Bags', flag => flag.gdp >= 25000000000);
 }
+
+
+
+
 
 function babyBoomerAction(idx) {
 
