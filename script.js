@@ -1033,7 +1033,12 @@ function startGame() {
 
 window.onload = function() {
   startGame();
-  // Do NOT call addFlagClickHandlers here; it is called after each mode/page render
+  addFlagClickHandlers();
+  // Saviour mode button event
+  const savBtn = document.getElementById('saviour-mode-btn');
+  if (savBtn) savBtn.onclick = showSaviourMode;
+  const backSavBtn = document.getElementById('back-to-menu-saviour');
+  if (backSavBtn) backSavBtn.onclick = showMainMenu;
 };
 
 window.showSaviourMode = showSaviourMode;
