@@ -216,8 +216,8 @@ function saveHighScores() {
 
 function updateScoreDisplays() {
   // Entry mode
-  document.getElementById('score-entry').innerHTML = `Score: ${formatScore(entryScore)} of ${entryTotal}<br>Streak: ${entryStreak} <span class="score-streak">(Longest: ${entryLongestStreak})</span>`;
-  let entryHS = `High Score: ${formatScore(entryHighScore)} of ${entryHighTotal}`;
+  document.getElementById('score-entry').innerHTML = `Score: ${entryScore > 0 ? formatScore(entryScore) : '-'} of ${entryTotal > 0 ? entryTotal : '-'}`;
+  let entryHS = `High Score: ${entryHighScore > 0 ? formatScore(entryHighScore) : '-'} of ${entryHighTotal > 0 ? entryHighTotal : '-'}`;
   let nhs = '';
   if (
     entryScore > entryHighScore ||
@@ -226,9 +226,10 @@ function updateScoreDisplays() {
     nhs = '<div class="new-highscore">New High Score!</div>';
   }
   document.getElementById('highscore-entry').innerHTML = entryHS + nhs;
+
   // MC mode
-  document.getElementById('score-mc').innerHTML = `Score: ${formatScore(mcScore)} of ${mcTotal}<br>Streak: ${mcStreak} <span class="score-streak">(Longest: ${mcLongestStreak})</span>`;
-  let mcHS = `High Score: ${formatScore(mcHighScore)} of ${mcHighTotal}`;
+  document.getElementById('score-mc').innerHTML = `Score: ${mcScore > 0 ? formatScore(mcScore) : '-'} of ${mcTotal > 0 ? mcTotal : '-'}`;
+  let mcHS = `High Score: ${mcHighScore > 0 ? formatScore(mcHighScore) : '-'} of ${mcHighTotal > 0 ? mcHighTotal : '-'}`;
   let nhsMC = '';
   if (
     mcScore > mcHighScore ||
@@ -237,9 +238,10 @@ function updateScoreDisplays() {
     nhsMC = '<div class="new-highscore">New High Score!</div>';
   }
   document.getElementById('highscore-mc').innerHTML = mcHS + nhsMC;
+
   // Reverse Choice mode
-  document.getElementById('score-rc').innerHTML = `Score: ${formatScore(rcScore)} of ${rcTotal}<br>Streak: ${rcStreak} <span class="score-streak">(Longest: ${rcLongestStreak})</span>`;
-  let rcHS = `High Score: ${formatScore(rcHighScore)} of ${rcHighTotal}`;
+  document.getElementById('score-rc').innerHTML = `Score: ${rcScore > 0 ? formatScore(rcScore) : '-'} of ${rcTotal > 0 ? rcTotal : '-'}`;
+  let rcHS = `High Score: ${rcHighScore > 0 ? formatScore(rcHighScore) : '-'} of ${rcHighTotal > 0 ? rcHighTotal : '-'}`;
   let nhsRC = '';
   if (
     rcScore > rcHighScore ||
@@ -248,9 +250,10 @@ function updateScoreDisplays() {
     nhsRC = '<div class="new-highscore">New High Score!</div>';
   }
   document.getElementById('highscore-rc').innerHTML = rcHS + nhsRC;
+
   // Saviour mode
-  document.getElementById('score-saviour').innerHTML = `Actions: ${saviourScore} of ${saviourTotal}<br>Streak: ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
-  let savHS = `High Score: ${saviourHighScore > 0 ? saviourHighScore : '-'} of ${saviourHighTotal}`;
+  document.getElementById('score-saviour').innerHTML = `Actions: ${saviourScore > 0 ? saviourScore : '-'} of ${saviourTotal > 0 ? saviourTotal : '-'}`;
+  let savHS = `High Score: ${saviourHighScore > 0 ? saviourHighScore : '-'} of ${saviourHighTotal > 0 ? saviourHighTotal : '-'}`;
   let nhsSaviour = '';
   if (
     (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
