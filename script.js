@@ -86,6 +86,11 @@ function saveSaviourActionState(actionName) {
   renderSaviourUndoRedo();
 }
 
+function handleGameOverAction(actionName) {
+  saveSaviourActionState(actionName);
+  saviourGameOver = true;
+}
+
 function undoSaviourAction() {
   if (saviourActionPointer <= 0) return;
   saviourActionPointer--;
@@ -1205,7 +1210,6 @@ function showSaviourFlagEntryModal(idx) {
     const resultDiv = document.getElementById('saviour-flag-entry-result');
     resultDiv.textContent = `Hint: Country code is '${flag.code}'.`;
     resultDiv.style.color = '#0078d7';
-    saveSaviourActionState('Hint Used');
   };
   setTimeout(() => document.getElementById('saviour-flag-entry-input').focus(), 100);
 }
@@ -1465,6 +1469,10 @@ function pennyPincherAction(idx) {
 function moneyBagsAction(idx) {
   processSaviourAction(idx, 'Money Bags', flag => flag.gdp >= 25000000000);
 }
+
+
+
+
 
 function babyBoomerAction(idx) {
 
