@@ -16,14 +16,18 @@ A beautiful, mobile-friendly flag guessing game for learning world flags. Guess 
 
 ## Features
 
-- 🌍 **Two Game Modes:**
+- 🌍 **Five Game Modes:**
   - **Entry Mode:** Type the country name or ISO 2-letter code. Get hints if you need help!
   - **Multiple Choice:** Pick the correct country from four options. Partial credit for fewer attempts.
+  - **Reverse Choice:** Select the flag that matches the given country name.
+  - **Study Mode:** Explore all flags and their details.
+  - **Saviour Mode:** Use special actions to save the highlighted flag while eliminating others.
 - 🏳️ **Wikipedia flag images** and Unicode flag emojis (on mobile).
 - 🏆 **Score and High Score tracking** (with partial credit and fractions, e.g. 2/3, 1/2, etc.).
 - 💾 **Personal high scores** are saved in your browser.
 - 📱 **Mobile-friendly, modern UI** with beautiful, responsive design.
 - 🔗 **Learn more** about each flag with a direct Wikipedia link.
+- 🛠️ **Custom favicon support** with multiple formats for web and mobile.
 - 👨‍💻 **Created by [@pgordineer](https://github.com/pgordineer)**
 
 ---
