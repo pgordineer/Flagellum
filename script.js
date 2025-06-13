@@ -47,15 +47,15 @@ let saviourActive = [];
 const SAVIOUR_GRID_SIZE = 5;
 const SAVIOUR_ACTIONS = [
   { name: 'Freeze Ray', icon: '❄️' },
-  { name: 'Shrink Ray', icon: '🔬' },
   { name: 'Heat Ray', icon: '🔥' },
-  { name: 'Gamma Burst', icon: '☢️' },
   { name: 'Tailor', icon: '✂️' },
-  { name: 'Penny Pincher', icon: '🪙' },
+  { name: 'Shrink Ray', icon: '🔬' },
   { name: 'Money Bags', icon: '💰' },
-  { name: 'Baby Boomer', icon: '👶' },
+  { name: 'Penny Pincher', icon: '🪙' },
   { name: 'Tidal Force', icon: '🌊' },
-  { name: 'Landlocked', icon: '🏜️' }
+  { name: 'Landlocked', icon: '🏜️' },
+  { name: 'Baby Boomer', icon: '👶' },
+  { name: 'Gamma Burst', icon: '☢️' }
 ];
 
 // --- Saviour Mode Undo/Redo State ---
@@ -1122,28 +1122,40 @@ function setupSaviourActions() {
 function renderSaviourActions() {
   const actionsDiv = document.getElementById('saviour-actions');
   actionsDiv.innerHTML = '';
-  SAVIOUR_ACTIONS.forEach((action, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'saviour-action-btn';
-    btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
-    btn.disabled = !!saviourUsedActions[idx] || saviourGameOver;
-    // Action handlers
-    let handler = null;
-    switch (action.name) {
-      case 'Gamma Burst': handler = () => gammaBurstAction(idx); break;
-      case 'Freeze Ray': handler = () => freezeRayAction(idx); break;
-      case 'Heat Ray': handler = () => heatRayAction(idx); break;
-      case 'Tidal Force': handler = () => tidalForceAction(idx); break;
-      case 'Landlocked': handler = () => landlockedAction(idx); break;
-      case 'Tailor': handler = () => tailorAction(idx); break;
-      case 'Penny Pincher': handler = () => pennyPincherAction(idx); break;
-      case 'Money Bags': handler = () => moneyBagsAction(idx); break;
-      case 'Shrink Ray': handler = () => shrinkRayAction(idx); break;
-      default: handler = () => {};
+  // Render as two columns, five rows
+  for (let row = 0; row < 5; row++) {
+    const rowDiv = document.createElement('div');
+    rowDiv.style.display = 'flex';
+    rowDiv.style.gap = '0.5em';
+    rowDiv.style.marginBottom = '0.5em';
+    for (let col = 0; col < 2; col++) {
+      const idx = row * 2 + col;
+      if (idx >= SAVIOUR_ACTIONS.length) continue;
+      const action = SAVIOUR_ACTIONS[idx];
+      const btn = document.createElement('button');
+      btn.className = 'saviour-action-btn';
+      btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
+      btn.disabled = !!saviourUsedActions[idx] || saviourGameOver;
+      // Action handlers
+      let handler = null;
+      switch (action.name) {
+        case 'Gamma Burst': handler = () => gammaBurstAction(idx); break;
+        case 'Freeze Ray': handler = () => freezeRayAction(idx); break;
+        case 'Heat Ray': handler = () => heatRayAction(idx); break;
+        case 'Tidal Force': handler = () => tidalForceAction(idx); break;
+        case 'Landlocked': handler = () => landlockedAction(idx); break;
+        case 'Tailor': handler = () => tailorAction(idx); break;
+        case 'Penny Pincher': handler = () => pennyPincherAction(idx); break;
+        case 'Money Bags': handler = () => moneyBagsAction(idx); break;
+        case 'Shrink Ray': handler = () => shrinkRayAction(idx); break;
+        case 'Baby Boomer': handler = () => babyBoomerAction ? babyBoomerAction(idx) : () => {}; break;
+        default: handler = () => {};
+      }
+      btn.onclick = handler;
+      rowDiv.appendChild(btn);
     }
-    btn.onclick = handler;
-    actionsDiv.appendChild(btn);
-  });
+    actionsDiv.appendChild(rowDiv);
+  }
 }
 
 // --- Saviour Mode Action Implementations ---
