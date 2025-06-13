@@ -937,3 +937,60 @@ window.onload = function() {
 };
 
 window.showSaviourMode = showSaviourMode;
+
+// --- Saviour Mode ---
+function showSaviourMode() {
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('game-entry').style.display = 'none';
+  document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('game-rc').style.display = 'none';
+  document.getElementById('study-page').style.display = 'none';
+  document.getElementById('game-saviour').style.display = 'flex';
+  saviourStreak = 0;
+  updateSaviourScoreDisplays();
+  setupSaviourGrid();
+  setupSaviourActions();
+}
+
+function updateSaviourScoreDisplays() {
+  document.getElementById('score-saviour').innerHTML = `Actions: ${saviourScore} of ${saviourTotal}<br>Streak: ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
+  let savHS = `High Score: ${saviourHighScore} of ${saviourHighTotal}`;
+  let nhs = '';
+  if (
+    saviourScore > saviourHighScore ||
+    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourHighScore > 0)
+  ) {
+    nhs = '<div class="new-highscore">New High Score!</div>';
+  }
+  document.getElementById('highscore-saviour').innerHTML = savHS + nhs;
+}
+
+function setupSaviourGrid() {
+  if (flags.length < 25) return;
+  let shuffled = [...flags].sort(() => Math.random() - 0.5);
+  saviourGrid = shuffled.slice(0, 25);
+  saviourActive = Array(25).fill(true);
+  const gridDiv = document.getElementById('saviour-grid');
+  gridDiv.innerHTML = '';
+  for (let i = 0; i < 25; i++) {
+    const flag = saviourGrid[i];
+    const btn = document.createElement('button');
+    btn.className = 'saviour-flag-btn' + (i === saviourHighlightIndex ? ' saviour-highlight' : '');
+    btn.disabled = !saviourActive[i];
+    btn.innerHTML = `<img src="${flag.img}" alt="Flag of ${flag.country}" title="${flag.country}" />`;
+    btn.onclick = () => {};
+    gridDiv.appendChild(btn);
+  }
+}
+
+function setupSaviourActions() {
+  const actionsDiv = document.getElementById('saviour-actions');
+  actionsDiv.innerHTML = '';
+  SAVIOUR_ACTIONS.forEach((action, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'saviour-action-btn';
+    btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
+    btn.onclick = () => { /* Placeholder for action logic */ };
+    actionsDiv.appendChild(btn);
+  });
+}
