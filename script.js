@@ -1180,6 +1180,7 @@ function showSaviourFlagEntryModal(idx) {
         <input type="text" id="saviour-flag-entry-input" placeholder="Enter country or code..." autocomplete="off" style="width:100%;padding:0.7rem;font-size:1.1rem;border:1px solid #ddd;border-radius:0.5rem;margin-bottom:0.5rem;box-sizing:border-box;" />
         <div id="saviour-flag-entry-autocomplete" class="autocomplete-list" style="display:none;"></div>
         <button id="saviour-flag-entry-submit" style="width:100%;padding:0.7rem;font-size:1.1rem;border:none;border-radius:0.5rem;background:#0078d7;color:#fff;margin-bottom:0.5rem;cursor:pointer;">Submit</button>
+        <button id="saviour-hint-btn" style="width:100%;padding:0.7rem;font-size:1.1rem;border:none;border-radius:0.5rem;background:#0078d7;color:#fff;margin-bottom:0.5rem;cursor:pointer;">Hint</button>
         <div id="saviour-flag-entry-result" style="min-height:1.5em;text-align:center;margin-bottom:0.5rem;"></div>
       </div>
     </div>
@@ -1199,6 +1200,12 @@ function showSaviourFlagEntryModal(idx) {
       handleSaviourFlagEntrySubmit(idx);
     }
   });
+  // Hint button logic
+  document.getElementById('saviour-hint-btn').onclick = function() {
+    const resultDiv = document.getElementById('saviour-flag-entry-result');
+    resultDiv.textContent = `Hint: Country code is '${flag.code}'.`;
+    resultDiv.style.color = '#0078d7';
+  };
   setTimeout(() => document.getElementById('saviour-flag-entry-input').focus(), 100);
 }
 
