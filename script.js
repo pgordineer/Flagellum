@@ -807,7 +807,7 @@ function setupFlagImageModal() {
     modal.style.display = 'none';
     modal.innerHTML = `
       <div id="flag-modal-bg" style="position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);"></div>
-      <div id="flag-modal-content" style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;max-width:90vw;max-height:90vh;margin:auto;">
+      <div id="flag-modal-content" style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;max-width:95vw;max-height:90vh;margin:auto;">
         <img id="flag-modal-img" src="" alt="Flag" style="max-width:80vw;max-height:70vh;border-radius:0.5rem;box-shadow:0 2px 16px #0003;border:1px solid #ccc;background:#fff;" />
       </div>
     `;
@@ -1106,10 +1106,6 @@ function renderSaviourGrid(gameOver = false) {
       btn.style.borderColor = '#c62828';
     }
     btn.innerHTML = `<img src="${flag.img}" alt="Flag of ${flag.country}" title="${flag.country}" />`;
-    btn.onclick = () => {
-      if (!saviourActive[i] || gameOver) return;
-      showSaviourFlagModal(i);
-    };
     gridDiv.appendChild(btn);
   }
 }
@@ -1461,133 +1457,4 @@ function showSaviourGameOver() {
   renderSaviourGrid(true);
   const flag = saviourGrid[saviourHighlightIndex];
   document.getElementById('result-saviour').innerHTML = `<span style="color:#c62828;font-weight:bold;">❌ You failed to save ${flag.country} (${flag.code})</span>`;
-}
-
-// --- Saviour Flag Modal ---
-function setupSaviourFlagModal() {
-  if (!document.getElementById('saviour-flag-modal')) {
-    const modal = document.createElement('div');
-    modal.id = 'saviour-flag-modal';
-    modal.style.display = 'none';
-    modal.innerHTML = `
-      <div id="saviour-flag-modal-bg" style="position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.75);"></div>
-      <div id="saviour-flag-modal-content" style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;max-width:90vw;max-height:90vh;margin:auto;">
-        <img id="saviour-flag-modal-img" src="" alt="Flag" style="max-width:80vw;max-height:80vh;border-radius:0.5rem;box-shadow:0 2px 16px #0003;border:1px solid #ccc;background:#fff;" />
-        <div id="saviour-flag-modal-info" style="color:#fff;max-width:80vw;text-align:center;position:absolute;bottom:1em;left:50%;transform:translateX(-50%);font-size:0.9em;"></div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-    document.getElementById('saviour-flag-modal-bg').onclick = closeSaviourFlagModal;
-    document.getElementById('saviour-flag-modal-content').onclick = function(e) { e.stopPropagation(); };
-    modal.onclick = function(e) { if (e.target === modal) closeSaviourFlagModal(); };
-  }
-}
-function showSaviourFlagModal(flagIdx) {
-  const flag = saviourGrid[flagIdx];
-  // Remove any existing modal
-  let oldModal = document.getElementById('flag-modal');
-  if (oldModal) oldModal.remove();
-  // Modal HTML
-  const modal = document.createElement('div');
-  modal.id = 'flag-modal';
-  modal.innerHTML = `
-    <div id="flag-modal-bg" style="position:fixed;left:0;top:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);"></div>
-    <div id="flag-modal-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:95vw;max-height:90vh;margin:auto;">
-      <img id="flag-modal-img" src="${flag.img}" alt="Flag of ${flag.country}" style="max-width:80vw;max-height:40vh;border-radius:0.5rem;box-shadow:0 2px 16px #0003;border:1px solid #ccc;background:#fff;margin-bottom:1em;" />
-      <input id="saviour-modal-guess" type="text" placeholder="Country or code..." autocomplete="off" style="width:90%;max-width:320px;padding:0.7rem;font-size:1.1rem;border:1px solid #ddd;border-radius:0.5rem;margin-bottom:0.5em;box-sizing:border-box;" />
-      <div id="saviour-modal-autocomplete" class="autocomplete-list" style="width:90%;max-width:320px;"></div>
-      <button id="saviour-modal-submit" class="main-btn" style="width:90%;max-width:320px;">Submit</button>
-      <button id="flag-modal-close" class="back-to-menu-study" style="margin-top:0.7em;">Cancel</button>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  // Focus input
-  setTimeout(() => document.getElementById('saviour-modal-guess').focus(), 50);
-  // Close events
-  document.getElementById('flag-modal-bg').onclick = closeFlagModal;
-  document.getElementById('flag-modal-close').onclick = closeFlagModal;
-  document.getElementById('flag-modal-content').onclick = function(e) { e.stopPropagation(); };
-  // Setup autocomplete
-  setupSaviourModalAutocomplete(flagIdx);
-  // Submit event
-  document.getElementById('saviour-modal-submit').onclick = function() {
-    handleSaviourModalSubmit(flagIdx);
-  };
-  document.getElementById('saviour-modal-guess').onkeydown = function(e) {
-    if (e.key === 'Enter') handleSaviourModalSubmit(flagIdx);
-  };
-}
-
-function closeFlagModal() {
-  let modal = document.getElementById('flag-modal');
-  if (modal) modal.remove();
-}
-
-// --- Saviour Mode Autocomplete ---
-function setupSaviourModalAutocomplete(flagIdx) {
-  const input = document.getElementById('saviour-modal-guess');
-  const listDiv = document.getElementById('saviour-modal-autocomplete');
-  if (!input || !listDiv) return;
-  listDiv.innerHTML = '';
-  input.oninput = function() {
-    const val = input.value.trim().toLowerCase();
-    listDiv.innerHTML = '';
-    if (!val) return;
-    const matches = flags.filter(f =>
-      f.country.toLowerCase().includes(val) ||
-      (f.code && f.code.toLowerCase().includes(val))
-    ).slice(0, 8);
-    matches.forEach(f => {
-      const item = document.createElement('div');
-      item.className = 'autocomplete-item';
-      item.innerHTML = `<b>${f.country}</b> <span style="color:#888;font-size:0.95em;">(${f.code})</span>`;
-      item.onclick = function() {
-        input.value = f.country;
-        listDiv.innerHTML = '';
-        input.focus();
-      };
-      listDiv.appendChild(item);
-    });
-  };
-  input.onfocus = input.oninput;
-}
-
-// --- Saviour Mode Submit Handling ---
-function handleSaviourModalSubmit(flagIdx) {
-  const input = document.getElementById('saviour-modal-guess');
-  if (!input) return;
-  const val = input.value.trim().toLowerCase();
-  const flag = saviourGrid[flagIdx];
-  if (
-    val === flag.country.toLowerCase() ||
-    (flag.code && val === flag.code.toLowerCase())
-  ) {
-    // Eliminate this country as an action
-    closeFlagModal();
-    eliminateSaviourFlag(flagIdx);
-  } else {
-    input.style.borderColor = '#c62828';
-    input.style.background = '#ffeaea';
-    setTimeout(() => {
-      input.style.borderColor = '#ddd';
-      input.style.background = '';
-    }, 900);
-  }
-}
-
-function eliminateSaviourFlag(flagIdx) {
-  if (!saviourActive[flagIdx] || saviourGameOver) return;
-  saveSaviourActionState('Manual Eliminate');
-  let eliminatedSaviour = false;
-  saviourActive[flagIdx] = false;
-  if (flagIdx === saviourHighlightIndex) eliminatedSaviour = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
 }
