@@ -63,6 +63,83 @@ let saviourActionPointer = -1;
 let saviourUsedActions = [];
 let saviourGameOver = false;
 
+// --- Saviour Mode Undo/Redo Implementation ---
+function saveSaviourActionState(actionName) {
+  // Save a deep copy of the current state for undo/redo
+  saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
+  saviourActionHistory.push({
+    saviourActive: JSON.parse(JSON.stringify(saviourActive)),
+    saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
+    saviourScore,
+    saviourGameOver,
+    actionName,
+    grid: JSON.parse(JSON.stringify(saviourGrid)),
+    highlight: saviourHighlightIndex,
+    streak: saviourStreak,
+    total: saviourTotal,
+    longestStreak: saviourLongestStreak
+  });
+  saviourActionPointer = saviourActionHistory.length - 1;
+  renderSaviourUndoRedo();
+}
+
+function undoSaviourAction() {
+  if (saviourActionPointer <= 0) return;
+  saviourActionPointer--;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
+}
+
+function redoSaviourAction() {
+  if (saviourActionPointer >= saviourActionHistory.length - 1) return;
+  saviourActionPointer++;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
+}
+
+function restoreSaviourActionState(state) {
+  saviourActive = JSON.parse(JSON.stringify(state.saviourActive));
+  saviourUsedActions = JSON.parse(JSON.stringify(state.saviourUsedActions));
+  saviourScore = state.saviourScore;
+  saviourGameOver = state.saviourGameOver;
+  saviourGrid = JSON.parse(JSON.stringify(state.grid));
+  saviourHighlightIndex = state.highlight;
+  saviourStreak = state.streak;
+  saviourTotal = state.total;
+  saviourLongestStreak = state.longestStreak;
+  renderSaviourGrid(saviourGameOver);
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
+  renderSaviourUndoRedo();
+  if (saviourGameOver) showSaviourGameOver();
+  else document.getElementById('result-saviour').innerHTML = '';
+}
+
+function renderSaviourUndoRedo() {
+  const gridDiv = document.getElementById('saviour-grid');
+  let undoRedoDiv = document.getElementById('saviour-undo-redo');
+  if (!undoRedoDiv) {
+    undoRedoDiv = document.createElement('div');
+    undoRedoDiv.id = 'saviour-undo-redo';
+    undoRedoDiv.style.display = 'flex';
+    undoRedoDiv.style.justifyContent = 'center';
+    undoRedoDiv.style.gap = '0.7em';
+    undoRedoDiv.style.marginBottom = '0.7em';
+    gridDiv.parentNode.insertBefore(undoRedoDiv, gridDiv);
+  }
+  undoRedoDiv.innerHTML = '';
+  const undoBtn = document.createElement('button');
+  undoBtn.className = 'main-btn saviour-btn';
+  undoBtn.textContent = 'Undo';
+  undoBtn.disabled = saviourActionPointer <= 0;
+  undoBtn.onclick = undoSaviourAction;
+  const redoBtn = document.createElement('button');
+  redoBtn.className = 'main-btn saviour-btn';
+  redoBtn.textContent = 'Redo';
+  redoBtn.disabled = saviourActionPointer >= saviourActionHistory.length - 1;
+  redoBtn.onclick = redoSaviourAction;
+  undoRedoDiv.appendChild(undoBtn);
+  undoRedoDiv.appendChild(redoBtn);
+}
+
 function loadHighScores() {
   entryHighScore = parseFloat(localStorage.getItem('flagellum_entry_highscore')) || 0;
   entryHighTotal = parseInt(localStorage.getItem('flagellum_entry_hightotal')) || 0;
@@ -1080,23 +1157,27 @@ function gammaBurstAction() {
 }
 
 function saveSaviourActionState(actionName) {
-  // Save a deep copy of the current state for undo
+  // Save a deep copy of the current state for undo/redo
   saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
   saviourActionHistory.push({
-    saviourActive: [...saviourActive],
-    saviourUsedActions: [...saviourUsedActions],
+    saviourActive: JSON.parse(JSON.stringify(saviourActive)),
+    saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
     saviourScore,
-    actionName,
     saviourGameOver,
+    actionName,
+    grid: JSON.parse(JSON.stringify(saviourGrid)),
+    highlight: saviourHighlightIndex,
+    streak: saviourStreak,
+    total: saviourTotal,
+    longestStreak: saviourLongestStreak
   });
-  saviourActionPointer++;
+  saviourActionPointer = saviourActionHistory.length - 1;
+  renderSaviourUndoRedo();
 }
 
 function undoSaviourAction() {
-  console.log('Undo clicked. Pointer before:', saviourActionPointer);
   if (saviourActionPointer <= 0) return;
   saviourActionPointer--;
-  console.log('Undo: restoring pointer to', saviourActionPointer);
   restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
 }
 
@@ -1107,15 +1188,19 @@ function redoSaviourAction() {
 }
 
 function restoreSaviourActionState(state) {
-  console.log('Restoring state:', state);
-  saviourActive = [...state.saviourActive];
-  saviourUsedActions = [...state.saviourUsedActions];
+  saviourActive = JSON.parse(JSON.stringify(state.saviourActive));
+  saviourUsedActions = JSON.parse(JSON.stringify(state.saviourUsedActions));
   saviourScore = state.saviourScore;
   saviourGameOver = state.saviourGameOver;
+  saviourGrid = JSON.parse(JSON.stringify(state.grid));
+  saviourHighlightIndex = state.highlight;
+  saviourStreak = state.streak;
+  saviourTotal = state.total;
+  saviourLongestStreak = state.longestStreak;
   renderSaviourGrid(saviourGameOver);
   updateSaviourScoreDisplays();
   renderSaviourActions();
-  renderSaviourUndoRedo(); // Ensure undo/redo buttons update
+  renderSaviourUndoRedo();
   if (saviourGameOver) showSaviourGameOver();
   else document.getElementById('result-saviour').innerHTML = '';
 }
