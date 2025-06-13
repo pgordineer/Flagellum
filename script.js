@@ -971,15 +971,22 @@ function setupSaviourGrid() {
   let shuffled = [...flags].sort(() => Math.random() - 0.5);
   saviourGrid = shuffled.slice(0, 25);
   saviourActive = Array(25).fill(true);
+  renderSaviourGrid();
+}
+
+function renderSaviourGrid() {
   const gridDiv = document.getElementById('saviour-grid');
   gridDiv.innerHTML = '';
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < saviourGrid.length; i++) {
     const flag = saviourGrid[i];
     const btn = document.createElement('button');
     btn.className = 'saviour-flag-btn' + (i === saviourHighlightIndex ? ' saviour-highlight' : '');
     btn.disabled = !saviourActive[i];
+    if (!saviourActive[i]) {
+      btn.style.filter = 'grayscale(1)';
+      btn.style.opacity = '0.5';
+    }
     btn.innerHTML = `<img src="${flag.img}" alt="Flag of ${flag.country}" title="${flag.country}" />`;
-    btn.onclick = () => {};
     gridDiv.appendChild(btn);
   }
 }
@@ -991,7 +998,23 @@ function setupSaviourActions() {
     const btn = document.createElement('button');
     btn.className = 'saviour-action-btn';
     btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
-    btn.onclick = () => { /* Placeholder for action logic */ };
+    if (action.name === 'Gamma Burst') {
+      btn.onclick = gammaBurstAction;
+    } else {
+      btn.onclick = () => { /* Placeholder for other actions */ };
+    }
     actionsDiv.appendChild(btn);
   });
+}
+
+function gammaBurstAction() {
+  // Eliminate (gray out) all countries with nuclear arms in the saviour grid
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].nuclear_arms) {
+      saviourActive[i] = false;
+    }
+  }
+  renderSaviourGrid();
+  saviourScore++;
+  updateSaviourScoreDisplays();
 }
