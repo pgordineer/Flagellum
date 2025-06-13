@@ -81,7 +81,7 @@ function saveSaviourActionState(actionName) {
     total: saviourTotal,
     longestStreak: saviourLongestStreak
   });
-  saviourActionPointer++;
+  saviourActionPointer = saviourActionHistory.length - 1;
   renderSaviourUndoRedo();
 }
 
@@ -1060,8 +1060,8 @@ function setupSaviourGrid() {
   saviourScore = 0;
   saviourGameOver = false;
   saviourActionHistory = [];
+  saviourActionPointer = -1;
   saveSaviourActionState('Start');
-  saviourActionPointer = 0;
   renderSaviourGrid();
 }
 
@@ -1175,7 +1175,7 @@ function saveSaviourActionState(actionName) {
     total: saviourTotal,
     longestStreak: saviourLongestStreak
   });
-  saviourActionPointer++;
+  saviourActionPointer = saviourActionHistory.length - 1;
   renderSaviourUndoRedo();
 }
 
