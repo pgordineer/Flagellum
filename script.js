@@ -349,12 +349,31 @@ function showStudyPage() {
 
 function renderStudyTable(sortKey, sortDir = 'asc') {
   let sorted = [...flags];
+  // Determine if the column is numeric
+  const numericCols = ['gdp', 'area', 'coastline_km', 'min_lat', 'max_lat', 'min_lng', 'max_lng'];
   sorted.sort((a, b) => {
-    let vA = a[sortKey] ? a[sortKey].toString().toLowerCase() : '';
-    let vB = b[sortKey] ? b[sortKey].toString().toLowerCase() : '';
-    if (vA < vB) return sortDir === 'asc' ? -1 : 1;
-    if (vA > vB) return sortDir === 'asc' ? 1 : -1;
-    return 0;
+    let vA = a[sortKey];
+    let vB = b[sortKey];
+    if (numericCols.includes(sortKey)) {
+      vA = vA !== undefined && vA !== null ? Number(vA) : -Infinity;
+      vB = vB !== undefined && vB !== null ? Number(vB) : -Infinity;
+      if (vA < vB) return sortDir === 'asc' ? -1 : 1;
+      if (vA > vB) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    } else if (sortKey === 'nuclear_arms') {
+      // Sort 'Yes' before 'No' in ascending
+      vA = a.nuclear_arms ? 1 : 0;
+      vB = b.nuclear_arms ? 1 : 0;
+      if (vA < vB) return sortDir === 'asc' ? 1 : -1;
+      if (vA > vB) return sortDir === 'asc' ? -1 : 1;
+      return 0;
+    } else {
+      vA = vA ? vA.toString().toLowerCase() : '';
+      vB = vB ? vB.toString().toLowerCase() : '';
+      if (vA < vB) return sortDir === 'asc' ? -1 : 1;
+      if (vA > vB) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    }
   });
   const tbody = document.getElementById('study-tbody');
   tbody.innerHTML = '';
@@ -386,13 +405,6 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
     };
   });
   addFlagClickHandlers(); // Ensure click handler is always set after DOM update
-  // Scroll table to show new columns by default
-  const studyDiv = document.querySelector('#study-page > div[style*="overflow-x:auto"]');
-  if (studyDiv) {
-    studyDiv.scrollLeft = studyDiv.scrollWidth; // scroll to rightmost
-    // Optionally, scroll to a specific column (e.g., GDP) if desired
-    // studyDiv.scrollLeft = studyDiv.scrollWidth * 0.45;
-  }
 }
 
 function pickRandomFlag() {

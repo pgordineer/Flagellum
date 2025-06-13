@@ -22,7 +22,8 @@
     <div id="study-page" style="display:none; max-width:100vw;">
       <button id="back-to-menu-study-top" class="back-to-menu-study" style="margin-bottom:1rem;">Back to Menu</button>
       <h2 style="text-align:center;">Study All Flags</h2>
-      <div style="overflow-x:auto;">
+      <div id="study-scroll-top" style="overflow-x:auto;"></div>
+      <div style="overflow-x:auto;" id="study-scroll-bottom">
         <table id="study-table" class="study-table">
           <thead>
             <tr>
@@ -116,5 +117,32 @@
     </footer>
   </div>
   <script src="script.js"></script>
+  <script>
+  // Sync top and bottom scrollbars for study table
+  (function() {
+    function syncScroll(e1, e2) {
+      e1.scrollLeft = e2.scrollLeft;
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      var table = document.getElementById('study-table');
+      var topDiv = document.getElementById('study-scroll-top');
+      var bottomDiv = document.getElementById('study-scroll-bottom');
+      if (table && topDiv && bottomDiv) {
+        // Clone table for top scrollbar only
+        var topTable = table.cloneNode(false);
+        topTable.style.visibility = 'hidden';
+        topTable.style.pointerEvents = 'none';
+        topTable.style.height = '1px';
+        topTable.style.margin = '0';
+        topTable.style.padding = '0';
+        topTable.style.border = 'none';
+        topDiv.appendChild(topTable);
+        // Sync scroll
+        topDiv.onscroll = function() { syncScroll(bottomDiv, topDiv); };
+        bottomDiv.onscroll = function() { syncScroll(topDiv, bottomDiv); };
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
