@@ -148,8 +148,12 @@ function loadHighScores() {
   rcHighScore = parseFloat(localStorage.getItem('flagellum_rc_highscore')) || 0;
   rcHighTotal = parseInt(localStorage.getItem('flagellum_rc_hightotal')) || 0;
   rcLongestStreak = parseInt(localStorage.getItem('flagellum_rc_longeststreak')) || 0;
+  saviourHighScore = parseInt(localStorage.getItem('flagellum_saviour_highscore')) || 0;
+  saviourHighTotal = parseInt(localStorage.getItem('flagellum_saviour_hightotal')) || 0;
+  saviourLongestStreak = parseInt(localStorage.getItem('flagellum_saviour_longeststreak')) || 0;
 }
 
+// Update: Saviour mode high score is lowest number of actions (minimum, not maximum)
 function saveHighScores() {
   // Entry mode
   if (
@@ -194,10 +198,10 @@ function saveHighScores() {
     rcLongestStreak = rcStreak;
     localStorage.setItem('flagellum_rc_longeststreak', rcLongestStreak);
   }
-  // Saviour mode
+  // Saviour mode (lower is better, but must be >0)
   if (
-    saviourScore > saviourHighScore ||
-    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal)
+    (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
+    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourScore > 0)
   ) {
     localStorage.setItem('flagellum_saviour_highscore', saviourScore);
     localStorage.setItem('flagellum_saviour_hightotal', saviourTotal);
@@ -246,10 +250,10 @@ function updateScoreDisplays() {
   document.getElementById('highscore-rc').innerHTML = rcHS + nhsRC;
   // Saviour mode
   document.getElementById('score-saviour').innerHTML = `Actions: ${saviourScore} of ${saviourTotal}<br>Streak: ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
-  let savHS = `High Score: ${saviourHighScore} of ${saviourHighTotal}`;
+  let savHS = `High Score: ${saviourHighScore > 0 ? saviourHighScore : '-'} of ${saviourHighTotal}`;
   let nhsSaviour = '';
   if (
-    saviourScore > saviourHighScore ||
+    (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
     (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourHighScore > 0)
   ) {
     nhsSaviour = '<div class="new-highscore">New High Score!</div>';
@@ -280,7 +284,7 @@ function updateMainMenuHighscores() {
     `<div class="main-highscore-row">Entry Mode: <b>${formatScore(entryHighScore)} of ${entryHighTotal}</b> <span class="score-streak">Longest Streak: ${entryLongestStreak}</span></div>` +
     `<div class="main-highscore-row">Multiple Choice: <b>${formatScore(mcHighScore)} of ${mcHighTotal}</b> <span class="score-streak">Longest Streak: ${mcLongestStreak}</span></div>` +
     `<div class="main-highscore-row">Reverse Choice: <b>${formatScore(rcHighScore)} of ${rcHighTotal}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak}</span></div>` +
-    `<div class="main-highscore-row">Saviour Mode: <b>${formatScore(saviourHighScore)} of ${saviourHighTotal}</b> <span class="score-streak">Longest Streak: ${saviourLongestStreak}</span></div>`;
+    `<div class="main-highscore-row">Saviour Mode: <b>${saviourHighScore > 0 ? saviourHighScore : '-' } of ${saviourHighTotal}</b> <span class="score-streak">Longest Streak: ${saviourLongestStreak}</span></div>`;
 }
 
 function showMainMenu() {
@@ -1067,10 +1071,10 @@ function showSaviourMode() {
 function updateSaviourScoreDisplays() {
   document.getElementById('score-saviour').innerHTML = `<span style="color:#0078d7;font-weight:500;">Actions Used:</span> ${saviourScore}`;
   document.getElementById('streak-saviour').innerHTML = `<span style="color:#0078d7;font-weight:500;">Streak:</span> ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
-  let savHS = `<span style="color:#0078d7;font-weight:500;">High Score:</span> ${saviourHighScore}`;
+  let savHS = `<span style="color:#0078d7;font-weight:500;">High Score:</span> ${saviourHighScore > 0 ? saviourHighScore : '-'}`;
   let nhs = '';
   if (
-    saviourScore > saviourHighScore ||
+    (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
     (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourHighScore > 0)
   ) {
     nhs = '<div class="new-highscore">New High Score!</div>';
@@ -1106,11 +1110,10 @@ function renderSaviourGrid(gameOver = false) {
   // Win detection: only the highlighted flag remains
   if (activeCount === 1 && lastActiveIdx === saviourHighlightIndex && !gameOver) {
     saviourGameOver = true;
-    // --- NEW: Save high score on win ---
+    // --- Update: Save high score on win (lower is better) ---
     if (
-      saviourScore > saviourHighScore ||
-      (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal) ||
-      saviourHighScore === 0
+      (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
+      (saviourScore === saviourHighScore && saviourGrid.length < saviourHighTotal && saviourHighScore > 0)
     ) {
       saviourHighScore = saviourScore;
       saviourHighTotal = saviourGrid.length;
