@@ -1144,7 +1144,7 @@ function showSaviourFlagEntryModal(idx) {
         <input type="text" id="saviour-flag-entry-input" placeholder="Enter country or code..." autocomplete="off" style="width:100%;padding:0.7rem;font-size:1.1rem;border:1px solid #ddd;border-radius:0.5rem;margin-bottom:0.5rem;box-sizing:border-box;" />
         <div id="saviour-flag-entry-autocomplete" class="autocomplete-list" style="display:none;"></div>
         <button id="saviour-flag-entry-submit" style="width:100%;padding:0.7rem;font-size:1.1rem;border:none;border-radius:0.5rem;background:#0078d7;color:#fff;margin-bottom:0.5rem;cursor:pointer;">Submit</button>
-        <div id="saviour-flag-entry-result" style="min-height:1.5em;text-align:center;margin-bottom:0.5em;"></div>
+        <div id="saviour-flag-entry-result" style="min-height:1.5em;text-align:center;margin-bottom:0.5rem;"></div>
       </div>
     </div>
   `;
@@ -1534,3 +1534,58 @@ function babyBoomerAction(idx) {
   // Placeholder for future implementation
   alert('Baby Boomer action is not yet implemented.');
 }
+
+function setupSaviourActions() {
+  renderSaviourActions();
+  renderSaviourUndoRedo();
+  setTimeout(() => {
+    const infoBtn = document.getElementById('saviour-info-btn');
+    if (infoBtn) infoBtn.onclick = showSaviourInfoPopout;
+  }, 0);
+}
+
+function showSaviourInfoPopout() {
+  // Remove if already present
+  let existing = document.getElementById('saviour-info-popout');
+  if (existing) existing.remove();
+  // Create popout
+  const pop = document.createElement('div');
+  pop.id = 'saviour-info-popout';
+  pop.style.position = 'fixed';
+  pop.style.zIndex = '2000';
+  pop.style.left = '0';
+  pop.style.top = '0';
+  pop.style.width = '100vw';
+  pop.style.height = '100vh';
+  pop.style.background = 'rgba(0,0,0,0.45)';
+  pop.style.display = 'flex';
+  pop.style.alignItems = 'center';
+  pop.style.justifyContent = 'center';
+  pop.innerHTML = `
+    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;">
+      <button id="saviour-info-close" style="position:absolute;top:0.5em;right:0.7em;font-size:1.5em;background:none;border:none;cursor:pointer;">&times;</button>
+      <h3 style="margin-top:0;text-align:center;font-size:1.2em;">Saviour Actions</h3>
+      <div style="display:grid;grid-template-columns:1.5em 1fr;gap:0.5em 0.7em;align-items:center;">
+        ${SAVIOUR_ACTION_DESCRIPTIONS.map(a => `<span>${a.icon}</span><span><b>${a.name}:</b> ${a.desc}</span>`).join('')}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(pop);
+  document.getElementById('saviour-info-close').onclick = () => pop.remove();
+  pop.onclick = e => { if (e.target === pop) pop.remove(); };
+}
+
+// Patch showSaviourMode to call setupSaviourActions
+const _origShowSaviourMode = showSaviourMode;
+showSaviourMode = function() {
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('game-entry').style.display = 'none';
+  document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('game-rc').style.display = 'none';
+  document.getElementById('study-page').style.display = 'none';
+  document.getElementById('game-saviour').style.display = 'flex';
+  saviourStreak = 0;
+  updateSaviourScoreDisplays();
+  setupSaviourGrid();
+  setupSaviourActions();
+};
