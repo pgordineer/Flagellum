@@ -69,7 +69,6 @@ function saveSaviourActionState(actionName) {
   if (saviourActionPointer < saviourActionHistory.length - 1) {
     saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
   }
-  // Push new state and move pointer to it
   saviourActionHistory.push({
     saviourActive: JSON.parse(JSON.stringify(saviourActive)),
     saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
@@ -87,17 +86,15 @@ function saveSaviourActionState(actionName) {
 }
 
 function undoSaviourAction() {
-  if (saviourActionPointer > 0) {
-    saviourActionPointer--;
-    restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
-  }
+  if (saviourActionPointer <= 0) return;
+  saviourActionPointer--;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
 }
 
 function redoSaviourAction() {
-  if (saviourActionPointer < saviourActionHistory.length - 1) {
-    saviourActionPointer++;
-    restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
-  }
+  if (saviourActionPointer >= saviourActionHistory.length - 1) return;
+  saviourActionPointer++;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
 }
 
 function restoreSaviourActionState(state) {
@@ -1063,8 +1060,8 @@ function setupSaviourGrid() {
   saviourScore = 0;
   saviourGameOver = false;
   saviourActionHistory = [];
+  saviourActionPointer = -1;
   saveSaviourActionState('Start');
-  saviourActionPointer = 0;
   renderSaviourGrid();
 }
 
@@ -1138,340 +1135,82 @@ function renderSaviourUndoRedo() {
   undoRedoDiv.appendChild(redoBtn);
 }
 
-function loadHighScores() {
-  entryHighScore = parseFloat(localStorage.getItem('flagellum_entry_highscore')) || 0;
-  entryHighTotal = parseInt(localStorage.getItem('flagellum_entry_hightotal')) || 0;
-  entryLongestStreak = parseInt(localStorage.getItem('flagellum_entry_longeststreak')) || 0;
-  mcHighScore = parseFloat(localStorage.getItem('flagellum_mc_highscore')) || 0;
-  mcHighTotal = parseInt(localStorage.getItem('flagellum_mc_hightotal')) || 0;
-  mcLongestStreak = parseInt(localStorage.getItem('flagellum_mc_longeststreak')) || 0;
-  rcHighScore = parseFloat(localStorage.getItem('flagellum_rc_highscore')) || 0;
-  rcHighTotal = parseInt(localStorage.getItem('flagellum_rc_hightotal')) || 0;
-  rcLongestStreak = parseInt(localStorage.getItem('flagellum_rc_longeststreak')) || 0;
-}
-
-function saveHighScores() {
-  // Entry mode
-  if (
-    entryScore > entryHighScore ||
-    (entryScore === entryHighScore && entryTotal < entryHighTotal)
-  ) {
-    // Only update if this is a better score (higher score, or same score but fewer total)
-    localStorage.setItem('flagellum_entry_highscore', entryScore);
-    localStorage.setItem('flagellum_entry_hightotal', entryTotal);
-    entryHighScore = entryScore;
-    entryHighTotal = entryTotal;
-  }
-  if (entryStreak > entryLongestStreak) {
-    entryLongestStreak = entryStreak;
-    localStorage.setItem('flagellum_entry_longeststreak', entryLongestStreak);
-  }
-  // MC mode
-  if (
-    mcScore > mcHighScore ||
-    (mcScore === mcHighScore && mcTotal < mcHighTotal)
-  ) {
-    localStorage.setItem('flagellum_mc_highscore', mcScore);
-    localStorage.setItem('flagellum_mc_hightotal', mcTotal);
-    mcHighScore = mcScore;
-    mcHighTotal = mcTotal;
-  }
-  if (mcStreak > mcLongestStreak) {
-    mcLongestStreak = mcStreak;
-    localStorage.setItem('flagellum_mc_longeststreak', mcLongestStreak);
-  }
-  // Reverse Choice mode
-  if (
-    rcScore > rcHighScore ||
-    (rcScore === rcHighScore && rcTotal < rcHighTotal)
-  ) {
-    localStorage.setItem('flagellum_rc_highscore', rcScore);
-    localStorage.setItem('flagellum_rc_hightotal', rcTotal);
-    rcHighScore = rcScore;
-    rcHighTotal = rcTotal;
-  }
-  if (rcStreak > rcLongestStreak) {
-    rcLongestStreak = rcStreak;
-    localStorage.setItem('flagellum_rc_longeststreak', rcLongestStreak);
-  }
-  // Saviour mode
-  if (
-    saviourScore > saviourHighScore ||
-    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal)
-  ) {
-    localStorage.setItem('flagellum_saviour_highscore', saviourScore);
-    localStorage.setItem('flagellum_saviour_hightotal', saviourTotal);
-    saviourHighScore = saviourScore;
-    saviourHighTotal = saviourTotal;
-  }
-  if (saviourStreak > saviourLongestStreak) {
-    saviourLongestStreak = saviourStreak;
-    localStorage.setItem('flagellum_saviour_longeststreak', saviourLongestStreak);
-  }
-}
-
-function updateScoreDisplays() {
-  // Entry mode
-  document.getElementById('score-entry').innerHTML = `Score: ${formatScore(entryScore)} of ${entryTotal}<br>Streak: ${entryStreak} <span class="score-streak">(Longest: ${entryLongestStreak})</span>`;
-  let entryHS = `High Score: ${formatScore(entryHighScore)} of ${entryHighTotal}`;
-  let nhs = '';
-  if (
-    entryScore > entryHighScore ||
-    (entryScore === entryHighScore && entryTotal < entryHighTotal && entryHighScore > 0)
-  ) {
-    nhs = '<div class="new-highscore">New High Score!</div>';
-  }
-  document.getElementById('highscore-entry').innerHTML = entryHS + nhs;
-  // MC mode
-  document.getElementById('score-mc').innerHTML = `Score: ${formatScore(mcScore)} of ${mcTotal}<br>Streak: ${mcStreak} <span class="score-streak">(Longest: ${mcLongestStreak})</span>`;
-  let mcHS = `High Score: ${formatScore(mcHighScore)} of ${mcHighTotal}`;
-  let nhsMC = '';
-  if (
-    mcScore > mcHighScore ||
-    (mcScore === mcHighScore && mcTotal < mcHighTotal && mcHighScore > 0)
-  ) {
-    nhsMC = '<div class="new-highscore">New High Score!</div>';
-  }
-  document.getElementById('highscore-mc').innerHTML = mcHS + nhsMC;
-  // Reverse Choice mode
-  document.getElementById('score-rc').innerHTML = `Score: ${formatScore(rcScore)} of ${rcTotal}<br>Streak: ${rcStreak} <span class="score-streak">(Longest: ${rcLongestStreak})</span>`;
-  let rcHS = `High Score: ${formatScore(rcHighScore)} of ${rcHighTotal}`;
-  let nhsRC = '';
-  if (
-    rcScore > rcHighScore ||
-    (rcScore === rcHighScore && rcTotal < rcHighTotal && rcHighScore > 0)
-  ) {
-    nhsRC = '<div class="new-highscore">New High Score!</div>';
-  }
-  document.getElementById('highscore-rc').innerHTML = rcHS + nhsRC;
-  // Saviour mode
-  document.getElementById('score-saviour').innerHTML = `Actions: ${saviourScore} of ${saviourTotal}<br>Streak: ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
-  let savHS = `High Score: ${saviourHighScore} of ${saviourHighTotal}`;
-  let nhsSaviour = '';
-  if (
-    saviourScore > saviourHighScore ||
-    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourHighScore > 0)
-  ) {
-    nhsSaviour = '<div class="new-highscore">New High Score!</div>';
-  }
-  document.getElementById('highscore-saviour').innerHTML = savHS + nhsSaviour;
-}
-
-function formatScore(score) {
-  // Show as integer if whole, else as fraction (e.g. 1 2/3)
-  if (Number.isInteger(score)) return score === 0 ? '0' : score;
-  let intPart = Math.floor(score);
-  let frac = score - intPart;
-  let fracStr = '';
-  // Use normal font size for fractions
-  if (Math.abs(frac - 2/3) < 0.01) fracStr = '2/3';
-  else if (Math.abs(frac - 1/3) < 0.01) fracStr = '1/3';
-  else if (Math.abs(frac - 0.5) < 0.01) fracStr = '1/2';
-  else fracStr = score.toFixed(2);
-  if (intPart === 0 && fracStr) return fracStr;
-  if (fracStr && intPart > 0) return `${intPart} ${fracStr}`;
-  return score.toFixed(2);
-}
-
-function updateMainMenuHighscores() {
-  const mainHigh = document.getElementById('main-highscores');
-  mainHigh.innerHTML =
-    `<h2>Personal High Scores</h2>` +
-    `<div class="main-highscore-row">Entry Mode: <b>${formatScore(entryHighScore)} of ${entryHighTotal}</b> <span class="score-streak">Longest Streak: ${entryLongestStreak}</span></div>` +
-    `<div class="main-highscore-row">Multiple Choice: <b>${formatScore(mcHighScore)} of ${mcHighTotal}</b> <span class="score-streak">Longest Streak: ${mcLongestStreak}</span></div>` +
-    `<div class="main-highscore-row">Reverse Choice: <b>${formatScore(rcHighScore)} of ${rcHighTotal}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak}</span></div>` +
-    `<div class="main-highscore-row">Saviour Mode: <b>${formatScore(saviourHighScore)} of ${saviourHighTotal}</b> <span class="score-streak">Longest Streak: ${saviourLongestStreak}</span></div>`;
-}
-
-function showMainMenu() {
-  updateMainMenuHighscores();
-  document.getElementById('main-menu').style.display = 'flex';
-  document.getElementById('game-entry').style.display = 'none';
-  document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('game-rc').style.display = 'none';
-  document.getElementById('study-page').style.display = 'none';
-  document.getElementById('congrats').style.display = 'none';
-  document.getElementById('game-saviour').style.display = 'none'; // Hide Saviour mode when returning to menu
-}
-
-function showEntryMode() {
-  document.getElementById('main-menu').style.display = 'none';
-  document.getElementById('game-entry').style.display = 'block';
-  document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('game-rc').style.display = 'none';
-  usedHint = false;
-  entryStreak = 0;
-  updateScoreDisplays();
-  pickRandomFlag();
-  document.getElementById('guess').focus();
-  setupAutocomplete();
-  addFlagClickHandlers();
-}
-
-function showMCMode() {
-  document.getElementById('main-menu').style.display = 'none';
-  document.getElementById('game-entry').style.display = 'none';
-  document.getElementById('game-mc').style.display = 'block';
-  document.getElementById('game-rc').style.display = 'none';
-  mcAttempts = 0;
-  mcTried = [];
-  mcStreak = 0;
-  updateScoreDisplays();
-  pickRandomFlagMC();
-  addFlagClickHandlers();
-}
-
-function showRCMode() {
-  document.getElementById('main-menu').style.display = 'none';
-  document.getElementById('game-entry').style.display = 'none';
-  document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('game-rc').style.display = 'block';
-  rcAttempts = 0;
-  rcTried = [];
-  rcStreak = 0;
-  updateScoreDisplays();
-  pickRandomFlagRC();
-  addFlagClickHandlers();
-}
-
-function showStudyPage() {
-  document.getElementById('main-menu').style.display = 'none';
-  document.getElementById('game-entry').style.display = 'none';
-  document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('study-page').style.display = 'block';
-  renderStudyTable('country');
-  addFlagClickHandlers();
-}
-
-function renderStudyTable(sortKey, sortDir = 'asc') {
-  let sorted = [...flags];
-  sorted.sort((a, b) => {
-    let vA = a[sortKey] ? a[sortKey].toString().toLowerCase() : '';
-    let vB = b[sortKey] ? b[sortKey].toString().toLowerCase() : '';
-    if (vA < vB) return sortDir === 'asc' ? -1 : 1;
-    if (vA > vB) return sortDir === 'asc' ? 1 : -1;
-    return 0;
-  });
-  const tbody = document.getElementById('study-tbody');
-  tbody.innerHTML = '';
-  for (const flag of sorted) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${flag.country}</td>
-      <td>${flag.code}</td>
-      <td style="font-size:1.5em;">${flag.emoji}</td>
-      <td><a href="https://en.wikipedia.org/wiki/${flag.wiki}" target="_blank">Wiki</a></td>
-      <td><img src="${flag.img}" alt="Flag of ${flag.country}" /></td>
-    `;
-    tbody.appendChild(tr);
-  }
-  // Set up sorting buttons
-  const ths = document.querySelectorAll('.sort-btn');
-  ths.forEach(btn => {
-    btn.onclick = () => {
-      let newDir = sortKey === btn.dataset.sort && sortDir === 'asc' ? 'desc' : 'asc';
-      renderStudyTable(btn.dataset.sort, newDir);
-    };
-  });
-  addFlagClickHandlers(); // Ensure click handler is always set after DOM update
-}
-
-function pickRandomFlag() {
-  if (!flags.length) return;
-  currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  const isMobile = window.innerWidth < 700;
-  document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
-  document.getElementById('guess').value = '';
-  document.getElementById('result').textContent = '';
-  document.getElementById('wiki-link').innerHTML = '';
-  document.getElementById('submit').textContent = 'Guess';
-  document.getElementById('submit').disabled = false;
-  document.getElementById('guess').disabled = false;
-  document.getElementById('hint').style.display = 'block';
-  document.getElementById('hint').textContent = 'Hint';
-  document.getElementById('hint').disabled = false;
-  document.getElementById('skip').style.display = 'inline-block';
-  document.getElementById('hint-text').textContent = '';
-  document.getElementById('submit').onclick = checkGuess;
-  addFlagClickHandlers(); // Ensure click handler is always set after DOM update
-}
-
-function showHint() {
-  usedHint = true;
-  document.getElementById('hint').textContent = `Country code: ${currentFlag.code}`;
-  document.getElementById('hint').disabled = true;
-  document.getElementById('hint').style.display = 'block';
-  document.getElementById('hint-text').textContent = '';
-}
-
-function checkGuess() {
-  const guess = document.getElementById('guess').value.trim().toLowerCase();
-  const answer = currentFlag.country.toLowerCase();
-  const code = currentFlag.code.toLowerCase();
-  if (guess === answer || guess === code) {
-    let addScore = usedHint ? 0.5 : 1;
-    entryScore += addScore;
-    entryTotal++;
-    // Streak logic
-    if (!usedHint && addScore === 1) {
-      entryStreak++;
-      if (entryStreak > entryLongestStreak) entryLongestStreak = entryStreak;
-    } else {
-      entryStreak = 0;
+function gammaBurstAction() {
+  if (saviourUsedActions[3] || saviourGameOver) return;
+  // Save state for undo
+  saveSaviourActionState('Gamma Burst');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].nuclear_arms) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
-    updateScoreDisplays();
-    saveHighScores();
-    const pointStr = addScore === 1 ? '1 Point!' : (addScore === 0.5 ? '1/2 Point!' : `${addScore} Point!`);
-    document.getElementById('result').innerHTML = `✅ Correct! <span class='fraction'>${pointStr}</span> ${currentFlag.country} (${currentFlag.code})`;
-    document.getElementById('result').style.color = '#2e7d32';
-    document.getElementById('wiki-link').innerHTML = `<a href="https://en.wikipedia.org/wiki/${currentFlag.wiki}" target="_blank">Learn more on Wikipedia</a>`;
-    document.getElementById('submit').textContent = 'Next Flag';
-    document.getElementById('guess').disabled = true;
-    document.getElementById('submit').onclick = function() {
-      usedHint = false;
-      pickRandomFlag();
-      document.getElementById('guess').focus();
-    };
-    document.getElementById('hint').style.display = 'none';
-    document.getElementById('skip').style.display = 'none';
-    document.getElementById('hint-text').textContent = '';
+  }
+  saviourUsedActions[3] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
   } else {
-    entryStreak = 0;
-    document.getElementById('result').textContent = '❌ Try again!';
-    document.getElementById('result').style.color = '#c62828';
-    document.getElementById('hint').style.display = 'block';
-    document.getElementById('hint').textContent = 'Hint';
-    document.getElementById('hint').disabled = false;
-    document.getElementById('skip').style.display = 'inline-block';
-    document.getElementById('hint-text').textContent = '';
-    document.getElementById('submit').onclick = checkGuess;
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
   }
 }
 
-function skipEntryFlag() {
-  entryTotal++;
-  entryStreak = 0;
-  updateScoreDisplays();
-  saveHighScores();
-  pickRandomFlag();
-  document.getElementById('guess').focus();
+function saveSaviourActionState(actionName) {
+  // If we are not at the end, slice off redo history
+  if (saviourActionPointer < saviourActionHistory.length - 1) {
+    saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
+  }
+  saviourActionHistory.push({
+    saviourActive: JSON.parse(JSON.stringify(saviourActive)),
+    saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
+    saviourScore,
+    saviourGameOver,
+    actionName,
+    grid: JSON.parse(JSON.stringify(saviourGrid)),
+    highlight: saviourHighlightIndex,
+    streak: saviourStreak,
+    total: saviourTotal,
+    longestStreak: saviourLongestStreak
+  });
+  saviourActionPointer = saviourActionHistory.length - 1;
+  renderSaviourUndoRedo();
 }
 
-function pickRandomFlagMC() {
-  if (!flags.length) return;
-  // Pick correct flag
-  currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  // Pick 3 other random, unique countries
-  let options = [currentFlag];
-  let used = new Set([currentFlag.country]);
-  while (options.length < 4) {
-    let f = flags[Math.floor(Math.random() * flags.length)];
-    if (!used.has(f.country)) {
-      options.push(f);
-      used.add(f.country);
-    }
-  }
-  // Shuffle options
-  for (let i = options.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [options[i],
+function undoSaviourAction() {
+  if (saviourActionPointer <= 0) return;
+  saviourActionPointer--;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
+}
+
+function redoSaviourAction() {
+  if (saviourActionPointer >= saviourActionHistory.length - 1) return;
+  saviourActionPointer++;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
+}
+
+function restoreSaviourActionState(state) {
+  saviourActive = JSON.parse(JSON.stringify(state.saviourActive));
+  saviourUsedActions = JSON.parse(JSON.stringify(state.saviourUsedActions));
+  saviourScore = state.saviourScore;
+  saviourGameOver = state.saviourGameOver;
+  saviourGrid = JSON.parse(JSON.stringify(state.grid));
+  saviourHighlightIndex = state.highlight;
+  saviourStreak = state.streak;
+  saviourTotal = state.total;
+  saviourLongestStreak = state.longestStreak;
+  renderSaviourGrid(saviourGameOver);
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
+  renderSaviourUndoRedo();
+  if (saviourGameOver) showSaviourGameOver();
+  else document.getElementById('result-saviour').innerHTML = '';
+}
+
+function showSaviourGameOver() {
+  renderSaviourGrid(true);
+  const flag = saviourGrid[saviourHighlightIndex];
+  document.getElementById('result-saviour').innerHTML = `<span style="color:#c62828;font-weight:bold;">❌ You failed to save ${flag.country} (${flag.code})</span>`;
+}
