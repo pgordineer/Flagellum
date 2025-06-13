@@ -1099,8 +1099,17 @@ function renderSaviourActions() {
     btn.className = 'saviour-action-btn';
     btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
     btn.disabled = !!saviourUsedActions[idx] || saviourGameOver;
+    // Action handlers
     if (action.name === 'Gamma Burst') {
       btn.onclick = gammaBurstAction;
+    } else if (action.name === 'Freeze Ray') {
+      btn.onclick = freezeRayAction;
+    } else if (action.name === 'Heat Ray') {
+      btn.onclick = heatRayAction;
+    } else if (action.name === 'Tidal Force') {
+      btn.onclick = tidalForceAction;
+    } else if (action.name === 'Landlocked') {
+      btn.onclick = landlockedAction;
     } else {
       btn.onclick = () => { /* Placeholder for other actions */ };
     }
@@ -1108,33 +1117,7 @@ function renderSaviourActions() {
   });
 }
 
-function renderSaviourUndoRedo() {
-  const gridDiv = document.getElementById('saviour-grid');
-  let undoRedoDiv = document.getElementById('saviour-undo-redo');
-  if (!undoRedoDiv) {
-    undoRedoDiv = document.createElement('div');
-    undoRedoDiv.id = 'saviour-undo-redo';
-    undoRedoDiv.style.display = 'flex';
-    undoRedoDiv.style.justifyContent = 'center';
-    undoRedoDiv.style.gap = '0.7em';
-    undoRedoDiv.style.marginBottom = '0.7em';
-    gridDiv.parentNode.insertBefore(undoRedoDiv, gridDiv);
-  }
-  undoRedoDiv.innerHTML = '';
-  const undoBtn = document.createElement('button');
-  undoBtn.className = 'main-btn saviour-btn';
-  undoBtn.textContent = 'Undo';
-  undoBtn.disabled = saviourActionPointer <= 0;
-  undoBtn.onclick = undoSaviourAction;
-  const redoBtn = document.createElement('button');
-  redoBtn.className = 'main-btn saviour-btn';
-  redoBtn.textContent = 'Redo';
-  redoBtn.disabled = saviourActionPointer >= saviourActionHistory.length - 1;
-  redoBtn.onclick = redoSaviourAction;
-  undoRedoDiv.appendChild(undoBtn);
-  undoRedoDiv.appendChild(redoBtn);
-}
-
+// --- Saviour Mode Action Implementations ---
 function gammaBurstAction() {
   if (saviourUsedActions[3] || saviourGameOver) return;
   // Save state for undo
@@ -1147,6 +1130,94 @@ function gammaBurstAction() {
     }
   }
   saviourUsedActions[3] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function freezeRayAction() {
+  if (saviourUsedActions[0] || saviourGameOver) return;
+  saveSaviourActionState('Freeze Ray');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && (saviourGrid[i].max_lat > 66.5 || saviourGrid[i].min_lat < -66.5)) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[0] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function heatRayAction() {
+  if (saviourUsedActions[2] || saviourGameOver) return;
+  saveSaviourActionState('Heat Ray');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && (saviourGrid[i].min_lat > 23.5 || saviourGrid[i].max_lat < -23.5)) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[2] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function tidalForceAction() {
+  if (saviourUsedActions[7] || saviourGameOver) return;
+  saveSaviourActionState('Tidal Force');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].coastline_km > 0) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[7] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function landlockedAction() {
+  if (saviourUsedActions[8] || saviourGameOver) return;
+  saveSaviourActionState('Landlocked');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].coastline_km === 0) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[8] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
