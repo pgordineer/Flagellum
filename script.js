@@ -1117,6 +1117,10 @@ function renderSaviourGrid(gameOver = false) {
 function setupSaviourActions() {
   renderSaviourActions();
   renderSaviourUndoRedo();
+  setTimeout(() => {
+    const infoBtn = document.getElementById('saviour-info-btn');
+    if (infoBtn) infoBtn.onclick = showSaviourInfoPopout;
+  }, 0);
 }
 
 function renderSaviourActions() {
@@ -1156,6 +1160,51 @@ function renderSaviourActions() {
     }
     actionsDiv.appendChild(rowDiv);
   }
+}
+
+// Saviour action descriptions for info popout
+const SAVIOUR_ACTION_DESCRIPTIONS = [
+  { name: 'Freeze Ray', icon: '❄️', desc: 'Eliminate all countries with territory in the polar circles.' },
+  { name: 'Heat Ray', icon: '🔥', desc: 'Eliminate all countries with territory in the tropics.' },
+  { name: 'Tailor', icon: '✂️', desc: 'Eliminate all countries with area at or over 83,879 km².' },
+  { name: 'Shrink Ray', icon: '🔬', desc: 'Eliminate all countries with area under 83,879 km².' },
+  { name: 'Money Bags', icon: '💰', desc: 'Eliminate all countries with GDP of 25,000,000,000 or over.' },
+  { name: 'Penny Pincher', icon: '🪙', desc: 'Eliminate all countries with GDP under 25,000,000,000.' },
+  { name: 'Tidal Force', icon: '🌊', desc: 'Eliminate all countries with a coastline.' },
+  { name: 'Landlocked', icon: '🏜️', desc: 'Eliminate all countries with no coastline.' },
+  { name: 'Baby Boomer', icon: '👶', desc: 'Special action (not yet implemented).' },
+  { name: 'Gamma Burst', icon: '☢️', desc: 'Eliminate all countries with nuclear arms.' }
+];
+
+function showSaviourInfoPopout() {
+  // Remove if already present
+  let existing = document.getElementById('saviour-info-popout');
+  if (existing) existing.remove();
+  // Create popout
+  const pop = document.createElement('div');
+  pop.id = 'saviour-info-popout';
+  pop.style.position = 'fixed';
+  pop.style.zIndex = '2000';
+  pop.style.left = '0';
+  pop.style.top = '0';
+  pop.style.width = '100vw';
+  pop.style.height = '100vh';
+  pop.style.background = 'rgba(0,0,0,0.45)';
+  pop.style.display = 'flex';
+  pop.style.alignItems = 'center';
+  pop.style.justifyContent = 'center';
+  pop.innerHTML = `
+    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;">
+      <button id="saviour-info-close" style="position:absolute;top:0.5em;right:0.7em;font-size:1.5em;background:none;border:none;cursor:pointer;">&times;</button>
+      <h3 style="margin-top:0;text-align:center;font-size:1.2em;">Saviour Actions</h3>
+      <div style="display:grid;grid-template-columns:1.5em 1fr;gap:0.5em 0.7em;align-items:center;">
+        ${SAVIOUR_ACTION_DESCRIPTIONS.map(a => `<span>${a.icon}</span><span><b>${a.name}:</b> ${a.desc}</span>`).join('')}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(pop);
+  document.getElementById('saviour-info-close').onclick = () => pop.remove();
+  pop.onclick = e => { if (e.target === pop) pop.remove(); };
 }
 
 // --- Saviour Mode Action Implementations ---

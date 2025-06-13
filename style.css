@@ -550,54 +550,35 @@ footer {
   margin-bottom: 1em;
 }
 .saviour-action-btn {
-  background: #fff;
-  border: 2px solid #1976d2;
-  border-radius: 0.5em;
-  box-shadow: 0 2px 8px #0001;
-  padding: 0.5em 0.8em;
+  padding: 0.5em 1.1em;
+  font-size: 1.1em;
+  border-radius: 0.6em;
+  border: none;
+  background: #e3eafc;
+  color: #1a237e;
+  margin: 0.2em 0.2em;
   cursor: pointer;
-  font-size: 1.3em;
-  display: flex;
-  align-items: center;
-  gap: 0.4em;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: background 0.18s;
+  box-shadow: 0 1px 4px #0001;
+  font-family: inherit;
 }
 .saviour-action-btn:hover:not(:disabled) {
-  background: #e3f2fd;
-  box-shadow: 0 4px 16px #1976d233;
+  background: #d1e3ff;
 }
 .saviour-action-btn:disabled {
-  opacity: 0.5;
+  background: #e0e0e0;
+  color: #888;
   cursor: not-allowed;
+  opacity: 0.7;
 }
-#game-saviour .score-row {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5em;
+#saviour-info-popout {
+  /* Popout overlay styles handled in JS */
 }
-#game-saviour .score-label {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #0078d7;
-  margin-bottom: 0.5rem;
-  text-align: center;
+#saviour-info-popout h3 {
+  margin-bottom: 0.7em;
 }
-.saviour-btn, #back-to-menu-saviour {
-  width: 100%;
-  padding: 0.7rem;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: #888;
-  color: #fff;
-  margin-bottom: 1em;
-  cursor: pointer;
-  transition: background 0.2s;
-  display: block;
-}
-.saviour-btn:hover, #back-to-menu-saviour:hover {
-  background: #555;
+#saviour-info-popout button {
+  font-family: inherit;
 }
 @media (max-width: 700px) {
   .saviour-grid {
