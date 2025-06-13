@@ -1,5 +1,7 @@
 # Flagellum
 
+<img src="favicon/favicon-96x96.png" alt="Flagellum Favicon" style="width:48px;height:48px;display:block;margin:auto;" />
+
 A beautiful, mobile-friendly flag guessing game for learning world flags. Guess the country by its flag (image from Wikipedia), using either the country name or its 2-letter code, or try the fun multiple choice mode!
 
 <a href="https://pgordineer.github.io/Flagellum/">
