@@ -1348,7 +1348,7 @@ function renderSaviourActions() {
 }
 
 function gammaBurstAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Gamma Burst');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1370,7 +1370,7 @@ function gammaBurstAction(idx) {
 }
 
 function freezeRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Freeze Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1392,7 +1392,7 @@ function freezeRayAction(idx) {
 }
 
 function heatRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Heat Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1414,7 +1414,7 @@ function heatRayAction(idx) {
 }
 
 function tidalForceAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Tidal Force');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1436,7 +1436,7 @@ function tidalForceAction(idx) {
 }
 
 function landlockedAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Landlocked');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1458,7 +1458,7 @@ function landlockedAction(idx) {
 }
 
 function tailorAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Tailor');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1480,7 +1480,7 @@ function tailorAction(idx) {
 }
 
 function pennyPincherAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Penny Pincher');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1502,9 +1502,8 @@ function pennyPincherAction(idx) {
 }
 
 function moneyBagsAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Money Bags');
- 
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
     if (saviourActive[i] && saviourGrid[i].gdp >= 25000000000) {
@@ -1525,7 +1524,7 @@ function moneyBagsAction(idx) {
 }
 
 function shrinkRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
+  if (saviourUsedActions[idx]) return;
   saveSaviourActionState('Shrink Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
