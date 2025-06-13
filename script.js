@@ -121,7 +121,7 @@ function renderSaviourUndoRedo() {
   if (!undoRedoDiv) return;
   undoRedoDiv.innerHTML = '';
   const undoBtn = document.createElement('button');
-  undoBtn.className = 'back-to-menu-study'; // Use same style as other nav buttons
+  undoBtn.className = 'back-to-menu-study';
   undoBtn.textContent = 'Undo';
   undoBtn.disabled = saviourActionPointer <= 0;
   undoBtn.onclick = undoSaviourAction;
@@ -130,6 +130,10 @@ function renderSaviourUndoRedo() {
   redoBtn.textContent = 'Redo';
   redoBtn.disabled = saviourActionPointer >= saviourActionHistory.length - 1;
   redoBtn.onclick = redoSaviourAction;
+  // Place on same line
+  undoRedoDiv.style.display = 'flex';
+  undoRedoDiv.style.justifyContent = 'center';
+  undoRedoDiv.style.gap = '0.7em';
   undoRedoDiv.appendChild(undoBtn);
   undoRedoDiv.appendChild(redoBtn);
 }
@@ -1058,9 +1062,9 @@ function showSaviourMode() {
 }
 
 function updateSaviourScoreDisplays() {
-  // Styled like other score rows
-  document.getElementById('score-saviour').innerHTML = `<span style="color:#0078d7;font-weight:500;">Actions:</span> <span class="fraction">${saviourScore} of ${saviourTotal}</span> &nbsp; <span style="color:#0078d7;font-weight:500;">Streak:</span> ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
-  let savHS = `<span style="color:#0078d7;font-weight:500;">High Score:</span> <span class="fraction">${saviourHighScore} of ${saviourHighTotal}</span>`;
+  document.getElementById('score-saviour').innerHTML = `<span style="color:#0078d7;font-weight:500;">Actions Used:</span> ${saviourScore}`;
+  document.getElementById('streak-saviour').innerHTML = `<span style="color:#0078d7;font-weight:500;">Streak:</span> ${saviourStreak} <span class="score-streak">(Longest: ${saviourLongestStreak})</span>`;
+  let savHS = `<span style="color:#0078d7;font-weight:500;">High Score:</span> ${saviourHighScore}`;
   let nhs = '';
   if (
     saviourScore > saviourHighScore ||
