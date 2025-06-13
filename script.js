@@ -1433,7 +1433,15 @@ function shrinkRayAction(idx) {
   processSaviourAction(idx, 'Shrink Ray', flag => flag.area < 83879);
 }
 
-function pennyBoomerAction(idx) {
+function pennyPincherAction(idx) {
+  processSaviourAction(idx, 'Penny Pincher', flag => flag.gdp < 25000000000);
+}
+
+function moneyBagsAction(idx) {
+  processSaviourAction(idx, 'Money Bags', flag => flag.gdp >= 25000000000);
+}
+
+function babyBoomerAction(idx) {
   // Placeholder for future implementation
   alert('Baby Boomer action is not yet implemented.');
 }
