@@ -52,6 +52,7 @@ const SAVIOUR_ACTIONS = [
   { name: 'Gamma Burst', icon: '☢️' },
   { name: 'Tailor', icon: '✂️' },
   { name: 'Penny Pincher', icon: '🪙' },
+  { name: 'Money Bags', icon: '💰' },
   { name: 'Baby Boomer', icon: '👶' },
   { name: 'Tidal Force', icon: '🌊' },
   { name: 'Landlocked', icon: '🏜️' }
@@ -1137,6 +1138,14 @@ function renderSaviourActions() {
       btn.onclick = tidalForceAction;
     } else if (action.name === 'Landlocked') {
       btn.onclick = landlockedAction;
+    } else if (action.name === 'Tailor') {
+      btn.onclick = tailorAction;
+    } else if (action.name === 'Penny Pincher') {
+      btn.onclick = pennyPincherAction;
+    } else if (action.name === 'Money Bags') {
+      btn.onclick = moneyBagsAction;
+    } else if (action.name === 'Shrink Ray') {
+      btn.onclick = shrinkRayAction;
     } else {
       btn.onclick = () => { /* Placeholder for other actions */ };
     }
@@ -1245,6 +1254,97 @@ function landlockedAction() {
     }
   }
   saviourUsedActions[8] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function tailorAction() {
+  // Eliminates all countries with area >= 83879
+  if (saviourUsedActions[4] || saviourGameOver) return;
+  saveSaviourActionState('Tailor');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].area >= 83879) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[4] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function pennyPincherAction() {
+  // Eliminates all countries with GDP < 25000000000
+  if (saviourUsedActions[5] || saviourGameOver) return;
+  saveSaviourActionState('Penny Pincher');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].gdp < 25000000000) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[5] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function moneyBagsAction() {
+  // Eliminates all countries with GDP >= 25000000000
+  if (saviourUsedActions[6] || saviourGameOver) return;
+  saveSaviourActionState('Money Bags');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].gdp >= 25000000000) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[6] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function shrinkRayAction() {
+  if (saviourUsedActions[1] || saviourGameOver) return;
+  saveSaviourActionState('Shrink Ray');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].area < 83879) { // Shrink Ray effect: area < 83,879 km²
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[1] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
