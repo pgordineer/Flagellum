@@ -1418,17 +1418,15 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[idx] = true; // Mark the action as used
-  saviourScore++; // Increment the actions count
+  saviourUsedActions[idx] = true;
+  saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
     const mainResultDiv = document.getElementById('result-saviour');
     if (mainResultDiv) {
       mainResultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ Game Over! The saviour flag was eliminated.</span>`;
     }
-    renderSaviourGrid(true); // Render the grid in game-over state
-    updateSaviourScoreDisplays(); // Update the score displays
-    renderSaviourActions(); // Update the actions display
+    showSaviourGameOver();
     return;
   }
   renderSaviourGrid();
@@ -1471,6 +1469,10 @@ function pennyPincherAction(idx) {
 function moneyBagsAction(idx) {
   processSaviourAction(idx, 'Money Bags', flag => flag.gdp >= 25000000000);
 }
+
+
+
+
 
 function babyBoomerAction(idx) {
 
@@ -1533,7 +1535,5 @@ showSaviourMode = function() {
   const resultDiv = document.getElementById('result-saviour');
   if (resultDiv) resultDiv.innerHTML = '';
   setupSaviourGrid();
-  setupSaviourActions();
-};
   setupSaviourActions();
 };
