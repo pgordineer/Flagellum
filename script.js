@@ -870,7 +870,6 @@ function addFlagClickHandlers() {
       }
     };
   }
-  // Do NOT set handlers for Saviour mode here; handled in renderSaviourGrid
   // Modal close events
   const modal = document.getElementById('flag-modal');
   if (modal) {
