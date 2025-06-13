@@ -1093,8 +1093,10 @@ function saveSaviourActionState(actionName) {
 }
 
 function undoSaviourAction() {
+  console.log('Undo clicked. Pointer before:', saviourActionPointer);
   if (saviourActionPointer <= 0) return;
   saviourActionPointer--;
+  console.log('Undo: restoring pointer to', saviourActionPointer);
   restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
 }
 
@@ -1105,6 +1107,7 @@ function redoSaviourAction() {
 }
 
 function restoreSaviourActionState(state) {
+  console.log('Restoring state:', state);
   saviourActive = [...state.saviourActive];
   saviourUsedActions = [...state.saviourUsedActions];
   saviourScore = state.saviourScore;
