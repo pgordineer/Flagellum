@@ -1106,55 +1106,175 @@ function renderSaviourGrid(gameOver = false) {
       btn.style.borderColor = '#c62828';
     }
     btn.innerHTML = `<img src="${flag.img}" alt="Flag of ${flag.country}" title="${flag.country}" />`;
+    // Add click handler for popout entry
+    if (saviourActive[i] && !gameOver) {
+      btn.onclick = function() {
+        showSaviourFlagEntryModal(i);
+      };
+    }
     gridDiv.appendChild(btn);
   }
 }
 
-function setupSaviourActions() {
-  renderSaviourActions();
-  renderSaviourUndoRedo();
-  setTimeout(() => {
-    const infoBtn = document.getElementById('saviour-info-btn');
-    if (infoBtn) infoBtn.onclick = showSaviourInfoPopout;
-  }, 0);
+// --- Saviour Mode Flag Entry Modal ---
+function showSaviourFlagEntryModal(idx) {
+  // Remove existing modal if present
+  let existing = document.getElementById('saviour-flag-entry-modal');
+  if (existing) existing.remove();
+  const flag = saviourGrid[idx];
+  // Modal container
+  const modal = document.createElement('div');
+  modal.id = 'saviour-flag-entry-modal';
+  modal.style.position = 'fixed';
+  modal.style.zIndex = '2000';
+  modal.style.left = '0';
+  modal.style.top = '0';
+  modal.style.width = '100vw';
+  modal.style.height = '100vh';
+  modal.style.background = 'rgba(0,0,0,0.55)';
+  modal.style.display = 'flex';
+  modal.style.alignItems = 'center';
+  modal.style.justifyContent = 'center';
+  // Modal content
+  modal.innerHTML = `
+    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;display:flex;flex-direction:column;align-items:center;">
+      <button id="saviour-flag-entry-close" style="position:absolute;top:0.5em;right:0.7em;font-size:1.5em;background:none;border:none;cursor:pointer;">&times;</button>
+      <img src="${flag.img}" alt="Flag of ${flag.country}" style="max-width:220px;max-height:120px;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:1em;" />
+      <div style="width:100%;max-width:320px;">
+        <input type="text" id="saviour-flag-entry-input" placeholder="Enter country or code..." autocomplete="off" style="width:100%;padding:0.7rem;font-size:1.1rem;border:1px solid #ddd;border-radius:0.5rem;margin-bottom:0.5rem;box-sizing:border-box;" />
+        <div id="saviour-flag-entry-autocomplete" class="autocomplete-list" style="display:none;"></div>
+        <button id="saviour-flag-entry-submit" style="width:100%;padding:0.7rem;font-size:1.1rem;border:none;border-radius:0.5rem;background:#0078d7;color:#fff;margin-bottom:0.5rem;cursor:pointer;">Submit</button>
+        <div id="saviour-flag-entry-result" style="min-height:1.5em;text-align:center;margin-bottom:0.5em;"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  // Close logic
+  document.getElementById('saviour-flag-entry-close').onclick = () => modal.remove();
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
+  // Autocomplete logic (reuse Entry Mode)
+  setupSaviourFlagEntryAutocomplete(idx);
+  // Submit logic
+  document.getElementById('saviour-flag-entry-submit').onclick = function() {
+    handleSaviourFlagEntrySubmit(idx);
+  };
+  document.getElementById('saviour-flag-entry-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      handleSaviourFlagEntrySubmit(idx);
+    }
+  });
+  setTimeout(() => document.getElementById('saviour-flag-entry-input').focus(), 100);
 }
 
-function renderSaviourActions() {
-  const actionsDiv = document.getElementById('saviour-actions');
-  actionsDiv.innerHTML = '';
-  // Render as two columns, five rows
-  for (let row = 0; row < 5; row++) {
-    const rowDiv = document.createElement('div');
-    rowDiv.style.display = 'flex';
-    rowDiv.style.gap = '0.5em';
-    rowDiv.style.marginBottom = '0.5em';
-    for (let col = 0; col < 2; col++) {
-      const idx = row * 2 + col;
-      if (idx >= SAVIOUR_ACTIONS.length) continue;
-      const action = SAVIOUR_ACTIONS[idx];
-      const btn = document.createElement('button');
-      btn.className = 'saviour-action-btn';
-      btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
-      btn.disabled = !!saviourUsedActions[idx] || saviourGameOver;
-      // Action handlers
-      let handler = null;
-      switch (action.name) {
-        case 'Gamma Burst': handler = () => gammaBurstAction(idx); break;
-        case 'Freeze Ray': handler = () => freezeRayAction(idx); break;
-        case 'Heat Ray': handler = () => heatRayAction(idx); break;
-        case 'Tidal Force': handler = () => tidalForceAction(idx); break;
-        case 'Landlocked': handler = () => landlockedAction(idx); break;
-        case 'Tailor': handler = () => tailorAction(idx); break;
-        case 'Penny Pincher': handler = () => pennyPincherAction(idx); break;
-        case 'Money Bags': handler = () => moneyBagsAction(idx); break;
-        case 'Shrink Ray': handler = () => shrinkRayAction(idx); break;
-        case 'Baby Boomer': handler = () => babyBoomerAction ? babyBoomerAction(idx) : () => {}; break;
-        default: handler = () => {};
-      }
-      btn.onclick = handler;
-      rowDiv.appendChild(btn);
+function setupSaviourFlagEntryAutocomplete(idx) {
+  const input = document.getElementById('saviour-flag-entry-input');
+  const listDiv = document.getElementById('saviour-flag-entry-autocomplete');
+  let currentFocus = -1;
+  let lastFiltered = [];
+  function closeList() {
+    listDiv.style.display = 'none';
+    listDiv.innerHTML = '';
+    currentFocus = -1;
+  }
+  function filterFlags(val) {
+    if (!val) return [];
+    const lowerVal = val.toLowerCase();
+    return flags.filter(f =>
+      (`${f.country} (${f.code})`).toLowerCase().includes(lowerVal)
+    ).slice(0, 15);
+  }
+  function renderList(filtered) {
+    lastFiltered = filtered;
+    if (!filtered.length) {
+      closeList();
+      return;
     }
-    actionsDiv.appendChild(rowDiv);
+    listDiv.innerHTML = '';
+    filtered.forEach((flag, idx2) => {
+      const item = document.createElement('div');
+      item.className = 'autocomplete-item';
+      item.innerHTML = `${flag.country} <span style='color:#888;'>(${flag.code})</span>`;
+      item.onclick = function() {
+        input.value = `${flag.country}`;
+        closeList();
+        input.focus();
+      };
+      listDiv.appendChild(item);
+    });
+    listDiv.style.display = 'block';
+  }
+  input.addEventListener('input', function() {
+    const val = this.value;
+    const filtered = filterFlags(val);
+    renderList(filtered);
+  });
+  input.addEventListener('focus', function() {
+    const val = this.value;
+    const filtered = filterFlags(val);
+    renderList(filtered);
+  });
+  input.addEventListener('keydown', function(e) {
+    const items = listDiv.querySelectorAll('.autocomplete-item');
+    if (!items.length || listDiv.style.display === 'none') return;
+    if (e.key === 'ArrowDown') {
+      currentFocus++;
+      if (currentFocus >= items.length) currentFocus = 0;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      currentFocus--;
+      if (currentFocus < 0) currentFocus = items.length - 1;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === 'Enter') {
+      if (currentFocus > -1) {
+        items[currentFocus].click();
+        e.preventDefault();
+      }
+    } else if (e.key === 'Escape') {
+      closeList();
+    }
+  });
+  function setActive(items, idx) {
+    items.forEach(i => i.classList.remove('active'));
+    if (idx >= 0 && idx < items.length) {
+      items[idx].classList.add('active');
+      items[idx].scrollIntoView({block:'nearest'});
+    }
+  }
+  document.addEventListener('click', function(e) {
+    if (e.target !== input && e.target.parentNode !== listDiv) {
+      closeList();
+    }
+  });
+}
+
+function handleSaviourFlagEntrySubmit(idx) {
+  const input = document.getElementById('saviour-flag-entry-input');
+  const resultDiv = document.getElementById('saviour-flag-entry-result');
+  const guess = input.value.trim().toLowerCase();
+  const flag = saviourGrid[idx];
+  if (!guess) {
+    resultDiv.textContent = 'Please enter a country or code.';
+    resultDiv.style.color = '#c62828';
+    return;
+  }
+  if (guess === flag.country.toLowerCase() || guess === flag.code.toLowerCase()) {
+    // Eliminate this flag (count as action)
+    saveSaviourActionState('Click and Entry');
+    saviourActive[idx] = false;
+    saviourScore++;
+    resultDiv.innerHTML = `<span style='color:#2e7d32;font-weight:bold;'>✅ Eliminated ${flag.country} (${flag.code})</span>`;
+    setTimeout(() => {
+      let modal = document.getElementById('saviour-flag-entry-modal');
+      if (modal) modal.remove();
+      renderSaviourGrid();
+      updateSaviourScoreDisplays();
+      renderSaviourActions();
+    }, 700);
+  } else {
+    resultDiv.textContent = '❌ Incorrect. Try again!';
+    resultDiv.style.color = '#c62828';
   }
 }
 
@@ -1169,292 +1289,6 @@ const SAVIOUR_ACTION_DESCRIPTIONS = [
   { name: 'Tidal Force', icon: '🌊', desc: 'Eliminate all countries with a coastline.' },
   { name: 'Landlocked', icon: '🏜️', desc: 'Eliminate all countries with no coastline.' },
   { name: 'Baby Boomer', icon: '👶', desc: 'Special action (not yet implemented).' },
-  { name: 'Gamma Burst', icon: '☢️', desc: 'Eliminate all countries with nuclear arms.' }
+  { name: 'Gamma Burst', icon: '☢️', desc: 'Eliminate all countries with nuclear arms.' },
+  { name: 'Click and Entry', icon: '🖱️', desc: 'Click a flag to zoom and enter its country or code. If correct, that flag is eliminated as an action.' }
 ];
-
-function showSaviourInfoPopout() {
-  // Remove if already present
-  let existing = document.getElementById('saviour-info-popout');
-  if (existing) existing.remove();
-  // Create popout
-  const pop = document.createElement('div');
-  pop.id = 'saviour-info-popout';
-  pop.style.position = 'fixed';
-  pop.style.zIndex = '2000';
-  pop.style.left = '0';
-  pop.style.top = '0';
-  pop.style.width = '100vw';
-  pop.style.height = '100vh';
-  pop.style.background = 'rgba(0,0,0,0.45)';
-  pop.style.display = 'flex';
-  pop.style.alignItems = 'center';
-  pop.style.justifyContent = 'center';
-  pop.innerHTML = `
-    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;">
-      <button id="saviour-info-close" style="position:absolute;top:0.5em;right:0.7em;font-size:1.5em;background:none;border:none;cursor:pointer;">&times;</button>
-      <h3 style="margin-top:0;text-align:center;font-size:1.2em;">Saviour Actions</h3>
-      <div style="display:grid;grid-template-columns:1.5em 1fr;gap:0.5em 0.7em;align-items:center;">
-        ${SAVIOUR_ACTION_DESCRIPTIONS.map(a => `<span>${a.icon}</span><span><b>${a.name}:</b> ${a.desc}</span>`).join('')}
-      </div>
-    </div>
-  `;
-  document.body.appendChild(pop);
-  document.getElementById('saviour-info-close').onclick = () => pop.remove();
-  pop.onclick = e => { if (e.target === pop) pop.remove(); };
-}
-
-// --- Saviour Mode Action Implementations ---
-function gammaBurstAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Gamma Burst');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].nuclear_arms) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function freezeRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Freeze Ray');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && (saviourGrid[i].max_lat > 66.5 || saviourGrid[i].min_lat < -66.5)) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function heatRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Heat Ray');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && (saviourGrid[i].min_lat > 23.5 || saviourGrid[i].max_lat < -23.5)) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function tidalForceAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Tidal Force');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].coastline_km > 0) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function landlockedAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Landlocked');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].coastline_km === 0) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function tailorAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Tailor');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].area >= 83879) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function pennyPincherAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Penny Pincher');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].gdp < 25000000000) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function moneyBagsAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Money Bags');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].gdp >= 25000000000) {
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function shrinkRayAction(idx) {
-  if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState('Shrink Ray');
-  let eliminatedSaviour = false;
-  for (let i = 0; i < saviourGrid.length; i++) {
-    if (saviourActive[i] && saviourGrid[i].area < 83879) { // Shrink Ray effect: area < 83,879 km²
-      saviourActive[i] = false;
-      if (i === saviourHighlightIndex) eliminatedSaviour = true;
-    }
-  }
-  saviourUsedActions[idx] = true;
-  saviourScore++;
-  if (eliminatedSaviour) {
-    saviourGameOver = true;
-    showSaviourGameOver();
-  } else {
-    renderSaviourGrid();
-    updateSaviourScoreDisplays();
-    renderSaviourActions();
-  }
-}
-
-function saveSaviourActionState(actionName) {
-  // If we are not at the end, slice off redo history
-  if (saviourActionPointer < saviourActionHistory.length - 1) {
-    saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
-  }
-  saviourActionHistory.push({
-    saviourActive: JSON.parse(JSON.stringify(saviourActive)),
-    saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
-    saviourScore,
-    saviourGameOver,
-    actionName,
-    grid: JSON.parse(JSON.stringify(saviourGrid)),
-    highlight: saviourHighlightIndex,
-    streak: saviourStreak,
-    total: saviourTotal,
-    longestStreak: saviourLongestStreak
-  });
-  saviourActionPointer = saviourActionHistory.length - 1;
-  renderSaviourUndoRedo();
-}
-
-function undoSaviourAction() {
-  if (saviourActionPointer <= 0) return;
-  saviourActionPointer--;
-  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
-}
-
-function redoSaviourAction() {
-  if (saviourActionPointer >= saviourActionHistory.length - 1) return;
-  saviourActionPointer++;
-  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
-}
-
-function restoreSaviourActionState(state) {
-  saviourActive = JSON.parse(JSON.stringify(state.saviourActive));
-  saviourUsedActions = JSON.parse(JSON.stringify(state.saviourUsedActions));
-  saviourScore = state.saviourScore;
-  saviourGameOver = state.saviourGameOver;
-  saviourGrid = JSON.parse(JSON.stringify(state.grid));
-  saviourHighlightIndex = state.highlight;
-  saviourStreak = state.streak;
-  saviourTotal = state.total;
-  saviourLongestStreak = state.longestStreak;
-  renderSaviourGrid(saviourGameOver);
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
-  renderSaviourUndoRedo();
-  if (saviourGameOver) showSaviourGameOver();
-  else document.getElementById('result-saviour').innerHTML = '';
-}
-
-function showSaviourGameOver() {
-  renderSaviourGrid(true);
-  const flag = saviourGrid[saviourHighlightIndex];
-  document.getElementById('result-saviour').innerHTML = `<span style="color:#c62828;font-weight:bold;">❌ You failed to save ${flag.country} (${flag.code})</span>`;
-}
