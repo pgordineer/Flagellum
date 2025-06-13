@@ -1292,3 +1292,245 @@ const SAVIOUR_ACTION_DESCRIPTIONS = [
   { name: 'Gamma Burst', icon: '☢️', desc: 'Eliminate all countries with nuclear arms.' },
   { name: 'Click and Entry', icon: '🖱️', desc: 'Click a flag to zoom and enter its country or code. If correct, that flag is eliminated as an action.' }
 ];
+
+function renderSaviourActions() {
+  const actionsDiv = document.getElementById('saviour-actions');
+  actionsDiv.innerHTML = '';
+  // Render as two columns, five rows
+  for (let row = 0; row < 5; row++) {
+    const rowDiv = document.createElement('div');
+    rowDiv.style.display = 'flex';
+    rowDiv.style.gap = '0.5em';
+    rowDiv.style.marginBottom = '0.5em';
+    for (let col = 0; col < 2; col++) {
+      const idx = row * 2 + col;
+      if (idx >= SAVIOUR_ACTIONS.length) continue;
+      const action = SAVIOUR_ACTIONS[idx];
+      const btn = document.createElement('button');
+      btn.className = 'saviour-action-btn';
+      btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
+      btn.disabled = !!saviourUsedActions[idx] || saviourGameOver;
+      // Action handlers
+      let handler = null;
+      switch (action.name) {
+        case 'Gamma Burst': handler = () => gammaBurstAction(idx); break;
+        case 'Freeze Ray': handler = () => freezeRayAction(idx); break;
+        case 'Heat Ray': handler = () => heatRayAction(idx); break;
+        case 'Tidal Force': handler = () => tidalForceAction(idx); break;
+        case 'Landlocked': handler = () => landlockedAction(idx); break;
+        case 'Tailor': handler = () => tailorAction(idx); break;
+        case 'Penny Pincher': handler = () => pennyPincherAction(idx); break;
+        case 'Money Bags': handler = () => moneyBagsAction(idx); break;
+        case 'Shrink Ray': handler = () => shrinkRayAction(idx); break;
+        case 'Baby Boomer': handler = () => babyBoomerAction ? babyBoomerAction(idx) : () => {}; break;
+        default: handler = () => {};
+      }
+      btn.onclick = handler;
+      rowDiv.appendChild(btn);
+    }
+    actionsDiv.appendChild(rowDiv);
+  }
+}
+
+function gammaBurstAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Gamma Burst');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].nuclear_arms) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function freezeRayAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Freeze Ray');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && (saviourGrid[i].max_lat > 66.5 || saviourGrid[i].min_lat < -66.5)) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function heatRayAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Heat Ray');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && (saviourGrid[i].min_lat > 23.5 || saviourGrid[i].max_lat < -23.5)) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function tidalForceAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Tidal Force');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].coastline_km > 0) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function landlockedAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Landlocked');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].coastline_km === 0) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function tailorAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Tailor');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].area >= 83879) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function pennyPincherAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Penny Pincher');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].gdp < 25000000000) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function moneyBagsAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Money Bags');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].gdp >= 25000000000) {
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function shrinkRayAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
+  saveSaviourActionState('Shrink Ray');
+  let eliminatedSaviour = false;
+  for (let i = 0; i < saviourGrid.length; i++) {
+    if (saviourActive[i] && saviourGrid[i].area < 83879) { // Shrink Ray effect: area < 83,879 km²
+      saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
+    }
+  }
+  saviourUsedActions[idx] = true;
+  saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function babyBoomerAction(idx) {
+  // Placeholder for future implementation
+  alert('Baby Boomer action is not yet implemented.');
+}
