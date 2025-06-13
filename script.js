@@ -1128,35 +1128,27 @@ function renderSaviourActions() {
     btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
     btn.disabled = !!saviourUsedActions[idx] || saviourGameOver;
     // Action handlers
-    if (action.name === 'Gamma Burst') {
-      btn.onclick = gammaBurstAction;
-    } else if (action.name === 'Freeze Ray') {
-      btn.onclick = freezeRayAction;
-    } else if (action.name === 'Heat Ray') {
-      btn.onclick = heatRayAction;
-    } else if (action.name === 'Tidal Force') {
-      btn.onclick = tidalForceAction;
-    } else if (action.name === 'Landlocked') {
-      btn.onclick = landlockedAction;
-    } else if (action.name === 'Tailor') {
-      btn.onclick = tailorAction;
-    } else if (action.name === 'Penny Pincher') {
-      btn.onclick = pennyPincherAction;
-    } else if (action.name === 'Money Bags') {
-      btn.onclick = moneyBagsAction;
-    } else if (action.name === 'Shrink Ray') {
-      btn.onclick = shrinkRayAction;
-    } else {
-      btn.onclick = () => { /* Placeholder for other actions */ };
+    let handler = null;
+    switch (action.name) {
+      case 'Gamma Burst': handler = () => gammaBurstAction(idx); break;
+      case 'Freeze Ray': handler = () => freezeRayAction(idx); break;
+      case 'Heat Ray': handler = () => heatRayAction(idx); break;
+      case 'Tidal Force': handler = () => tidalForceAction(idx); break;
+      case 'Landlocked': handler = () => landlockedAction(idx); break;
+      case 'Tailor': handler = () => tailorAction(idx); break;
+      case 'Penny Pincher': handler = () => pennyPincherAction(idx); break;
+      case 'Money Bags': handler = () => moneyBagsAction(idx); break;
+      case 'Shrink Ray': handler = () => shrinkRayAction(idx); break;
+      default: handler = () => {};
     }
+    btn.onclick = handler;
     actionsDiv.appendChild(btn);
   });
 }
 
 // --- Saviour Mode Action Implementations ---
-function gammaBurstAction() {
-  if (saviourUsedActions[3] || saviourGameOver) return;
-  // Save state for undo
+function gammaBurstAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Gamma Burst');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1165,7 +1157,7 @@ function gammaBurstAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[3] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
@@ -1177,8 +1169,8 @@ function gammaBurstAction() {
   }
 }
 
-function freezeRayAction() {
-  if (saviourUsedActions[0] || saviourGameOver) return;
+function freezeRayAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Freeze Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1187,7 +1179,7 @@ function freezeRayAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[0] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
@@ -1199,8 +1191,8 @@ function freezeRayAction() {
   }
 }
 
-function heatRayAction() {
-  if (saviourUsedActions[2] || saviourGameOver) return;
+function heatRayAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Heat Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1209,7 +1201,7 @@ function heatRayAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[2] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
@@ -1221,8 +1213,8 @@ function heatRayAction() {
   }
 }
 
-function tidalForceAction() {
-  if (saviourUsedActions[7] || saviourGameOver) return;
+function tidalForceAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Tidal Force');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1231,7 +1223,7 @@ function tidalForceAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[7] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
@@ -1243,8 +1235,8 @@ function tidalForceAction() {
   }
 }
 
-function landlockedAction() {
-  if (saviourUsedActions[8] || saviourGameOver) return;
+function landlockedAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Landlocked');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1253,7 +1245,7 @@ function landlockedAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[8] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
@@ -1265,9 +1257,8 @@ function landlockedAction() {
   }
 }
 
-function tailorAction() {
-  // Eliminates all countries with area >= 83879
-  if (saviourUsedActions[4] || saviourGameOver) return;
+function tailorAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Tailor');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1276,7 +1267,7 @@ function tailorAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[4] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
@@ -1288,9 +1279,8 @@ function tailorAction() {
   }
 }
 
-function pennyPincherAction() {
-  // Eliminates all countries with GDP < 25000000000
-  if (saviourUsedActions[5] || saviourGameOver) return;
+function pennyPincherAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Penny Pincher');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1299,7 +1289,7 @@ function pennyPincherAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[5] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
@@ -1311,9 +1301,8 @@ function pennyPincherAction() {
   }
 }
 
-function moneyBagsAction() {
-  // Eliminates all countries with GDP >= 25000000000
-  if (saviourUsedActions[6] || saviourGameOver) return;
+function moneyBagsAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Money Bags');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1322,7 +1311,7 @@ function moneyBagsAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[6] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
@@ -1334,8 +1323,8 @@ function moneyBagsAction() {
   }
 }
 
-function shrinkRayAction() {
-  if (saviourUsedActions[1] || saviourGameOver) return;
+function shrinkRayAction(idx) {
+  if (saviourUsedActions[idx] || saviourGameOver) return;
   saveSaviourActionState('Shrink Ray');
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
@@ -1344,7 +1333,7 @@ function shrinkRayAction() {
       if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  saviourUsedActions[1] = true;
+  saviourUsedActions[idx] = true;
   saviourScore++;
   if (eliminatedSaviour) {
     saviourGameOver = true;
