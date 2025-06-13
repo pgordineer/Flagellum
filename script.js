@@ -57,6 +57,12 @@ const SAVIOUR_ACTIONS = [
   { name: 'Landlocked', icon: '🏜️' }
 ];
 
+// --- Saviour Mode Undo/Redo State ---
+let saviourActionHistory = [];
+let saviourActionPointer = -1;
+let saviourUsedActions = [];
+let saviourGameOver = false;
+
 function loadHighScores() {
   entryHighScore = parseFloat(localStorage.getItem('flagellum_entry_highscore')) || 0;
   entryHighTotal = parseInt(localStorage.getItem('flagellum_entry_hightotal')) || 0;
@@ -971,20 +977,30 @@ function setupSaviourGrid() {
   let shuffled = [...flags].sort(() => Math.random() - 0.5);
   saviourGrid = shuffled.slice(0, 25);
   saviourActive = Array(25).fill(true);
+  saviourUsedActions = Array(SAVIOUR_ACTIONS.length).fill(false);
+  saviourScore = 0;
+  saviourGameOver = false;
+  saviourActionHistory = [];
+  saviourActionPointer = -1;
+  saveSaviourActionState('Start');
   renderSaviourGrid();
 }
 
-function renderSaviourGrid() {
+function renderSaviourGrid(gameOver = false) {
   const gridDiv = document.getElementById('saviour-grid');
   gridDiv.innerHTML = '';
   for (let i = 0; i < saviourGrid.length; i++) {
     const flag = saviourGrid[i];
     const btn = document.createElement('button');
     btn.className = 'saviour-flag-btn' + (i === saviourHighlightIndex ? ' saviour-highlight' : '');
-    btn.disabled = !saviourActive[i];
+    btn.disabled = !saviourActive[i] || gameOver;
     if (!saviourActive[i]) {
       btn.style.filter = 'grayscale(1)';
       btn.style.opacity = '0.5';
+    }
+    if (gameOver) {
+      btn.style.background = '#ffdddd';
+      btn.style.borderColor = '#c62828';
     }
     btn.innerHTML = `<img src="${flag.img}" alt="Flag of ${flag.country}" title="${flag.country}" />`;
     gridDiv.appendChild(btn);
@@ -992,12 +1008,18 @@ function renderSaviourGrid() {
 }
 
 function setupSaviourActions() {
+  renderSaviourActions();
+  renderSaviourUndoRedo();
+}
+
+function renderSaviourActions() {
   const actionsDiv = document.getElementById('saviour-actions');
   actionsDiv.innerHTML = '';
   SAVIOUR_ACTIONS.forEach((action, idx) => {
     const btn = document.createElement('button');
     btn.className = 'saviour-action-btn';
     btn.innerHTML = `${action.icon} <span style="font-size:0.95em;">${action.name}</span>`;
+    btn.disabled = !!saviourUsedActions[idx] || saviourGameOver;
     if (action.name === 'Gamma Burst') {
       btn.onclick = gammaBurstAction;
     } else {
@@ -1007,14 +1029,95 @@ function setupSaviourActions() {
   });
 }
 
+function renderSaviourUndoRedo() {
+  const gridDiv = document.getElementById('saviour-grid');
+  let undoRedoDiv = document.getElementById('saviour-undo-redo');
+  if (!undoRedoDiv) {
+    undoRedoDiv = document.createElement('div');
+    undoRedoDiv.id = 'saviour-undo-redo';
+    undoRedoDiv.style.display = 'flex';
+    undoRedoDiv.style.justifyContent = 'center';
+    undoRedoDiv.style.gap = '0.7em';
+    undoRedoDiv.style.marginBottom = '0.7em';
+    gridDiv.parentNode.insertBefore(undoRedoDiv, gridDiv);
+  }
+  undoRedoDiv.innerHTML = '';
+  const undoBtn = document.createElement('button');
+  undoBtn.className = 'main-btn saviour-btn';
+  undoBtn.textContent = 'Undo';
+  undoBtn.disabled = saviourActionPointer <= 0;
+  undoBtn.onclick = undoSaviourAction;
+  const redoBtn = document.createElement('button');
+  redoBtn.className = 'main-btn saviour-btn';
+  redoBtn.textContent = 'Redo';
+  redoBtn.disabled = saviourActionPointer >= saviourActionHistory.length - 1;
+  redoBtn.onclick = redoSaviourAction;
+  undoRedoDiv.appendChild(undoBtn);
+  undoRedoDiv.appendChild(redoBtn);
+}
+
 function gammaBurstAction() {
-  // Eliminate (gray out) all countries with nuclear arms in the saviour grid
+  if (saviourUsedActions[3] || saviourGameOver) return;
+  // Save state for undo
+  saveSaviourActionState('Gamma Burst');
+  let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
     if (saviourActive[i] && saviourGrid[i].nuclear_arms) {
       saviourActive[i] = false;
+      if (i === saviourHighlightIndex) eliminatedSaviour = true;
     }
   }
-  renderSaviourGrid();
+  saviourUsedActions[3] = true;
   saviourScore++;
+  if (eliminatedSaviour) {
+    saviourGameOver = true;
+    showSaviourGameOver();
+  } else {
+    renderSaviourGrid();
+    updateSaviourScoreDisplays();
+    renderSaviourActions();
+  }
+}
+
+function saveSaviourActionState(actionName) {
+  // Save a deep copy of the current state for undo
+  saviourActionHistory = saviourActionHistory.slice(0, saviourActionPointer + 1);
+  saviourActionHistory.push({
+    saviourActive: [...saviourActive],
+    saviourUsedActions: [...saviourUsedActions],
+    saviourScore,
+    actionName,
+    saviourGameOver,
+  });
+  saviourActionPointer++;
+}
+
+function undoSaviourAction() {
+  if (saviourActionPointer <= 0) return;
+  saviourActionPointer--;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
+}
+
+function redoSaviourAction() {
+  if (saviourActionPointer >= saviourActionHistory.length - 1) return;
+  saviourActionPointer++;
+  restoreSaviourActionState(saviourActionHistory[saviourActionPointer]);
+}
+
+function restoreSaviourActionState(state) {
+  saviourActive = [...state.saviourActive];
+  saviourUsedActions = [...state.saviourUsedActions];
+  saviourScore = state.saviourScore;
+  saviourGameOver = state.saviourGameOver;
+  renderSaviourGrid();
   updateSaviourScoreDisplays();
+  renderSaviourActions();
+  if (saviourGameOver) showSaviourGameOver();
+  else document.getElementById('result-saviour').innerHTML = '';
+}
+
+function showSaviourGameOver() {
+  renderSaviourGrid(true);
+  const flag = saviourGrid[saviourHighlightIndex];
+  document.getElementById('result-saviour').innerHTML = `<span style="color:#c62828;font-weight:bold;">❌ You failed to save ${flag.country} (${flag.code})</span>`;
 }
