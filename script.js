@@ -935,3 +935,5 @@ window.onload = function() {
   const backSavBtn = document.getElementById('back-to-menu-saviour');
   if (backSavBtn) backSavBtn.onclick = showMainMenu;
 };
+
+window.showSaviourMode = showSaviourMode;
