@@ -401,7 +401,7 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
   }
   // Set up sorting buttons
   const ths = document.querySelectorAll('.sort-btn');
-  ths.forEach btn => {
+  ths.forEach(btn => {
     btn.onclick = () => {
       let newDir = sortKey === btn.dataset.sort && sortDir === 'asc' ? 'desc' : 'asc';
       renderStudyTable(btn.dataset.sort, newDir);
@@ -1470,27 +1470,6 @@ function setupSaviourActions() {
     const infoBtn = document.getElementById('saviour-info-btn');
     if (infoBtn) infoBtn.onclick = showSaviourInfoPopout;
   }, 0);
-}
-
-// Saviour Mode Hint Modal Logic
-function showSaviourHintModal() {
-  const modal = document.getElementById('saviour-modal');
-  const hintText = document.getElementById('saviour-hint-text');
-  const hintButton = document.getElementById('saviour-hint-btn');
-
-  modal.style.display = 'flex';
-
-  hintButton.addEventListener('click', () => {
-    const hint = `Country Code: ${saviourGrid[saviourHighlightIndex].code}`;
-    hintText.textContent = hint;
-    saviourTotal++;
-    renderSaviourScore();
-  });
-
-  const closeButton = document.getElementById('saviour-modal-close');
-  closeButton.addEventListener('click', () => {
-    modal.style.display = 'none';
-  });
 }
 
 function showSaviourInfoPopout() {
