@@ -1298,6 +1298,7 @@ window.showSaviourMode = showSaviourMode;
 
 // --- Saviour Mode ---
 function showSaviourMode() {
+  inSaviourDailyMode = false;
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
