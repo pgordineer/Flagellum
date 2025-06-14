@@ -201,21 +201,7 @@ updateSaviourScoreDisplays = function() {
   }
 };
 
-// Show Saviour Mode (Daily) with daily stats
-function showSaviourModeDaily() {
-  // Use the same UI as Saviour Mode, but swap in daily stats
-  document.getElementById('main-menu').style.display = 'none';
-  document.getElementById('game-entry').style.display = 'none';
-  document.getElementById('game-mc').style.display = 'none';
-  document.getElementById('game-rc').style.display = 'none';
-  document.getElementById('study-page').style.display = 'none';
-  document.getElementById('game-saviour').style.display = 'flex';
-  // TODO: updateSaviourScoreDisplaysDaily();
-  // TODO: setupSaviourGridDaily();
-  // For now, just show the regular Saviour Mode grid
-  setupSaviourGrid();
-  setupSaviourActions();
-}
+
 // Set today's date in MM/DD/YYYY format for Saviour Mode (Daily)
 window.addEventListener('DOMContentLoaded', function() {
   const dateDiv = document.getElementById('saviour-daily-date');
