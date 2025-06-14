@@ -1,3 +1,77 @@
+// --- Saviour Mode (Daily) ---
+let saviourDailyDate = null; // MM/DD/YYYY string
+let saviourDailyScore = 0;
+let saviourDailyHighScore = 0;
+let saviourDailyStreak = 0;
+let saviourDailyLongestStreak = 0;
+let saviourDailyTotal = 0;
+let saviourDailyHighTotal = 0;
+
+function getTodayDateStr() {
+  const today = new Date();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const yyyy = today.getFullYear();
+  return `${mm}/${dd}/${yyyy}`;
+}
+
+function getSaviourDailyKey(dateStr) {
+  return `flagellum_saviour_daily_${dateStr}`;
+}
+
+function loadSaviourDailyScores(dateStr) {
+  const key = getSaviourDailyKey(dateStr);
+  const data = JSON.parse(localStorage.getItem(key) || '{}');
+  saviourDailyScore = data.score || 0;
+  saviourDailyHighScore = data.highScore || 0;
+  saviourDailyStreak = data.streak || 0;
+  saviourDailyLongestStreak = data.longestStreak || 0;
+  saviourDailyTotal = data.total || 0;
+  saviourDailyHighTotal = data.highTotal || 0;
+}
+
+function saveSaviourDailyScores(dateStr) {
+  const key = getSaviourDailyKey(dateStr);
+  const data = {
+    score: saviourDailyScore,
+    highScore: saviourDailyHighScore,
+    streak: saviourDailyStreak,
+    longestStreak: saviourDailyLongestStreak,
+    total: saviourDailyTotal,
+    highTotal: saviourDailyHighTotal
+  };
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+// Launch Saviour Mode (Daily)
+document.getElementById('saviour-daily-mode-btn').onclick = function() {
+  saviourDailyDate = document.getElementById('saviour-daily-date').textContent.trim();
+  loadSaviourDailyScores(saviourDailyDate);
+  showSaviourModeDaily();
+};
+
+// Placeholder: Calendar UI logic will go here
+document.getElementById('saviour-daily-date').style.cursor = 'pointer';
+document.getElementById('saviour-daily-date').onclick = function() {
+  // TODO: Show calendar popup for date selection
+  alert('Calendar UI coming soon!');
+};
+
+// Show Saviour Mode (Daily) with daily stats
+function showSaviourModeDaily() {
+  // Use the same UI as Saviour Mode, but swap in daily stats
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('game-entry').style.display = 'none';
+  document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('game-rc').style.display = 'none';
+  document.getElementById('study-page').style.display = 'none';
+  document.getElementById('game-saviour').style.display = 'flex';
+  // TODO: updateSaviourScoreDisplaysDaily();
+  // TODO: setupSaviourGridDaily();
+  // For now, just show the regular Saviour Mode grid
+  setupSaviourGrid();
+  setupSaviourActions();
+}
 // Set today's date in MM/DD/YYYY format for Saviour Mode (Daily)
 window.addEventListener('DOMContentLoaded', function() {
   const dateDiv = document.getElementById('saviour-daily-date');
