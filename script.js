@@ -1329,9 +1329,49 @@ function updateSaviourScoreDisplays() {
   document.getElementById('highscore-saviour').innerHTML = savHS + nhs;
 }
 
+// --- Deterministic Seeded Shuffle for Saviour Daily ---
+function seededRandom(seed) {
+  // Mulberry32 PRNG
+  let t = seed;
+  return function() {
+    t += 0x6D2B79F5;
+    let r = Math.imul(t ^ t >>> 15, 1 | t);
+    r ^= r + Math.imul(r ^ r >>> 7, 61 | r);
+    return ((r ^ r >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function stringToSeed(str) {
+  // Simple hash from string to int
+  let hash = 0, i, chr;
+  if (str.length === 0) return 0;
+  for (i = 0; i < str.length; i++) {
+    chr = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit int
+  }
+  return hash;
+}
+
+function seededShuffle(array, seedStr) {
+  let arr = array.slice();
+  let rand = seededRandom(stringToSeed(seedStr));
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 function setupSaviourGrid() {
   if (flags.length < 25) return;
-  let shuffled = [...flags].sort(() => Math.random() - 0.5);
+  let shuffled;
+  if (inSaviourDailyMode && saviourDailyDate) {
+    // Deterministic shuffle for daily mode
+    shuffled = seededShuffle(flags, saviourDailyDate);
+  } else {
+    shuffled = [...flags].sort(() => Math.random() - 0.5);
+  }
   saviourGrid = shuffled.slice(0, 25);
   saviourActive = Array(25).fill(true);
   saviourUsedActions = Array(SAVIOUR_ACTIONS.length).fill(false);
