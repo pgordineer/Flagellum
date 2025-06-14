@@ -947,11 +947,18 @@ function setupAutocomplete() {
 
   function filterFlags(val) {
     if (!val) return [];
-    // Respect spaces: match substring with exact spacing
     const lowerVal = val.toLowerCase();
-    return flags.filter(f =>
-      (`${f.country} (${f.code})`).toLowerCase().includes(lowerVal)
-    ).slice(0, 15);
+    // First: exact code matches, then code contains, then country contains
+    let codeExact = flags.filter(f => f.code.toLowerCase() === lowerVal);
+    let codeContains = flags.filter(f => f.code.toLowerCase().includes(lowerVal) && f.code.toLowerCase() !== lowerVal);
+    let countryContains = flags.filter(f =>
+      f.country.toLowerCase().includes(lowerVal) &&
+      !codeExact.includes(f) &&
+      !codeContains.includes(f)
+    );
+    // Combine, remove duplicates, limit to 15
+    let combined = [...codeExact, ...codeContains, ...countryContains].slice(0, 15);
+    return combined;
   }
 
   function renderList(filtered) {
@@ -1529,9 +1536,16 @@ function setupSaviourFlagEntryAutocomplete(idx) {
   function filterFlags(val) {
     if (!val) return [];
     const lowerVal = val.toLowerCase();
-    return flags.filter(f =>
-      (`${f.country} (${f.code})`).toLowerCase().includes(lowerVal)
-    ).slice(0, 15);
+    // First: exact code matches, then code contains, then country contains
+    let codeExact = flags.filter(f => f.code.toLowerCase() === lowerVal);
+    let codeContains = flags.filter(f => f.code.toLowerCase().includes(lowerVal) && f.code.toLowerCase() !== lowerVal);
+    let countryContains = flags.filter(f =>
+      f.country.toLowerCase().includes(lowerVal) &&
+      !codeExact.includes(f) &&
+      !codeContains.includes(f)
+    );
+    let combined = [...codeExact, ...codeContains, ...countryContains].slice(0, 15);
+    return combined;
   }
   function renderList(filtered) {
     lastFiltered = filtered;
