@@ -306,7 +306,7 @@ function saveSaviourActionState(actionName) {
 }
 
 function handleGameOverAction(actionName) {
-  saveSaviourActionState(actionName);
+  // saveSaviourActionState(actionName); // <-- REMOVE THIS LINE
   saviourGameOver = true;
 }
 
@@ -1635,14 +1635,14 @@ function handleSaviourFlagEntrySubmit(idx) {
     return;
   }
   if (guess === flag.country.toLowerCase() || guess === flag.code.toLowerCase()) {
-    saveSaviourActionState('Click and Entry');
-    saviourActive[idx] = false;
+    // --- Move increment BEFORE saving state ---
     if (inSaviourDailyMode) {
       saviourDailyCurrentScore++;
-      // Only update high score if game is won, not here
     } else {
       saviourScore++;
     }
+    saveSaviourActionState('Click and Entry');
+    saviourActive[idx] = false;
     if (idx === saviourHighlightIndex) {
       saviourGameOver = true;
       resultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ You eliminated the saviour flag (${flag.country})!</span>`;
@@ -1726,7 +1726,6 @@ function renderSaviourActions() {
 
 function processSaviourAction(idx, actionName, eliminationCondition) {
   if (saviourUsedActions[idx] || saviourGameOver) return;
-  saveSaviourActionState(actionName);
   let eliminatedSaviour = false;
   for (let i = 0; i < saviourGrid.length; i++) {
     if (saviourActive[i] && eliminationCondition(saviourGrid[i])) {
@@ -1735,12 +1734,13 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
     }
   }
   saviourUsedActions[idx] = true;
+  // --- Move increment BEFORE saving state ---
   if (inSaviourDailyMode) {
     saviourDailyCurrentScore++;
-    // Only update high score if game is won, not here
   } else {
     saviourScore++;
   }
+  saveSaviourActionState(actionName);
   if (eliminatedSaviour) {
     saviourGameOver = true;
     const mainResultDiv = document.getElementById('result-saviour');
@@ -1748,7 +1748,6 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
       mainResultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ Game Over! The saviour flag was eliminated.</span>`;
     }
     if (inSaviourDailyMode) {
-      // Only update high score if game is won, not here
       updateMainMenuHighscores();
     }
     showSaviourGameOver();
@@ -1758,7 +1757,6 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
   updateSaviourScoreDisplays();
   renderSaviourActions();
   if (inSaviourDailyMode) {
-    // Only update high score if game is won, not here
     updateMainMenuHighscores();
   }
 }
