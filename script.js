@@ -1609,7 +1609,7 @@ const SAVIOUR_ACTION_DESCRIPTIONS = [
   { name: 'Shrink Ray', icon: '🔬', desc: 'Eliminate all countries with area under 83,879 km².' },
   { name: 'Money Bags', icon: '💰', desc: 'Eliminate all countries with GDP of 25,000,000,000 or over.' },
   { name: 'Penny Pincher', icon: '🪙', desc: 'Eliminate all countries with GDP under 25,000,000,000.' },
-  { name: 'Tidal Force', icon: '🌊', desc: 'Eliminate all countries with a coastline.' },
+  { name: 'Tidal Force', icon: '🌊' , desc: 'Eliminate all countries with a coastline.' },
   { name: 'Landlocked', icon: '🏜️', desc: 'Eliminate all countries with no coastline.' },
   { name: 'Baby Boomer', icon: '👶', desc: 'Special action (not yet implemented).' },
   { name: 'Gamma Burst', icon: '☢️', desc: 'Eliminate all countries with nuclear arms.' },
@@ -1794,3 +1794,13 @@ showSaviourMode = function() {
   setupSaviourGrid();
   setupSaviourActions();
 };
+
+// Patch: Always clear result-saviour when returning to menu from Saviour/Saviour Daily
+(function() {
+  var origBackToMenuSaviour = document.getElementById('back-to-menu-saviour').onclick;
+  document.getElementById('back-to-menu-saviour').onclick = function() {
+    var resultDiv = document.getElementById('result-saviour');
+    if (resultDiv) resultDiv.innerHTML = '';
+    if (typeof origBackToMenuSaviour === 'function') origBackToMenuSaviour();
+  };
+})();
