@@ -1299,6 +1299,7 @@ window.showSaviourMode = showSaviourMode;
 // --- Saviour Mode ---
 function showSaviourMode() {
   inSaviourDailyMode = false;
+  saviourDailyDate = null;
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
@@ -1831,6 +1832,8 @@ function showSaviourInfoPopout() {
 // Patch showSaviourMode to call setupSaviourActions
 const _origShowSaviourMode = showSaviourMode;
 showSaviourMode = function() {
+  inSaviourDailyMode = false;
+  saviourDailyDate = null;
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
