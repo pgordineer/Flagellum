@@ -38,8 +38,13 @@
 #saviour-daily-calendar .calendar-day .score-badge {
   display: block;
   font-size: 0.85em;
-  color: #2e7d32;
+  /* Changed color for better contrast */
+  color: #ffb300; /* amber/yellow for visibility */
   margin-top: 0.1em;
+}
+/* Make score-badge visible on selected (blue) background */
+#saviour-daily-calendar .calendar-day.selected .score-badge {
+  color: #ffe082; /* light yellow for contrast on blue */
 }
 #saviour-daily-calendar .calendar-day.today {
   border: 2px solid #0078d7;
