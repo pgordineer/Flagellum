@@ -223,7 +223,7 @@ function updateScoreDisplays() {
   // Entry mode
   document.getElementById('score-entry').innerHTML = `Score: ${entryScore > 0 ? formatScore(entryScore) : '-'} of ${entryTotal > 0 ? entryTotal : '-'}`;
   document.getElementById('streak-entry').innerHTML = `Streak: ${entryStreak > 0 ? entryStreak : '-'} <span class="score-streak-green">(Longest: ${entryLongestStreak > 0 ? entryLongestStreak : '-'})</span>`;
-  let entryHS = `High Score: ${entryHighScore > 0 ? formatScore(entryHighScore) : '-'} of ${entryHighTotal > 0 ? entryHighTotal : '-'}`;
+  let entryHS = `High Score: ${entryHighScore > 0 ? formatScore(entryHighScore) : '-'} of ${entryHighTotal > 0 ? Math.floor(entryHighTotal) : '-'}`;
   let nhs = '';
   if (
     entryScore > entryHighScore ||
@@ -237,7 +237,7 @@ function updateScoreDisplays() {
   // MC mode
   document.getElementById('score-mc').innerHTML = `Score: ${mcScore > 0 ? formatScore(mcScore) : '-'} of ${mcTotal > 0 ? mcTotal : '-'}`;
   document.getElementById('streak-mc').innerHTML = `Streak: ${mcStreak > 0 ? mcStreak : '-'} <span class="score-streak-green">(Longest: ${mcLongestStreak > 0 ? mcLongestStreak : '-'})</span>`;
-  let mcHS = `High Score: ${mcHighScore > 0 ? formatScore(mcHighScore) : '-'} of ${mcHighTotal > 0 ? mcHighTotal : '-'}`;
+  let mcHS = `High Score: ${mcHighScore > 0 ? formatScore(mcHighScore) : '-'} of ${mcHighTotal > 0 ? Math.floor(mcHighTotal) : '-'}`;
   let nhsMC = '';
   if (
     mcScore > mcHighScore ||
@@ -250,7 +250,7 @@ function updateScoreDisplays() {
   // Reverse Choice mode
   document.getElementById('score-rc').innerHTML = `Score: ${rcScore > 0 ? formatScore(rcScore) : '-'} of ${rcTotal > 0 ? rcTotal : '-'}`;
   document.getElementById('streak-rc').innerHTML = `Streak: ${rcStreak > 0 ? rcStreak : '-'} <span class="score-streak-green">(Longest: ${rcLongestStreak > 0 ? rcLongestStreak : '-'})</span>`;
-  let rcHS = `High Score: ${rcHighScore > 0 ? formatScore(rcHighScore) : '-'} of ${rcHighTotal > 0 ? rcHighTotal : '-'}`;
+  let rcHS = `High Score: ${rcHighScore > 0 ? formatScore(rcHighScore) : '-'} of ${rcHighTotal > 0 ? Math.floor(rcHighTotal) : '-'}`;
   let nhsRC = '';
   if (
     rcScore > rcHighScore ||
@@ -262,7 +262,7 @@ function updateScoreDisplays() {
 
   // Saviour mode
   document.getElementById('score-saviour').innerHTML = `Actions: ${saviourScore > 0 ? saviourScore : '-'} of ${saviourTotal > 0 ? saviourTotal : '-'}`;
-  let savHS = `High Score: ${saviourHighScore > 0 ? saviourHighScore : '-'} of ${saviourHighTotal > 0 ? saviourHighTotal : '-'}`;
+  let savHS = `High Score: ${saviourHighScore > 0 ? Math.floor(saviourHighScore) : '-'} of ${saviourHighTotal > 0 ? Math.floor(saviourHighTotal) : '-'}`;
   let nhsSaviour = '';
   if (
     (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
@@ -293,10 +293,10 @@ function updateMainMenuHighscores() {
   const mainHigh = document.getElementById('main-highscores');
   mainHigh.innerHTML =
     `<h2>Personal High Scores</h2>` +
-    `<div class="main-highscore-row">Entry Mode: <b>${entryHighScore > 0 ? formatScore(entryHighScore) : '-'} of ${entryHighTotal > 0 ? entryHighTotal : '-'}</b> <span class="score-streak">Longest Streak: ${entryLongestStreak > 0 ? entryLongestStreak : '-'}</span></div>` +
-    `<div class="main-highscore-row">Multiple Choice: <b>${mcHighScore > 0 ? formatScore(mcHighScore) : '-'} of ${mcHighTotal > 0 ? mcHighTotal : '-'}</b> <span class="score-streak">Longest Streak: ${mcLongestStreak > 0 ? mcLongestStreak : '-'}</span></div>` +
-    `<div class="main-highscore-row">Reverse Choice: <b>${rcHighScore > 0 ? formatScore(rcHighScore) : '-'} of ${rcHighTotal > 0 ? rcHighTotal : '-'}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak > 0 ? rcLongestStreak : '-'}</span></div>` +
-    `<div class="main-highscore-row">Saviour Mode: <b>${saviourHighScore > 0 ? saviourHighScore : '-'} of ${saviourHighTotal > 0 ? saviourHighTotal : '-'}</b> <span class="score-streak">Longest Streak: ${saviourLongestStreak > 0 ? saviourLongestStreak : '-'}</span></div>`;
+    `<div class="main-highscore-row">Entry Mode: <b>${entryHighScore > 0 ? formatScore(entryHighScore) : '-'} of ${entryHighTotal > 0 ? Math.floor(entryHighTotal) : '-'}</b> <span class="score-streak">Longest Streak: ${entryLongestStreak > 0 ? entryLongestStreak : '-'}</span></div>` +
+    `<div class="main-highscore-row">Multiple Choice: <b>${mcHighScore > 0 ? formatScore(mcHighScore) : '-'} of ${mcHighTotal > 0 ? Math.floor(mcHighTotal) : '-'}</b> <span class="score-streak">Longest Streak: ${mcLongestStreak > 0 ? mcLongestStreak : '-'}</span></div>` +
+    `<div class="main-highscore-row">Reverse Choice: <b>${rcHighScore > 0 ? formatScore(rcHighScore) : '-'} of ${rcHighTotal > 0 ? Math.floor(rcHighTotal) : '-'}</b> <span class="score-streak">Longest Streak: ${rcLongestStreak > 0 ? rcLongestStreak : '-'}</span></div>` +
+    `<div class="main-highscore-row">Saviour Mode: <b>${saviourHighScore > 0 ? Math.floor(saviourHighScore) : '-'} of ${saviourHighTotal > 0 ? Math.floor(saviourHighTotal) : '-'}</b> <span class="score-streak">Longest Streak: ${saviourLongestStreak > 0 ? saviourLongestStreak : '-'}</span></div>`;
 }
 
 function showMainMenu() {
