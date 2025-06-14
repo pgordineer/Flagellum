@@ -156,12 +156,33 @@ function showSaviourModeDaily() {
   document.getElementById('game-rc').style.display = 'none';
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('game-saviour').style.display = 'flex';
+  // Add game mode title
+  setGameModeTitle('game-saviour', 'Saviour Mode (Daily)');
   const resultDiv = document.getElementById('result-saviour');
   if (resultDiv) resultDiv.innerHTML = '';
   saviourDailyCurrentScore = 0;
   updateSaviourScoreDisplays();
   setupSaviourGrid();
   setupSaviourActions();
+}
+
+// Helper to set the game mode title at the top of each game screen
+function setGameModeTitle(containerId, title) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  let titleDiv = container.querySelector('.game-mode-title');
+  if (!titleDiv) {
+    titleDiv = document.createElement('div');
+    titleDiv.className = 'game-mode-title';
+    // Insert before the first score row or as first child
+    let firstScoreRow = container.querySelector('.score-row');
+    if (firstScoreRow) {
+      container.insertBefore(titleDiv, firstScoreRow);
+    } else {
+      container.insertBefore(titleDiv, container.firstChild);
+    }
+  }
+  titleDiv.textContent = title;
 }
 
 // Patch updateSaviourScoreDisplays to show daily stats if in daily mode
@@ -532,6 +553,8 @@ function showEntryMode() {
   document.getElementById('game-entry').style.display = 'block';
   document.getElementById('game-mc').style.display = 'none';
   document.getElementById('game-rc').style.display = 'none';
+  // Add game mode title
+  setGameModeTitle('game-entry', 'Entry Mode');
   usedHint = false;
   entryStreak = 0;
   updateScoreDisplays();
@@ -546,6 +569,8 @@ function showMCMode() {
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'block';
   document.getElementById('game-rc').style.display = 'none';
+  // Add game mode title
+  setGameModeTitle('game-mc', 'Multiple Choice Mode');
   mcAttempts = 0;
   mcTried = [];
   mcStreak = 0;
@@ -559,6 +584,8 @@ function showRCMode() {
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
   document.getElementById('game-rc').style.display = 'block';
+  // Add game mode title
+  setGameModeTitle('game-rc', 'Reverse Choice Mode');
   rcAttempts = 0;
   rcTried = [];
   rcStreak = 0;
@@ -1288,6 +1315,8 @@ function showSaviourMode() {
   document.getElementById('game-rc').style.display = 'none';
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('game-saviour').style.display = 'flex';
+  // Add game mode title
+  setGameModeTitle('game-saviour', 'Saviour Mode');
   saviourStreak = 0;
   updateSaviourScoreDisplays();
   // --- NEW: Clear result message on new game ---
@@ -1772,6 +1801,8 @@ showSaviourMode = function() {
   document.getElementById('game-rc').style.display = 'none';
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('game-saviour').style.display = 'flex';
+  // Add game mode title
+  setGameModeTitle('game-saviour', 'Saviour Mode');
   saviourStreak = 0;
   updateSaviourScoreDisplays();
   // --- NEW: Clear result message on new game ---
