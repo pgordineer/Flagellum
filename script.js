@@ -50,11 +50,141 @@ document.getElementById('saviour-daily-mode-btn').onclick = function() {
   showSaviourModeDaily();
 };
 
-// Placeholder: Calendar UI logic will go here
-document.getElementById('saviour-daily-date').style.cursor = 'pointer';
-document.getElementById('saviour-daily-date').onclick = function() {
-  // TODO: Show calendar popup for date selection
-  alert('Calendar UI coming soon!');
+
+// --- Calendar UI for Saviour Mode (Daily) ---
+const dailyDateDiv = document.getElementById('saviour-daily-date');
+const dailyCalendarDiv = document.getElementById('saviour-daily-calendar');
+dailyDateDiv.style.cursor = 'pointer';
+let calendarMonth = null;
+let calendarYear = null;
+
+function renderSaviourDailyCalendar(selectedDateStr) {
+  // Parse selected date
+  let selDate = selectedDateStr ? new Date(selectedDateStr) : new Date();
+  if (isNaN(selDate)) selDate = new Date();
+  calendarMonth = selDate.getMonth();
+  calendarYear = selDate.getFullYear();
+  // Start of month
+  const firstDay = new Date(calendarYear, calendarMonth, 1);
+  const startDay = firstDay.getDay();
+  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  // Header
+  let html = `<div class='calendar-header'>`;
+  html += `<button id='cal-prev'>&lt;</button>`;
+  html += `<span>${firstDay.toLocaleString('default', { month: 'long' })} ${calendarYear}</span>`;
+  html += `<button id='cal-next'>&gt;</button>`;
+  html += `</div>`;
+  // Days of week
+  html += `<div class='calendar-grid'>`;
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => html += `<div style='font-weight:bold;color:#888;'>${d}</div>`);
+  html += `</div><div class='calendar-grid'>`;
+  // Empty days
+  for (let i = 0; i < startDay; i++) html += `<div></div>`;
+  // Days with scores
+  for (let d = 1; d <= daysInMonth; d++) {
+    const mm = String(calendarMonth + 1).padStart(2, '0');
+    const dd = String(d).padStart(2, '0');
+    const dateStr = `${mm}/${dd}/${calendarYear}`;
+    const key = getSaviourDailyKey(dateStr);
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    let badge = '';
+    if (data.score > 0) badge = `<span class='score-badge'>${data.score}</span>`;
+    let classes = 'calendar-day';
+    if (dateStr === getTodayDateStr()) classes += ' today';
+    if (dateStr === saviourDailyDate) classes += ' selected';
+    html += `<div class='${classes}' data-date='${dateStr}'>${d}${badge}</div>`;
+  }
+  html += `</div>`;
+  dailyCalendarDiv.innerHTML = html;
+  dailyCalendarDiv.style.display = 'block';
+  // Position below date div
+  const rect = dailyDateDiv.getBoundingClientRect();
+  dailyCalendarDiv.style.position = 'absolute';
+  dailyCalendarDiv.style.left = rect.left + 'px';
+  dailyCalendarDiv.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+  // Event handlers
+  document.getElementById('cal-prev').onclick = function(e) {
+    e.stopPropagation();
+    calendarMonth--;
+    if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
+    renderSaviourDailyCalendar(`${String(calendarMonth+1).padStart(2,'0')}/01/${calendarYear}`);
+  };
+  document.getElementById('cal-next').onclick = function(e) {
+    e.stopPropagation();
+    calendarMonth++;
+    if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
+    renderSaviourDailyCalendar(`${String(calendarMonth+1).padStart(2,'0')}/01/${calendarYear}`);
+  };
+  Array.from(dailyCalendarDiv.querySelectorAll('.calendar-day')).forEach(dayDiv => {
+    dayDiv.onclick = function(e) {
+      e.stopPropagation();
+      const dateStr = this.getAttribute('data-date');
+      dailyCalendarDiv.style.display = 'none';
+      dailyDateDiv.textContent = dateStr;
+      saviourDailyDate = dateStr;
+      loadSaviourDailyScores(dateStr);
+      updateMainMenuHighscores();
+    };
+  });
+}
+
+dailyDateDiv.onclick = function(e) {
+  e.stopPropagation();
+  renderSaviourDailyCalendar(saviourDailyDate || getTodayDateStr());
+};
+document.body.addEventListener('click', function() {
+  dailyCalendarDiv.style.display = 'none';
+});
+
+// --- Main Menu Highscores: Add Saviour Daily ---
+const origUpdateMainMenuHighscores = updateMainMenuHighscores;
+updateMainMenuHighscores = function() {
+  origUpdateMainMenuHighscores();
+  // Add Saviour Daily below main-highscores
+  const mainHigh = document.getElementById('main-highscores');
+  if (!mainHigh) return;
+  let date = saviourDailyDate || getTodayDateStr();
+  loadSaviourDailyScores(date);
+  let dailyRow = document.getElementById('main-highscore-saviour-daily');
+  if (!dailyRow) {
+    dailyRow = document.createElement('div');
+    dailyRow.id = 'main-highscore-saviour-daily';
+    dailyRow.className = 'main-highscore-row';
+    mainHigh.appendChild(dailyRow);
+  }
+  dailyRow.innerHTML = `Saviour Mode (Daily) <span style='color:#888;font-size:0.98em;'>(for ${date})</span>: <b>${saviourDailyScore > 0 ? saviourDailyScore : '-'}${saviourDailyTotal > 0 ? ' of ' + saviourDailyTotal : ''}</b> <span class="score-streak">Longest Streak: ${saviourDailyLongestStreak > 0 ? saviourDailyLongestStreak : '-'}</span>`;
+};
+
+// --- In-Game UI: Show Saviour Daily stats if in daily mode ---
+let inSaviourDailyMode = false;
+function showSaviourModeDaily() {
+  inSaviourDailyMode = true;
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('game-entry').style.display = 'none';
+  document.getElementById('game-mc').style.display = 'none';
+  document.getElementById('game-rc').style.display = 'none';
+  document.getElementById('study-page').style.display = 'none';
+  document.getElementById('game-saviour').style.display = 'flex';
+  updateSaviourScoreDisplays();
+  setupSaviourGrid();
+  setupSaviourActions();
+}
+
+// Patch updateSaviourScoreDisplays to show daily stats if in daily mode
+const origUpdateSaviourScoreDisplays = updateSaviourScoreDisplays;
+updateSaviourScoreDisplays = function() {
+  if (inSaviourDailyMode) {
+    document.getElementById('score-saviour').innerHTML = `<span style="color:#0078d7;font-weight:500;">Actions Used:</span> ${saviourDailyScore}`;
+    document.getElementById('streak-saviour').innerHTML = `<span style="color:#0078d7;font-weight:500;">Streak:</span> ${saviourDailyStreak} <span class="score-streak">(Longest: ${saviourDailyLongestStreak})</span>`;
+    let savHS = `<span style="color:#0078d7;font-weight:500;">High Score:</span> ${saviourDailyHighScore > 0 ? saviourDailyHighScore : '-'}`;
+    let nhs = '';
+    if (saviourDailyScore > 0 && (saviourDailyHighScore === 0 || saviourDailyScore < saviourDailyHighScore)) {
+      nhs = '<div class="new-highscore">New High Score!</div>';
+    }
+    document.getElementById('highscore-saviour').innerHTML = savHS + nhs;
+  } else {
+    origUpdateSaviourScoreDisplays();
+  }
 };
 
 // Show Saviour Mode (Daily) with daily stats

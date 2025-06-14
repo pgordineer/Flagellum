@@ -1,3 +1,49 @@
+#saviour-daily-calendar.main-menu-calendar {
+  background: #fff;
+  border: 1px solid #bbb;
+  border-radius: 0.7em;
+  box-shadow: 0 2px 16px #0002;
+  padding: 1em 1em 0.5em 1em;
+  min-width: 270px;
+  max-width: 95vw;
+  color: #222;
+}
+#saviour-daily-calendar .calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+#saviour-daily-calendar .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 2.2em);
+  gap: 0.2em;
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+#saviour-daily-calendar .calendar-day {
+  padding: 0.3em 0.1em;
+  border-radius: 0.4em;
+  cursor: pointer;
+  font-weight: 500;
+  background: #f0f4fa;
+  color: #1976d2;
+  min-height: 2em;
+  position: relative;
+}
+#saviour-daily-calendar .calendar-day.selected {
+  background: #1976d2;
+  color: #fff;
+}
+#saviour-daily-calendar .calendar-day .score-badge {
+  display: block;
+  font-size: 0.85em;
+  color: #2e7d32;
+  margin-top: 0.1em;
+}
+#saviour-daily-calendar .calendar-day.today {
+  border: 2px solid #0078d7;
+}
 #saviour-daily-date.main-menu-date {
   width: 100%;
   padding: 0.7rem;
