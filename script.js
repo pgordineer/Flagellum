@@ -143,7 +143,7 @@ updateMainMenuHighscores = function() {
     dailyRow.className = 'main-highscore-row';
     mainHigh.appendChild(dailyRow);
   }
-  dailyRow.innerHTML = `Saviour Mode (Daily) <span style='color:#888;font-size:0.98em;'>(for ${date})</span>: <b>${saviourDailyHighScore > 0 ? saviourDailyHighScore : '-'}</b> <span class="score-streak">Longest Streak: ${saviourDailyLongestStreak > 0 ? saviourDailyLongestStreak : '-'}</span>`;
+  dailyRow.innerHTML = `Saviour Mode (Daily) <span style='color:#888;font-size:0.98em;'>(for ${date})</span>: <b>${saviourDailyHighScore > 0 ? saviourDailyHighScore : '-'}</b>`;
 };
 
 // --- In-Game UI: Show Saviour Daily stats if in daily mode ---
