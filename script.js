@@ -165,6 +165,9 @@ function showSaviourModeDaily() {
   document.getElementById('game-rc').style.display = 'none';
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('game-saviour').style.display = 'flex';
+  // Always clear congratulations/result message
+  const resultDiv = document.getElementById('result-saviour');
+  if (resultDiv) resultDiv.innerHTML = '';
   updateSaviourScoreDisplays();
   setupSaviourGrid();
   setupSaviourActions();
@@ -1339,20 +1342,37 @@ function renderSaviourGrid(gameOver = false) {
   // Win detection: only the highlighted flag remains
   if (activeCount === 1 && lastActiveIdx === saviourHighlightIndex && !gameOver) {
     saviourGameOver = true;
-    // --- Update: Save high score on win (lower is better) ---
-    if (
-      (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
-      (saviourScore === saviourHighScore && saviourGrid.length < saviourHighTotal && saviourHighScore > 0)
-    ) {
-      saviourHighScore = saviourScore;
-      saviourHighTotal = saviourGrid.length;
-      localStorage.setItem('flagellum_saviour_highscore', saviourHighScore);
-      localStorage.setItem('flagellum_saviour_hightotal', saviourHighTotal);
+    if (inSaviourDailyMode) {
+      if (
+        (saviourDailyScore > 0 && (saviourDailyHighScore === 0 || saviourDailyScore < saviourDailyHighScore))
+      ) {
+        saviourDailyHighScore = saviourDailyScore;
+        saviourDailyHighTotal = saviourGrid.length;
+      }
+      saviourDailyTotal = saviourGrid.length;
+      if (saviourDailyStreak >= 0) saviourDailyStreak++;
+      if (saviourDailyStreak > saviourDailyLongestStreak) saviourDailyLongestStreak = saviourDailyStreak;
+      saveSaviourDailyScores(saviourDailyDate);
+      updateSaviourScoreDisplays();
+      renderSaviourGrid(true);
+      document.getElementById('result-saviour').innerHTML = `<span style=\"color:#2e7d32;font-weight:bold;\">🎉 Congratulations! You saved ${saviourGrid[saviourHighlightIndex].country} (${saviourGrid[saviourHighlightIndex].code}) and won Saviour Mode (Daily)!</span>`;
+      updateMainMenuHighscores();
+      return;
+    } else {
+      if (
+        (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
+        (saviourScore === saviourHighScore && saviourGrid.length < saviourHighTotal && saviourHighScore > 0)
+      ) {
+        saviourHighScore = saviourScore;
+        saviourHighTotal = saviourGrid.length;
+        localStorage.setItem('flagellum_saviour_highscore', saviourHighScore);
+        localStorage.setItem('flagellum_saviour_hightotal', saviourHighTotal);
+      }
+      updateSaviourScoreDisplays();
+      renderSaviourGrid(true);
+      document.getElementById('result-saviour').innerHTML = `<span style=\"color:#2e7d32;font-weight:bold;\">🎉 Congratulations! You saved ${saviourGrid[saviourHighlightIndex].country} (${saviourGrid[saviourHighlightIndex].code}) and won Saviour Mode!</span>`;
+      return;
     }
-    updateSaviourScoreDisplays();
-    renderSaviourGrid(true);
-    document.getElementById('result-saviour').innerHTML = `<span style="color:#2e7d32;font-weight:bold;">🎉 Congratulations! You saved ${saviourGrid[saviourHighlightIndex].country} (${saviourGrid[saviourHighlightIndex].code}) and won Saviour Mode!</span>`;
-    return;
   }
   for (let i = 0; i < saviourGrid.length; i++) {
     const flag = saviourGrid[i];
@@ -1523,37 +1543,39 @@ function handleSaviourFlagEntrySubmit(idx) {
   if (saviourGameOver) return;
   const input = document.getElementById('saviour-flag-entry-input');
   const resultDiv = document.getElementById('saviour-flag-entry-result');
-  const hintBtn = document.getElementById('saviour-hint-btn');
-  const hintDisplay = document.getElementById('saviour-hint-display');
   const guess = input.value.trim().toLowerCase();
   const flag = saviourGrid[idx];
-
+  // Patch: Hint button always clears error and shows hint
+  const hintBtn = document.getElementById('saviour-hint-btn');
   if (hintBtn) {
-    hintBtn.onclick = () => {
-      saveSaviourActionState('Hint Used');
-      saviourScore++;
-      usedHint = true;
-      hintDisplay.textContent = `Hint: Country code is '${flag.code}'.`;
-      hintDisplay.style.display = 'block';
-      updateSaviourScoreDisplays();
+    hintBtn.onclick = function() {
+      resultDiv.textContent = `Hint: Country code is '${flag.code}'.`;
+      resultDiv.style.color = '#0078d7';
     };
   }
-
   if (!guess) {
     resultDiv.textContent = 'Please enter a country or code.';
     resultDiv.style.color = '#c62828';
     return;
   }
-
   if (guess === flag.country.toLowerCase() || guess === flag.code.toLowerCase()) {
     saveSaviourActionState('Click and Entry');
     saviourActive[idx] = false;
-    saviourScore++;
+    if (inSaviourDailyMode) {
+      saviourDailyScore++;
+      saveSaviourDailyScores(saviourDailyDate);
+    } else {
+      saviourScore++;
+    }
     if (idx === saviourHighlightIndex) {
       saviourGameOver = true;
       resultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ You eliminated the saviour flag (${flag.country})!</span>`;
       const mainResultDiv = document.getElementById('result-saviour');
-      if (mainResultDiv) mainResultDiv.innerHTML = `<span style="color:#c62828;font-weight:bold;">❌ Game Over! The saviour flag (${flag.country}) was eliminated.</span>`;
+      if (mainResultDiv) mainResultDiv.innerHTML = `<span style=\"color:#c62828;font-weight:bold;\">❌ Game Over! The saviour flag (${flag.country}) was eliminated.</span>`;
+      if (inSaviourDailyMode) {
+        saveSaviourDailyScores(saviourDailyDate);
+        updateMainMenuHighscores();
+      }
       setTimeout(() => {
         let modal = document.getElementById('saviour-flag-entry-modal');
         if (modal) modal.remove();
@@ -1568,6 +1590,10 @@ function handleSaviourFlagEntrySubmit(idx) {
       renderSaviourGrid();
       updateSaviourScoreDisplays();
       renderSaviourActions();
+      if (inSaviourDailyMode) {
+        saveSaviourDailyScores(saviourDailyDate);
+        updateMainMenuHighscores();
+      }
     }, 700);
   } else {
     resultDiv.textContent = '❌ Incorrect. Try again!';
