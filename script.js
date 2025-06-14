@@ -1,3 +1,14 @@
+// Set today's date in MM/DD/YYYY format for Saviour Mode (Daily)
+window.addEventListener('DOMContentLoaded', function() {
+  const dateDiv = document.getElementById('saviour-daily-date');
+  if (dateDiv) {
+    const today = new Date();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    dateDiv.textContent = `${mm}/${dd}/${yyyy}`;
+  }
+});
 let flags = [];
 let currentFlag = {};
 let mcCorrectIndex = 0;
