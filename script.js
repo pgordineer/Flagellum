@@ -412,16 +412,20 @@ function saveHighScores() {
     localStorage.setItem('flagellum_rc_longeststreak', rcLongestStreak);
   }
   // Saviour mode (lower is better, but must be >0)
+  // --- Only update regular Saviour mode if NOT in daily mode ---
   if (
-    (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
-    (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourScore > 0)
+    !inSaviourDailyMode &&
+    (
+      (saviourScore > 0 && (saviourHighScore === 0 || saviourScore < saviourHighScore)) ||
+      (saviourScore === saviourHighScore && saviourTotal < saviourHighTotal && saviourScore > 0)
+    )
   ) {
     localStorage.setItem('flagellum_saviour_highscore', saviourScore);
     localStorage.setItem('flagellum_saviour_hightotal', saviourTotal);
     saviourHighScore = saviourScore;
     saviourHighTotal = saviourTotal;
   }
-  if (saviourStreak > saviourLongestStreak) {
+  if (!inSaviourDailyMode && saviourStreak > saviourLongestStreak) {
     saviourLongestStreak = saviourStreak;
     localStorage.setItem('flagellum_saviour_longeststreak', saviourLongestStreak);
   }
@@ -518,6 +522,9 @@ function showMainMenu() {
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('congrats').style.display = 'none';
   document.getElementById('game-saviour').style.display = 'none'; // Hide Saviour mode when returning to menu
+  // --- Clear Saviour result message when returning to menu ---
+  const resultDiv = document.getElementById('result-saviour');
+  if (resultDiv) resultDiv.innerHTML = '';
 }
 
 function showEntryMode() {
@@ -1782,4 +1789,18 @@ showSaviourMode = function() {
     if (resultDiv) resultDiv.innerHTML = '';
     if (typeof origBackToMenuSaviour === 'function') origBackToMenuSaviour();
   };
+})();
+
+// --- Patch: Always clear result-saviour when returning to menu from Saviour Daily ---
+(function() {
+  // If there is a separate button for Saviour Daily, patch it too.
+  var btn = document.getElementById('back-to-menu-saviour-daily');
+  if (btn) {
+    var orig = btn.onclick;
+    btn.onclick = function() {
+      var resultDiv = document.getElementById('result-saviour');
+      if (resultDiv) resultDiv.innerHTML = '';
+      if (typeof orig === 'function') orig();
+    };
+  }
 })();
