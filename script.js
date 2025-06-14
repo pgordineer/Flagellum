@@ -1734,13 +1734,19 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
     }
   }
   saviourUsedActions[idx] = true;
-  // --- Move increment BEFORE saving state ---
   if (inSaviourDailyMode) {
     saviourDailyCurrentScore++;
   } else {
     saviourScore++;
   }
   saveSaviourActionState(actionName);
+  renderSaviourGrid();
+  updateSaviourScoreDisplays();
+  renderSaviourActions();
+  if (inSaviourDailyMode) {
+    updateMainMenuHighscores();
+  }
+  // --- Only now handle game over ---
   if (eliminatedSaviour) {
     saviourGameOver = true;
     const mainResultDiv = document.getElementById('result-saviour');
@@ -1752,12 +1758,6 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
     }
     showSaviourGameOver();
     return;
-  }
-  renderSaviourGrid();
-  updateSaviourScoreDisplays();
-  renderSaviourActions();
-  if (inSaviourDailyMode) {
-    updateMainMenuHighscores();
   }
 }
 
