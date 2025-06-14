@@ -1795,12 +1795,24 @@ showSaviourMode = function() {
   setupSaviourActions();
 };
 
-// Patch: Always clear result-saviour when returning to menu from Saviour/Saviour Daily
+// Patch: Always clear result-saviour when returning to menu from Saviour Daily
 (function() {
-  var origBackToMenuSaviour = document.getElementById('back-to-menu-saviour').onclick;
-  document.getElementById('back-to-menu-saviour').onclick = function() {
-    var resultDiv = document.getElementById('result-saviour');
-    if (resultDiv) resultDiv.innerHTML = '';
-    if (typeof origBackToMenuSaviour === 'function') origBackToMenuSaviour();
-  };
+  var backToMenuSaviour = document.getElementById('back-to-menu-saviour');
+  if (backToMenuSaviour) {
+    var origBackToMenuSaviour = backToMenuSaviour.onclick;
+    backToMenuSaviour.onclick = function() {
+      var resultDiv = document.getElementById('result-saviour');
+      if (resultDiv) resultDiv.innerHTML = '';
+      if (typeof origBackToMenuSaviour === 'function') origBackToMenuSaviour();
+    };
+  }
 })();
+
+// Patch: Always clear result-saviour when entering Saviour Mode (Daily)
+let origShowSaviourModeDaily = showSaviourModeDaily;
+showSaviourModeDaily = function() {
+  inSaviourDailyMode = true;
+  var resultDiv = document.getElementById('result-saviour');
+  if (resultDiv) resultDiv.innerHTML = '';
+  origShowSaviourModeDaily();
+};
