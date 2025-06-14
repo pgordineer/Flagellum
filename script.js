@@ -292,6 +292,7 @@ function saveSaviourActionState(actionName) {
     saviourActive: JSON.parse(JSON.stringify(saviourActive)),
     saviourUsedActions: JSON.parse(JSON.stringify(saviourUsedActions)),
     saviourScore,
+    saviourDailyCurrentScore, // <-- Save daily score as well
     saviourGameOver,
     actionName,
     grid: JSON.parse(JSON.stringify(saviourGrid)),
@@ -325,6 +326,7 @@ function restoreSaviourActionState(state) {
   saviourActive = JSON.parse(JSON.stringify(state.saviourActive));
   saviourUsedActions = JSON.parse(JSON.stringify(state.saviourUsedActions));
   saviourScore = state.saviourScore;
+  saviourDailyCurrentScore = state.saviourDailyCurrentScore; // <-- Restore daily score as well
   saviourGameOver = state.saviourGameOver;
   saviourGrid = JSON.parse(JSON.stringify(state.grid));
   saviourHighlightIndex = state.highlight;
