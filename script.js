@@ -221,7 +221,8 @@ function saveHighScores() {
 
 function updateScoreDisplays() {
   // Entry mode
-  document.getElementById('score-entry').innerHTML = `Score: ${entryScore > 0 ? formatScore(entryScore) : '-'} of ${entryTotal > 0 ? entryTotal : '-'} <span class="score-streak">Streak: ${entryStreak > 0 ? entryStreak : '-'} (Longest: ${entryLongestStreak > 0 ? entryLongestStreak : '-'})</span>`;
+  document.getElementById('score-entry').innerHTML = `Score: ${entryScore > 0 ? formatScore(entryScore) : '-'} of ${entryTotal > 0 ? entryTotal : '-'}`;
+  document.getElementById('streak-entry').innerHTML = `Streak: ${entryStreak > 0 ? entryStreak : '-'} <span class="score-streak-green">(Longest: ${entryLongestStreak > 0 ? entryLongestStreak : '-'})</span>`;
   let entryHS = `High Score: ${entryHighScore > 0 ? formatScore(entryHighScore) : '-'} of ${entryHighTotal > 0 ? entryHighTotal : '-'}`;
   let nhs = '';
   if (
@@ -234,7 +235,8 @@ function updateScoreDisplays() {
 
 
   // MC mode
-  document.getElementById('score-mc').innerHTML = `Score: ${mcScore > 0 ? formatScore(mcScore) : '-'} of ${mcTotal > 0 ? mcTotal : '-'} <span class="score-streak">Streak: ${mcStreak > 0 ? mcStreak : '-'} (Longest: ${mcLongestStreak > 0 ? mcLongestStreak : '-'})</span>`;
+  document.getElementById('score-mc').innerHTML = `Score: ${mcScore > 0 ? formatScore(mcScore) : '-'} of ${mcTotal > 0 ? mcTotal : '-'}`;
+  document.getElementById('streak-mc').innerHTML = `Streak: ${mcStreak > 0 ? mcStreak : '-'} <span class="score-streak-green">(Longest: ${mcLongestStreak > 0 ? mcLongestStreak : '-'})</span>`;
   let mcHS = `High Score: ${mcHighScore > 0 ? formatScore(mcHighScore) : '-'} of ${mcHighTotal > 0 ? mcHighTotal : '-'}`;
   let nhsMC = '';
   if (
@@ -246,7 +248,8 @@ function updateScoreDisplays() {
   document.getElementById('highscore-mc').innerHTML = mcHS + nhsMC;
 
   // Reverse Choice mode
-  document.getElementById('score-rc').innerHTML = `Score: ${rcScore > 0 ? formatScore(rcScore) : '-'} of ${rcTotal > 0 ? rcTotal : '-'} <span class="score-streak">Streak: ${rcStreak > 0 ? rcStreak : '-'} (Longest: ${rcLongestStreak > 0 ? rcLongestStreak : '-'})</span>`;
+  document.getElementById('score-rc').innerHTML = `Score: ${rcScore > 0 ? formatScore(rcScore) : '-'} of ${rcTotal > 0 ? rcTotal : '-'}`;
+  document.getElementById('streak-rc').innerHTML = `Streak: ${rcStreak > 0 ? rcStreak : '-'} <span class="score-streak-green">(Longest: ${rcLongestStreak > 0 ? rcLongestStreak : '-'})</span>`;
   let rcHS = `High Score: ${rcHighScore > 0 ? formatScore(rcHighScore) : '-'} of ${rcHighTotal > 0 ? rcHighTotal : '-'}`;
   let nhsRC = '';
   if (
