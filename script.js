@@ -22,11 +22,12 @@ function loadSaviourDailyScores(dateStr) {
   saviourDailyHighScore = data.highScore || 0;
   saviourDailyHighTotal = data.highTotal || 0;
   // Do not load running score for the day
-  saviourDailyCurrentScore = 0;
+  // saviourDailyCurrentScore is NOT reset here anymore
 }
 
 function saveSaviourDailyScores(dateStr) {
   const key = getSaviourDailyKey(dateStr);
+  // Only save if there is a high score (win)
   const data = {
     highScore: saviourDailyHighScore,
     highTotal: saviourDailyHighTotal
@@ -79,7 +80,8 @@ function renderSaviourDailyCalendar(selectedDateStr) {
     const key = getSaviourDailyKey(dateStr);
     const data = JSON.parse(localStorage.getItem(key) || '{}');
     let badge = '';
-    if (data.score > 0) badge = `<span class='score-badge'>${data.score}</span>`;
+    // Show the high score (lowest actions) for the day, not just last score
+    if (data.highScore > 0) badge = `<span class='score-badge'>${data.highScore}</span>`;
     let classes = 'calendar-day';
     if (dateStr === getTodayDateStr()) classes += ' today';
     if (dateStr === saviourDailyDate) classes += ' selected';
@@ -160,6 +162,7 @@ function showSaviourModeDaily() {
   setGameModeTitle('game-saviour', 'Saviour Mode (Daily)');
   const resultDiv = document.getElementById('result-saviour');
   if (resultDiv) resultDiv.innerHTML = '';
+  // Only reset current score at the start of a new daily game
   saviourDailyCurrentScore = 0;
   updateSaviourScoreDisplays();
   setupSaviourGrid();
@@ -1332,7 +1335,12 @@ function setupSaviourGrid() {
   saviourGrid = shuffled.slice(0, 25);
   saviourActive = Array(25).fill(true);
   saviourUsedActions = Array(SAVIOUR_ACTIONS.length).fill(false);
-  saviourScore = 0;
+  // Only reset saviourScore if NOT in daily mode
+  if (inSaviourDailyMode) {
+    // Do not reset saviourDailyCurrentScore here!
+  } else {
+    saviourScore = 0;
+  }
   saviourGameOver = false;
   saviourActionHistory = [];
   saviourActionPointer = -1;
@@ -1573,6 +1581,7 @@ function handleSaviourFlagEntrySubmit(idx) {
     saviourActive[idx] = false;
     if (inSaviourDailyMode) {
       saviourDailyCurrentScore++;
+      // Only update high score if game is won, not here
     } else {
       saviourScore++;
     }
@@ -1670,7 +1679,7 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
   saviourUsedActions[idx] = true;
   if (inSaviourDailyMode) {
     saviourDailyCurrentScore++;
-    saveSaviourDailyScores(saviourDailyDate);
+    // Only update high score if game is won, not here
   } else {
     saviourScore++;
   }
@@ -1681,7 +1690,7 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
       mainResultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ Game Over! The saviour flag was eliminated.</span>`;
     }
     if (inSaviourDailyMode) {
-      saveSaviourDailyScores(saviourDailyDate);
+      // Only update high score if game is won, not here
       updateMainMenuHighscores();
     }
     showSaviourGameOver();
@@ -1691,7 +1700,7 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
   updateSaviourScoreDisplays();
   renderSaviourActions();
   if (inSaviourDailyMode) {
-    saveSaviourDailyScores(saviourDailyDate);
+    // Only update high score if game is won, not here
     updateMainMenuHighscores();
   }
 }
