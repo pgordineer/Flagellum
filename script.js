@@ -275,15 +275,17 @@ function updateScoreDisplays() {
 
 function formatScore(score) {
   // Show as integer if whole, else as fraction (e.g. 1 2/3)
-  if (Number.isInteger(score)) return score === 0 ? '0' : score;
+  // Always show as integer if whole, else as mixed fraction or decimal
+  if (Number.isInteger(score) || Math.abs(score - Math.round(score)) < 0.01) {
+    return score === 0 ? '0' : Math.round(score).toString();
+  }
   let intPart = Math.floor(score);
   let frac = score - intPart;
   let fracStr = '';
-  // Use normal font size for fractions
   if (Math.abs(frac - 2/3) < 0.01) fracStr = '2/3';
   else if (Math.abs(frac - 1/3) < 0.01) fracStr = '1/3';
   else if (Math.abs(frac - 0.5) < 0.01) fracStr = '1/2';
-  else fracStr = score.toFixed(2);
+  else fracStr = (Math.round(frac * 100) / 100).toFixed(2);
   if (intPart === 0 && fracStr) return fracStr;
   if (fracStr && intPart > 0) return `${intPart} ${fracStr}`;
   return score.toFixed(2);
