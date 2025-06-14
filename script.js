@@ -1641,12 +1641,21 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
     }
   }
   saviourUsedActions[idx] = true;
-  saviourScore++;
+  if (inSaviourDailyMode) {
+    saviourDailyScore++;
+    saveSaviourDailyScores(saviourDailyDate);
+  } else {
+    saviourScore++;
+  }
   if (eliminatedSaviour) {
     saviourGameOver = true;
     const mainResultDiv = document.getElementById('result-saviour');
     if (mainResultDiv) {
       mainResultDiv.innerHTML = `<span style='color:#c62828;font-weight:bold;'>❌ Game Over! The saviour flag was eliminated.</span>`;
+    }
+    if (inSaviourDailyMode) {
+      saveSaviourDailyScores(saviourDailyDate);
+      updateMainMenuHighscores();
     }
     showSaviourGameOver();
     return;
@@ -1654,6 +1663,10 @@ function processSaviourAction(idx, actionName, eliminationCondition) {
   renderSaviourGrid();
   updateSaviourScoreDisplays();
   renderSaviourActions();
+  if (inSaviourDailyMode) {
+    saveSaviourDailyScores(saviourDailyDate);
+    updateMainMenuHighscores();
+  }
 }
 
 function gammaBurstAction(idx) {
