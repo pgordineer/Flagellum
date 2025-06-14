@@ -105,7 +105,20 @@ footer {
 #main-menu button:hover {
   background: #005fa3;
 }
-#score-entry, #score-mc, #highscore-entry, #highscore-mc {
+#game-entry .score-row,
+#game-mc .score-row,
+#game-rc .score-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 0.5em;
+}
+
+#game-entry .score-label,
+#game-mc .score-label,
+#game-rc .score-label {
   font-size: 1.1rem;
   font-weight: 500;
   color: #0078d7;
