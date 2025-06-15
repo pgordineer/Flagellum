@@ -35,19 +35,30 @@ function saveSaviourDailyScores(dateStr) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-// Launch Saviour Mode (Daily)
-document.getElementById('saviour-daily-mode-btn').onclick = function() {
-  const dateText = document.getElementById('saviour-daily-date-text').textContent.trim();
+// Launch Saviour Mode Daily with selected date
+const dailyDateText = document.getElementById('saviour-daily-date-text');
+const dailyDatePill = document.getElementById('saviour-daily-date-pill');
+const dailyCalendarDiv = document.getElementById('saviour-daily-calendar');
+const saviourDailyModeBtn = document.getElementById('saviour-daily-mode-btn');
+
+saviourDailyModeBtn.onclick = function(e) {
+  // Only trigger if not clicking the date pill
+  if (e.target === dailyDatePill || dailyDatePill.contains(e.target)) return;
+  const dateText = dailyDateText.textContent.trim();
   saviourDailyDate = dateText;
   loadSaviourDailyScores(saviourDailyDate);
   showSaviourModeDaily();
 };
 
-
-// --- Calendar UI for Saviour Mode (Daily) ---
-const dailyDateDiv = document.getElementById('saviour-daily-date');
-const dailyDateText = document.getElementById('saviour-daily-date-text');
-const dailyCalendarDiv = document.getElementById('saviour-daily-calendar');
+// Date pill toggles calendar
+dailyDatePill.onclick = function(e) {
+  e.stopPropagation();
+  if (dailyCalendarDiv.style.display === 'block') {
+    dailyCalendarDiv.style.display = 'none';
+  } else {
+    renderSaviourDailyCalendar(saviourDailyDate || getTodayDateStr());
+  }
+};
 dailyDateDiv.style.cursor = 'pointer';
 let calendarMonth = null;
 let calendarYear = null;
@@ -126,6 +137,8 @@ function renderSaviourDailyCalendar(selectedDateStr) {
       const dateStr = this.getAttribute('data-date');
       dailyCalendarDiv.style.display = 'none';
       dailyDateText.textContent = dateStr;
+      // Also update the button label
+      document.getElementById('saviour-daily-mode-label').textContent = `Saviour Mode Daily`;
       saviourDailyDate = dateStr;
       loadSaviourDailyScores(dateStr);
       updateMainMenuHighscores();
@@ -162,7 +175,7 @@ updateMainMenuHighscores = function() {
     dailyRow.className = 'main-highscore-row';
     mainHigh.appendChild(dailyRow);
   }
-  dailyRow.innerHTML = `Saviour Mode (Daily) <span style='color:#888;font-size:0.98em;'>(for ${date})</span>: <b>${saviourDailyHighScore > 0 ? saviourDailyHighScore : '-'}</b>`;
+  dailyRow.innerHTML = `Saviour Mode Daily (${date}): <b>${saviourDailyHighScore > 0 ? saviourDailyHighScore : '-'}</b>`;
 };
 
 // --- In-Game UI: Show Saviour Daily stats if in daily mode ---
@@ -176,7 +189,7 @@ function showSaviourModeDaily() {
   document.getElementById('study-page').style.display = 'none';
   document.getElementById('game-saviour').style.display = 'flex';
   // Add game mode title
-  setGameModeTitle('game-saviour', 'Saviour Mode (Daily)');
+  setGameModeTitle('game-saviour', `Saviour Mode Daily (${saviourDailyDate || getTodayDateStr()})`);
   const resultDiv = document.getElementById('result-saviour');
   if (resultDiv) resultDiv.innerHTML = '';
   // Only reset current score at the start of a new daily game
@@ -225,12 +238,14 @@ updateSaviourScoreDisplays = function() {
 // Set today's date in MM/DD/YYYY format for Saviour Mode (Daily)
 window.addEventListener('DOMContentLoaded', function() {
   const dateText = document.getElementById('saviour-daily-date-text');
+  const label = document.getElementById('saviour-daily-mode-label');
   if (dateText) {
     const today = new Date();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
     const yyyy = today.getFullYear();
     dateText.textContent = `${mm}/${dd}/${yyyy}`;
+    if (label) label.textContent = `Saviour Mode Daily`;
   }
 });
 let flags = [];
