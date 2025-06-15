@@ -135,7 +135,12 @@ function renderSaviourDailyCalendar(selectedDateStr) {
 
 dailyDateDiv.onclick = function(e) {
   e.stopPropagation();
-  renderSaviourDailyCalendar(saviourDailyDate || getTodayDateStr());
+  // Toggle calendar visibility
+  if (dailyCalendarDiv.style.display === 'block') {
+    dailyCalendarDiv.style.display = 'none';
+  } else {
+    renderSaviourDailyCalendar(saviourDailyDate || getTodayDateStr());
+  }
 };
 document.body.addEventListener('click', function() {
   dailyCalendarDiv.style.display = 'none';
