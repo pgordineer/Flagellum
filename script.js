@@ -55,24 +55,32 @@ document.getElementById('saviour-daily-date-pill').onclick = function(e) {
     return;
   }
   renderSaviourDailyCalendar(saviourDailyDate || getTodayDateStr());
-  const alignBtn = document.getElementById('saviour-daily-mode-btn');
-  const alignRect = alignBtn.getBoundingClientRect();
-  // Temporarily show to measure
-  dailyCalendarDiv.style.display = 'block';
-  dailyCalendarDiv.style.visibility = 'hidden';
-  dailyCalendarDiv.style.position = 'fixed';
-  dailyCalendarDiv.style.minWidth = '270px';
-  dailyCalendarDiv.style.maxWidth = '340px';
-  dailyCalendarDiv.style.width = '';
-  dailyCalendarDiv.style.textAlign = 'center';
-  // Center horizontally to alignBtn
-  const calWidth = dailyCalendarDiv.offsetWidth;
-  const top = Math.round(alignRect.bottom + 8); // 8px gap below button
-  const left = Math.round(alignRect.left + (alignRect.width/2) - (calWidth/2));
-  dailyCalendarDiv.style.left = left + 'px';
-  dailyCalendarDiv.style.top = top + 'px';
-  dailyCalendarDiv.style.visibility = 'visible';
-  dailyCalendarDiv.style.zIndex = 1001;
+  // Always use position: fixed and align bottom of calendar to bottom of Saviour Mode button
+  const savBtn = document.getElementById('saviour-mode-btn');
+  const dailyBtn = document.getElementById('saviour-daily-mode-btn');
+  const cal = dailyCalendarDiv;
+  cal.style.display = 'block';
+  cal.style.visibility = 'hidden';
+  cal.style.position = 'fixed';
+  cal.style.minWidth = '270px';
+  cal.style.maxWidth = '340px';
+  cal.style.width = '';
+  cal.style.textAlign = 'center';
+  // Wait for render to get correct height
+  setTimeout(() => {
+    const calHeight = cal.offsetHeight;
+    const calWidth = cal.offsetWidth;
+    const savRect = savBtn.getBoundingClientRect();
+    // Align bottom of calendar to bottom of Saviour Mode button, and center horizontally to Saviour Mode Daily button
+    const dailyRect = dailyBtn.getBoundingClientRect();
+    const left = Math.round(dailyRect.left + (dailyRect.width/2) - (calWidth/2));
+    const bottom = Math.round(savRect.bottom); // align to bottom of Saviour Mode
+    const top = bottom - calHeight;
+    cal.style.left = left + 'px';
+    cal.style.top = top + 'px';
+    cal.style.visibility = 'visible';
+    cal.style.zIndex = 1001;
+  }, 0);
 };
 
 
@@ -130,11 +138,7 @@ function renderSaviourDailyCalendar(selectedDateStr) {
   html += `</div>`;
   dailyCalendarDiv.innerHTML = html;
   dailyCalendarDiv.style.display = 'block';
-  // Position below date div
-  const rect = dailyDateDiv.getBoundingClientRect();
-  dailyCalendarDiv.style.position = 'absolute';
-  dailyCalendarDiv.style.left = rect.left + 'px';
-  dailyCalendarDiv.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+  // Do not set position/top/left here; handled in pill click logic
 }
 
 // Event delegation for calendar
