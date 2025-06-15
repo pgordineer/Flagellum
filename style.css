@@ -176,15 +176,6 @@ h1 {
   font-size: 5rem;
   margin: 1.5rem 0 1rem 0;
   text-align: center;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0.6rem; /* less round, more rectangular */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 100px;
-  min-height: 70px;
-  box-shadow: 0 2px 8px #0001;
 }
 #guess {
   width: 100%;
