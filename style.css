@@ -39,12 +39,16 @@
 #saviour-daily-calendar.main-menu-calendar {
   background: #fff;
   border: 1px solid #bbb;
-  border-radius: 0.7em;
+  border-radius: 0.5em;
   box-shadow: 0 2px 16px #0002;
-  padding: 1em 1em 0.5em 1em;
-  min-width: 270px;
-  max-width: 95vw;
+  padding: 1em 0.7em 0.5em 0.7em;
+  min-width: 220px;
+  max-width: 340px;
   color: #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
 }
 #saviour-daily-calendar .calendar-header {
   display: flex;
@@ -54,8 +58,9 @@
 }
 #saviour-daily-calendar .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 2.2em);
+  grid-template-columns: repeat(7, 2em);
   gap: 0.2em;
+  justify-content: center;
   text-align: center;
   margin-bottom: 0.5em;
 }
@@ -176,6 +181,15 @@ h1 {
   font-size: 5rem;
   margin: 1.5rem 0 1rem 0;
   text-align: center;
+}
+
+/* Make flag image box in entry and multiple choice modes less rounded, matching study/reverse choice mode */
+#game-entry .flag-emoji img,
+#game-mc .flag-emoji img {
+  border-radius: 0.2em !important;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 4px #0001;
+}
 }
 #guess {
   width: 100%;
