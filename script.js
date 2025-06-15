@@ -48,32 +48,19 @@ document.getElementById('saviour-daily-mode-btn').onclick = function(e) {
 // Date pill click opens calendar
 document.getElementById('saviour-daily-date-pill').onclick = function(e) {
   e.stopPropagation();
-  const dailyCalendarDiv = document.getElementById('saviour-daily-calendar');
-  // Toggle: if already open, close it
-  if (dailyCalendarDiv.style.display === 'block') {
-    dailyCalendarDiv.style.display = 'none';
-    return;
-  }
   renderSaviourDailyCalendar(saviourDailyDate || getTodayDateStr());
+  const dailyCalendarDiv = document.getElementById('saviour-daily-calendar');
   const alignBtn = document.getElementById('saviour-mode-btn');
   const alignRect = alignBtn.getBoundingClientRect();
-  // Temporarily show to measure
-  dailyCalendarDiv.style.display = 'block';
-  dailyCalendarDiv.style.visibility = 'hidden';
-  dailyCalendarDiv.style.position = 'fixed';
   const calWidth = dailyCalendarDiv.offsetWidth || 320;
   const calHeight = dailyCalendarDiv.offsetHeight || 320;
-  // Center horizontally to alignBtn
-  const left = Math.round(alignRect.left + (alignRect.width/2) - (calWidth/2));
-  // Align bottom of calendar with bottom of alignBtn
-  const top = Math.round(alignRect.bottom - calHeight);
-  dailyCalendarDiv.style.left = left + 'px';
-  dailyCalendarDiv.style.top = top + 'px';
+  // Position: bottom of calendar = bottom of alignBtn, center horizontally to alignBtn
+  dailyCalendarDiv.style.position = 'absolute';
+  dailyCalendarDiv.style.left = (window.scrollX + alignRect.left + (alignRect.width/2) - (calWidth/2)) + 'px';
+  dailyCalendarDiv.style.top = (window.scrollY + alignRect.bottom - calHeight) + 'px';
   dailyCalendarDiv.style.width = calWidth + 'px';
   dailyCalendarDiv.style.maxWidth = '95vw';
-  dailyCalendarDiv.style.visibility = 'visible';
-  dailyCalendarDiv.style.zIndex = 1001;
-}
+  dailyCalendarDiv.style.display = 'block';
 };
 
 
