@@ -184,7 +184,8 @@ h1 {
 }
 
 /* Make flag image box in entry and multiple choice modes less rounded, matching study/reverse choice mode */
-.flag-img-box {
+#game-entry .flag-emoji img,
+#game-mc .flag-emoji img {
   border-radius: 0.2em !important;
   border: 1px solid #ccc;
   box-shadow: 0 1px 4px #0001;
