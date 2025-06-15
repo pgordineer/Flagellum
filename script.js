@@ -66,6 +66,7 @@ const dailyCalendarDiv = document.getElementById('saviour-daily-calendar');
 let calendarMonth = null;
 let calendarYear = null;
 
+
 function renderSaviourDailyCalendar(selectedDateStr) {
   // Parse selected date
   let selDate = selectedDateStr ? new Date(selectedDateStr) : new Date();
@@ -78,9 +79,9 @@ function renderSaviourDailyCalendar(selectedDateStr) {
   const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
   // Header
   let html = `<div class='calendar-header'>`;
-  html += `<button id='cal-prev'>&lt;</button>`;
+  html += `<button id='cal-prev' type='button'>&lt;</button>`;
   html += `<span>${firstDay.toLocaleString('default', { month: 'long' })} ${calendarYear}</span>`;
-  html += `<button id='cal-next'>&gt;</button>`;
+  html += `<button id='cal-next' type='button'>&gt;</button>`;
   html += `</div>`;
   // Days of week
   html += `<div class='calendar-grid'>`;
@@ -117,37 +118,37 @@ function renderSaviourDailyCalendar(selectedDateStr) {
   dailyCalendarDiv.style.position = 'absolute';
   dailyCalendarDiv.style.left = rect.left + 'px';
   dailyCalendarDiv.style.top = (rect.bottom + window.scrollY + 4) + 'px';
-  // Event handlers
-  document.getElementById('cal-prev').onclick = function(e) {
-    e.stopPropagation();
+}
+
+// Event delegation for calendar
+dailyCalendarDiv.onclick = function(e) {
+  e.stopPropagation();
+  const prevBtn = e.target.closest('#cal-prev');
+  const nextBtn = e.target.closest('#cal-next');
+  const dayDiv = e.target.closest('.calendar-day');
+  if (prevBtn) {
     calendarMonth--;
     if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
     renderSaviourDailyCalendar(`${String(calendarMonth+1).padStart(2,'0')}/01/${calendarYear}`);
-  };
-  document.getElementById('cal-next').onclick = function(e) {
-    e.stopPropagation();
+    return;
+  }
+  if (nextBtn) {
     calendarMonth++;
     if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
     renderSaviourDailyCalendar(`${String(calendarMonth+1).padStart(2,'0')}/01/${calendarYear}`);
-  };
-  Array.from(dailyCalendarDiv.querySelectorAll('.calendar-day')).forEach(dayDiv => {
-    if (dayDiv.classList.contains('future')) {
-      dayDiv.style.pointerEvents = 'none';
-      return;
-    }
-    dayDiv.onclick = function(e) {
-      e.stopPropagation();
-      const dateStr = this.getAttribute('data-date');
-      dailyCalendarDiv.style.display = 'none';
-      dailyDateText.textContent = dateStr;
-      saviourDailyDate = dateStr;
-      loadSaviourDailyScores(dateStr);
-      updateMainMenuHighscores();
-      // Update button label
-      updateSaviourDailyButtonLabel();
-    };
-  });
-}
+    return;
+  }
+  if (dayDiv && !dayDiv.classList.contains('future')) {
+    const dateStr = dayDiv.getAttribute('data-date');
+    dailyCalendarDiv.style.display = 'none';
+    dailyDateText.textContent = dateStr;
+    saviourDailyDate = dateStr;
+    loadSaviourDailyScores(dateStr);
+    updateMainMenuHighscores();
+    updateSaviourDailyButtonLabel();
+    return;
+  }
+};
 
 
 // Hide calendar on body click
