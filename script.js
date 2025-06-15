@@ -239,12 +239,10 @@ updateSaviourScoreDisplays = function() {
 
 
 
-// Set today's date in MM/DD/YYYY format for Saviour Mode Daily and update button label
 function updateSaviourDailyButtonLabel() {
-  const dateText = document.getElementById('saviour-daily-date-text');
   const btnLabel = document.getElementById('saviour-daily-btn-label');
-  if (dateText && btnLabel) {
-    btnLabel.textContent = `Saviour Mode Daily`;
+  if (btnLabel) {
+    btnLabel.textContent = 'Saviour Mode Daily';
   }
 }
 
