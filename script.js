@@ -55,22 +55,22 @@ document.getElementById('saviour-daily-date-pill').onclick = function(e) {
     return;
   }
   renderSaviourDailyCalendar(saviourDailyDate || getTodayDateStr());
-  const alignBtn = document.getElementById('saviour-mode-btn');
+  const alignBtn = document.getElementById('saviour-daily-mode-btn');
   const alignRect = alignBtn.getBoundingClientRect();
   // Temporarily show to measure
   dailyCalendarDiv.style.display = 'block';
   dailyCalendarDiv.style.visibility = 'hidden';
   dailyCalendarDiv.style.position = 'fixed';
-  const calWidth = dailyCalendarDiv.offsetWidth || 320;
-  const calHeight = dailyCalendarDiv.offsetHeight || 320;
+  dailyCalendarDiv.style.minWidth = '270px';
+  dailyCalendarDiv.style.maxWidth = '340px';
+  dailyCalendarDiv.style.width = '';
+  dailyCalendarDiv.style.textAlign = 'center';
   // Center horizontally to alignBtn
+  const calWidth = dailyCalendarDiv.offsetWidth;
+  const top = Math.round(alignRect.bottom + 8); // 8px gap below button
   const left = Math.round(alignRect.left + (alignRect.width/2) - (calWidth/2));
-  // Align bottom of calendar with bottom of alignBtn
-  const top = Math.round(alignRect.bottom - calHeight);
   dailyCalendarDiv.style.left = left + 'px';
   dailyCalendarDiv.style.top = top + 'px';
-  dailyCalendarDiv.style.width = calWidth + 'px';
-  dailyCalendarDiv.style.maxWidth = '95vw';
   dailyCalendarDiv.style.visibility = 'visible';
   dailyCalendarDiv.style.zIndex = 1001;
 };
