@@ -728,9 +728,7 @@ function pickRandomFlag() {
   currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastEntryFlag = currentFlag;
   const isMobile = window.innerWidth < 700;
-  document.getElementById('flag-emoji').innerHTML =
-    `<span class="flag-img-container"><img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}"></span>` +
-    (isMobile ? ` <span class="flag-emoji-char">${currentFlag.emoji}</span>` : '');
+  document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
   document.getElementById('guess').value = '';
   document.getElementById('result').textContent = '';
   document.getElementById('wiki-link').innerHTML = '';
@@ -838,9 +836,7 @@ function pickRandomFlagMC() {
   mcTried = [false, false, false, false];
   // Show flag and options
   const isMobile = window.innerWidth < 700;
-  document.getElementById('flag-emoji-mc').innerHTML =
-    `<span class="flag-img-container"><img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}"></span>` +
-    (isMobile ? ` <span class="flag-emoji-char">${currentFlag.emoji}</span>` : '');
+  document.getElementById('flag-emoji-mc').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
   const mcOptionsDiv = document.getElementById('mc-options');
   mcOptionsDiv.innerHTML = '';
   options.forEach((opt, idx) => {

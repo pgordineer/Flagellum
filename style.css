@@ -176,37 +176,15 @@ h1 {
   font-size: 5rem;
   margin: 1.5rem 0 1rem 0;
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-}
-
-.flag-img-container {
   background: #fff;
   border: 1px solid #ddd;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px #0001;
-  display: flex;
+  border-radius: 0.6rem; /* less round, more rectangular */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 90px;
-  min-height: 60px;
-  padding: 0.2em 0.5em;
-}
-.flag-img-container img {
-  width: 90px;
-  height: 60px;
-  border-radius: 0.18rem;
-  border: none;
-  box-shadow: none;
-  margin-bottom: 0;
-  display: block;
-}
-.flag-emoji-char {
-  font-size: 2.2rem;
-  line-height: 1;
-  display: inline-block;
+  min-width: 100px;
+  min-height: 70px;
+  box-shadow: 0 2px 8px #0001;
 }
 #guess {
   width: 100%;
