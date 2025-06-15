@@ -17,11 +17,9 @@
   background: #e3eafc;
 }
 #saviour-daily-mode-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5em;
+  display: block;
   position: relative;
+  text-align: center;
 }
 #saviour-daily-calendar .calendar-header button {
   font-size: 1em;

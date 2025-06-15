@@ -26,12 +26,14 @@
       <button id="rc-mode-btn" class="main-menu-btn">Reverse Choice Mode</button>
       <button id="study-btn" class="main-menu-btn">Study Mode</button>
       <button id="saviour-mode-btn" class="main-menu-btn">Saviour Mode</button>
-      <button id="saviour-daily-mode-btn" class="main-menu-btn" style="display:flex;align-items:center;justify-content:space-between;gap:0.5em;position:relative;">
-        <span id="saviour-daily-btn-label">Saviour Mode Daily</span>
-        <span id="saviour-daily-date-pill" class="date-pill" style="margin-left:auto;display:inline-flex;align-items:center;gap:0.3em;padding:0.25em 0.9em 0.25em 0.8em;font-size:0.98em;background:#f0f4fa;color:#1976d2;border-radius:999px;border:1.5px solid #1976d2;box-shadow:0 1px 4px #1976d211;cursor:pointer;transition:background 0.18s;">
-          <span id="saviour-daily-date-text"></span>
-          <span style="font-size:1.1em;line-height:1;">&#128197;</span>
-        </span>
+      <button id="saviour-daily-mode-btn" class="main-menu-btn" style="display:block;position:relative;padding-bottom:0.2em;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;">
+          <span id="saviour-daily-btn-label" style="display:block;">Saviour Mode Daily</span>
+          <span id="saviour-daily-date-pill" class="date-pill" style="margin-top:0.5em;display:inline-flex;align-items:center;gap:0.3em;padding:0.25em 0.9em 0.25em 0.8em;font-size:0.98em;background:#f0f4fa;color:#1976d2;border-radius:999px;border:1.5px solid #1976d2;box-shadow:0 1px 4px #1976d211;cursor:pointer;transition:background 0.18s;">
+            <span id="saviour-daily-date-text"></span>
+            <span style="font-size:1.1em;line-height:1;">&#128197;</span>
+          </span>
+        </div>
       </button>
       <div id="saviour-daily-calendar" class="main-menu-calendar" style="display:none;position:absolute;z-index:1001;"></div>
       <div id="congrats" style="display:none;"></div>
