@@ -50,11 +50,17 @@ document.getElementById('saviour-daily-date-pill').onclick = function(e) {
   e.stopPropagation();
   renderSaviourDailyCalendar(saviourDailyDate || getTodayDateStr());
   const dailyCalendarDiv = document.getElementById('saviour-daily-calendar');
-  // Position below the button, right-aligned to the pill
-  const pillRect = this.getBoundingClientRect();
-  dailyCalendarDiv.style.position = 'absolute';
-  dailyCalendarDiv.style.left = (pillRect.right - dailyCalendarDiv.offsetWidth) + 'px';
-  dailyCalendarDiv.style.top = (pillRect.bottom + window.scrollY + 4) + 'px';
+  const alignBtn = document.getElementById('saviour-mode-btn');
+  const alignRect = alignBtn.getBoundingClientRect();
+  const calWidth = 320; // Approximate width of calendar popup
+  // Center horizontally in viewport
+  dailyCalendarDiv.style.position = 'fixed';
+  dailyCalendarDiv.style.left = `calc(50vw - ${calWidth/2}px)`;
+  // Align bottom of calendar with bottom of Saviour Mode (non-daily) button
+  const alignBottom = alignRect.bottom;
+  dailyCalendarDiv.style.top = `${alignBottom - calWidth}px`;
+  dailyCalendarDiv.style.width = calWidth + 'px';
+  dailyCalendarDiv.style.maxWidth = '95vw';
   dailyCalendarDiv.style.display = 'block';
 };
 
