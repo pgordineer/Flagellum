@@ -151,8 +151,15 @@ function renderSaviourDailyCalendar(selectedDateStr) {
 
 
 // Hide calendar on body click
-document.body.addEventListener('click', function() {
-  dailyCalendarDiv.style.display = 'none';
+
+// Hide calendar only if clicking outside the calendar or date pill
+document.body.addEventListener('click', function(e) {
+  const calendar = document.getElementById('saviour-daily-calendar');
+  const pill = document.getElementById('saviour-daily-date-pill');
+  if (!calendar || !pill) return;
+  if (calendar.style.display !== 'block') return;
+  if (calendar.contains(e.target) || pill.contains(e.target)) return;
+  calendar.style.display = 'none';
 });
 
 // --- Main Menu Highscores: Add Saviour Daily ---
@@ -237,7 +244,7 @@ function updateSaviourDailyButtonLabel() {
   const dateText = document.getElementById('saviour-daily-date-text');
   const btnLabel = document.getElementById('saviour-daily-btn-label');
   if (dateText && btnLabel) {
-    btnLabel.textContent = `Saviour Mode Daily (${dateText.textContent.trim()})`;
+    btnLabel.textContent = `Saviour Mode Daily`;
   }
 }
 
