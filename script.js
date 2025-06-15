@@ -75,6 +75,8 @@ function renderSaviourDailyCalendar(selectedDateStr) {
   // Empty days
   for (let i = 0; i < startDay; i++) html += `<div></div>`;
   // Days with scores
+  const today = new Date();
+  const todayStr = getTodayDateStr();
   for (let d = 1; d <= daysInMonth; d++) {
     const mm = String(calendarMonth + 1).padStart(2, '0');
     const dd = String(d).padStart(2, '0');
@@ -82,11 +84,15 @@ function renderSaviourDailyCalendar(selectedDateStr) {
     const key = getSaviourDailyKey(dateStr);
     const data = JSON.parse(localStorage.getItem(key) || '{}');
     let badge = '';
-    // Show the high score (lowest actions) for the day, not just last score
     if (data.highScore > 0) badge = `<span class='score-badge'>${data.highScore}</span>`;
     let classes = 'calendar-day';
-    if (dateStr === getTodayDateStr()) classes += ' today';
+    // Compare dateStr to todayStr (MM/DD/YYYY)
+    const [cm, cd, cy] = [parseInt(mm), parseInt(dd), parseInt(calendarYear)];
+    const [tm, td, ty] = [today.getMonth() + 1, today.getDate(), today.getFullYear()];
+    let isFuture = (cy > ty) || (cy === ty && cm > tm) || (cy === ty && cm === tm && cd > td);
+    if (dateStr === todayStr) classes += ' today';
     if (dateStr === saviourDailyDate) classes += ' selected';
+    if (isFuture) classes += ' future';
     html += `<div class='${classes}' data-date='${dateStr}'>${d}${badge}</div>`;
   }
   html += `</div>`;
@@ -111,6 +117,10 @@ function renderSaviourDailyCalendar(selectedDateStr) {
     renderSaviourDailyCalendar(`${String(calendarMonth+1).padStart(2,'0')}/01/${calendarYear}`);
   };
   Array.from(dailyCalendarDiv.querySelectorAll('.calendar-day')).forEach(dayDiv => {
+    if (dayDiv.classList.contains('future')) {
+      dayDiv.style.pointerEvents = 'none';
+      return;
+    }
     dayDiv.onclick = function(e) {
       e.stopPropagation();
       const dateStr = this.getAttribute('data-date');
