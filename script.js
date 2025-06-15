@@ -666,9 +666,16 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
   addFlagClickHandlers(); // Ensure click handler is always set after DOM update
 }
 
+// Prevent immediate repeats in Entry mode
+let lastEntryFlag = null;
 function pickRandomFlag() {
   if (!flags.length) return;
-  currentFlag = flags[Math.floor(Math.random() * flags.length)];
+  let possibleFlags = flags;
+  if (lastEntryFlag && flags.length > 1) {
+    possibleFlags = flags.filter(f => f !== lastEntryFlag);
+  }
+  currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
+  lastEntryFlag = currentFlag;
   const isMobile = window.innerWidth < 700;
   document.getElementById('flag-emoji').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;">` + (isMobile ? ` <span style="font-size:2.2rem;">${currentFlag.emoji}</span>` : '');
   document.getElementById('guess').value = '';
@@ -747,10 +754,17 @@ function skipEntryFlag() {
   document.getElementById('guess').focus();
 }
 
+// Prevent immediate repeats in Multiple Choice mode
+let lastMCFlag = null;
 function pickRandomFlagMC() {
   if (!flags.length) return;
+  let possibleFlags = flags;
+  if (lastMCFlag && flags.length > 1) {
+    possibleFlags = flags.filter(f => f !== lastMCFlag);
+  }
   // Pick correct flag
-  currentFlag = flags[Math.floor(Math.random() * flags.length)];
+  currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
+  lastMCFlag = currentFlag;
   // Pick 3 other random, unique countries
   let options = [currentFlag];
   let used = new Set([currentFlag.country]);
@@ -839,9 +853,16 @@ function checkMCAnswer(idx, options, btns) {
   }
 }
 
+// Prevent immediate repeats in Reverse Choice mode
+let lastRCFlag = null;
 function pickRandomFlagRC() {
   if (!flags.length) return;
-  rcCurrentFlag = flags[Math.floor(Math.random() * flags.length)];
+  let possibleFlags = flags;
+  if (lastRCFlag && flags.length > 1) {
+    possibleFlags = flags.filter(f => f !== lastRCFlag);
+  }
+  rcCurrentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
+  lastRCFlag = rcCurrentFlag;
   // Pick 3 other random, unique countries
   rcOptions = [rcCurrentFlag];
   let used = new Set([rcCurrentFlag.country]);
