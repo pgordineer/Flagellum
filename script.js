@@ -728,7 +728,7 @@ function pickRandomFlag() {
   currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastEntryFlag = currentFlag;
   const isMobile = window.innerWidth < 700;
-  // Use same container/image markup as MC mode, no inline styles
+  // --- FIX: Only wrap the image in .flag-img-container, emoji in .flag-emoji-char ---
   document.getElementById('flag-emoji').innerHTML =
     `<span class="flag-img-container"><img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}"></span>` +
     (isMobile ? ` <span class="flag-emoji-char">${currentFlag.emoji}</span>` : '');
@@ -839,6 +839,7 @@ function pickRandomFlagMC() {
   mcTried = [false, false, false, false];
   // Show flag and options
   const isMobile = window.innerWidth < 700;
+  // --- FIX: Only wrap the image in .flag-img-container, emoji in .flag-emoji-char ---
   document.getElementById('flag-emoji-mc').innerHTML =
     `<span class="flag-img-container"><img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}"></span>` +
     (isMobile ? ` <span class="flag-emoji-char">${currentFlag.emoji}</span>` : '');
@@ -1251,13 +1252,8 @@ function pickRandomFlag() {
 
 function pickRandomFlagMC() {
   if (!flags.length) return;
-  let possibleFlags = flags;
-  if (lastMCFlag && flags.length > 1) {
-    possibleFlags = flags.filter(f => f !== lastMCFlag);
-  }
   // Pick correct flag
-  currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
-  lastMCFlag = currentFlag;
+  currentFlag = flags[Math.floor(Math.random() * flags.length)];
   // Pick 3 other random, unique countries
   let options = [currentFlag];
   let used = new Set([currentFlag.country]);
@@ -1278,6 +1274,7 @@ function pickRandomFlagMC() {
   mcTried = [false, false, false, false];
   // Show flag and options
   const isMobile = window.innerWidth < 700;
+  // --- FIX: Only wrap the image in .flag-img-container, emoji in .flag-emoji-char ---
   document.getElementById('flag-emoji-mc').innerHTML =
     `<span class="flag-img-container"><img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}"></span>` +
     (isMobile ? ` <span class="flag-emoji-char">${currentFlag.emoji}</span>` : '');
