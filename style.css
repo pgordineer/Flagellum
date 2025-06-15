@@ -185,29 +185,27 @@ h1 {
 .flag-img-container {
   background: #fff;
   border: 1px solid #ddd;
-  border-radius: 0.18rem; /* LESS rounded */
+  border-radius: 0.18rem;
   box-shadow: 0 2px 8px #0001;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 90px;
-  min-height: 60px;
-  padding: 0.2em 0.5em;
-}
-.flag-img-container img {
   width: 90px;
   height: 60px;
-  border-radius: 0.18rem; /* LESS rounded, matches container */
+  min-width: 90px;
+  min-height: 60px;
+  padding: 0; /* Remove padding for snug fit */
+  overflow: hidden;
+}
+.flag-img-container img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.18rem;
   border: none;
   box-shadow: none;
-  margin-bottom: 0;
+  margin: 0;
   display: block;
-}
-.flag-emoji-char {
-  font-size: 2.2rem;
-  line-height: 1;
-  display: inline-block;
-  /* No border, no background, no radius */
+  object-fit: cover;
 }
 #guess {
   width: 100%;
@@ -795,4 +793,5 @@ footer {
     width: 38px !important;
     height: 26px !important;
   }
+}
 }
