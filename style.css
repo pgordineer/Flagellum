@@ -1,3 +1,28 @@
+#saviour-daily-date-pill.date-pill {
+  background: #f0f4fa;
+  color: #1976d2;
+  border-radius: 999px;
+  border: 1.5px solid #1976d2;
+  box-shadow: 0 1px 4px #1976d211;
+  padding: 0.25em 0.9em 0.25em 0.8em;
+  font-size: 0.98em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  margin-left: auto;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+#saviour-daily-date-pill.date-pill:hover {
+  background: #e3eafc;
+}
+#saviour-daily-mode-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+  position: relative;
+}
 #saviour-daily-calendar .calendar-header button {
   font-size: 1em;
   padding: 0.1em 0.5em;
