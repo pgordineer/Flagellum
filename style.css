@@ -1,3 +1,18 @@
+#saviour-daily-calendar .calendar-header button {
+  font-size: 1em;
+  padding: 0.1em 0.5em;
+  min-width: 1.8em;
+  min-height: 1.8em;
+  border-radius: 0.4em;
+  border: 1px solid #bbb;
+  background: #f0f4fa;
+  color: #1976d2;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+#saviour-daily-calendar .calendar-header button:hover {
+  background: #e3eafc;
+}
 #saviour-daily-calendar.main-menu-calendar {
   background: #fff;
   border: 1px solid #bbb;
