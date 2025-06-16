@@ -182,8 +182,7 @@ h1 {
   max-width: 95vw;
 }
 .flag-image img, .rc-option-btn img {
-  width: 192px !important;
-  height: 132px !important;
+  /* Remove fixed width/height to prevent stretching; use only max-width/max-height inline for adaptive scaling */
   object-fit: contain;
   background: #fff;
   border-radius: 0.3em;
