@@ -1,3 +1,10 @@
+#rc-country {
+  min-height: 2.5em;
+  max-width: 95vw;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-align: center;
+}
 #saviour-daily-date-pill.date-pill {
   background: #f0f4fa;
   color: #1976d2;
