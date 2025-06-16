@@ -727,7 +727,11 @@ function pickRandomFlag() {
   }
   currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastEntryFlag = currentFlag;
-  document.getElementById('flag-image-entry').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}">`;
+  document.getElementById('flag-image-entry').innerHTML = `
+    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;display:flex;flex-direction:column;align-items:center;margin:auto;">
+      <img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="max-width:220px;max-height:120px;object-fit:contain;background:#fff;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:0.5em;" />
+    </div>
+  `;
   document.getElementById('guess').value = '';
   document.getElementById('result').textContent = '';
   document.getElementById('wiki-link').innerHTML = '';
@@ -834,7 +838,11 @@ function pickRandomFlagMC() {
   mcAttempts = 0;
   mcTried = [false, false, false, false];
   // Show flag and options
-  document.getElementById('flag-image-mc').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}">`;
+  document.getElementById('flag-image-mc').innerHTML = `
+    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;display:flex;flex-direction:column;align-items:center;margin:auto;">
+      <img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="max-width:220px;max-height:120px;object-fit:contain;background:#fff;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:0.5em;" />
+    </div>
+  `;
   const mcOptionsDiv = document.getElementById('mc-options');
   mcOptionsDiv.innerHTML = '';
   options.forEach((opt, idx) => {
@@ -1225,7 +1233,11 @@ function addFlagClickHandlers() {
 function pickRandomFlag() {
   if (!flags.length) return;
   currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  document.getElementById('flag-image-entry').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}">`;
+  document.getElementById('flag-image-entry').innerHTML = `
+    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;display:flex;flex-direction:column;align-items:center;margin:auto;">
+      <img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="max-width:220px;max-height:120px;object-fit:contain;background:#fff;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:0.5em;" />
+    </div>
+  `;
   document.getElementById('guess').value = '';
   document.getElementById('result').textContent = '';
   document.getElementById('wiki-link').innerHTML = '';
@@ -1264,7 +1276,11 @@ function pickRandomFlagMC() {
   mcAttempts = 0;
   mcTried = [false, false, false, false];
   // Show flag and options
-  document.getElementById('flag-image-mc').innerHTML = `<img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}">`;
+  document.getElementById('flag-image-mc').innerHTML = `
+    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;display:flex;flex-direction:column;align-items:center;margin:auto;">
+      <img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="max-width:220px;max-height:120px;object-fit:contain;background:#fff;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:0.5em;" />
+    </div>
+  `;
   const mcOptionsDiv = document.getElementById('mc-options');
   mcOptionsDiv.innerHTML = '';
   options.forEach((opt, idx) => {
