@@ -172,10 +172,12 @@ h1 {
   margin-bottom: 1.5rem;
   text-align: center;
 }
-.flag-emoji {
-  font-size: 5rem;
+.flag-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 1.5rem 0 1rem 0;
-  text-align: center;
+  min-height: 132px;
 }
 #guess {
   width: 100%;
@@ -614,9 +616,15 @@ footer {
   margin-bottom: 0.5rem;
   text-align: center;
 }
+.flag-image img,
 .rc-option-btn img {
   width: 192px !important;
   height: 132px !important;
+  object-fit: cover;
+  border-radius: 0.3em;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px #0001;
+  margin-bottom: 0.5em;
 }
 .score-streak {
   font-size: 0.98em;
