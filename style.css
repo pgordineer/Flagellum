@@ -173,6 +173,7 @@ h1 {
   text-align: center;
 }
 .flag-image {
+  min-height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;
