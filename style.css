@@ -182,7 +182,8 @@ h1 {
 .flag-image img, .rc-option-btn img {
   width: 192px !important;
   height: 132px !important;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
   border-radius: 0.3em;
   border: 1px solid #ccc;
   box-shadow: 0 2px 8px #0001;
@@ -400,6 +401,8 @@ footer {
 .study-table img {
   width: 48px;
   height: 32px;
+  object-fit: contain;
+  background: #fff;
   border-radius: 0.2em;
   border: 1px solid #ccc;
   box-shadow: 0 1px 4px #0001;
@@ -493,10 +496,11 @@ footer {
 #flag-modal-img {
   max-width: 80vw;
   max-height: 70vh;
+  object-fit: contain;
+  background: #fff;
   border-radius: 0.5rem;
   box-shadow: 0 2px 16px #0003;
   border: 1px solid #ccc;
-  background: #fff;
 }
 #flag-modal-close {
   position: absolute;
@@ -717,6 +721,8 @@ footer {
 .saviour-flag-btn img {
   width: 64px !important;
   height: 44px !important;
+  object-fit: contain;
+  background: #fff;
 }
 .saviour-actions {
   display: flex;
@@ -773,5 +779,7 @@ footer {
   .saviour-flag-btn img {
     width: 38px !important;
     height: 26px !important;
+    object-fit: contain;
+    background: #fff;
   }
 }

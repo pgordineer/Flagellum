@@ -941,7 +941,7 @@ function pickRandomFlagRC() {
     btn.disabled = false;
     btn.tabIndex = 0;
     btn.innerHTML = `
-      <img src="${opt.img}" alt="Flag of ${opt.country}" style="width:90px;height:60px;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;" />
+      <img src="${opt.img}" alt="Flag of ${opt.country}" style="width:90px;height:60px;object-fit:contain;background:#fff;vertical-align:middle;border-radius:0.3em;border:1px solid #ccc;box-shadow:0 2px 8px #0001;margin-bottom:0.5em;" />
       <span class="rc-zoom-btn" title="Enlarge flag" tabindex="-1">+</span>
     `;
     btn.onclick = (e) => {
@@ -1537,7 +1537,7 @@ function renderSaviourGrid(gameOver = false) {
       btn.style.borderColor = '#c62828';
     }
     // Remove title attribute to prevent hover country name
-    btn.innerHTML = `<img src="${flag.img}" alt="Flag" />`;
+    btn.innerHTML = `<img src="${flag.img}" alt="Flag" style="width:64px;height:44px;object-fit:contain;background:#fff;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;" />`;
     // Add click handler for popout entry
     if (saviourActive[i] && !gameOver) {
       btn.onclick = function() {
@@ -1571,7 +1571,7 @@ function showSaviourFlagEntryModal(idx) {
   modal.innerHTML = `
     <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;display:flex;flex-direction:column;align-items:center;">
       <button id="saviour-flag-entry-close" style="position:absolute;top:0.5em;right:0.7em;font-size:1.5em;background:none;border:none;cursor:pointer;">&times;</button>
-      <img src="${flag.img}" alt="Flag of ${flag.country}" style="max-width:220px;max-height:120px;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:1em;" />
+      <img src="${flag.img}" alt="Flag of ${flag.country}" style="max-width:220px;max-height:120px;object-fit:contain;background:#fff;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:1em;" />
       <div style="width:100%;max-width:320px;">
         <input type="text" id="saviour-flag-entry-input" placeholder="Enter country or code..." autocomplete="off" style="width:100%;padding:0.7rem;font-size:1.1rem;border:1px solid #ddd;border-radius:0.5rem;margin-bottom:0.5rem;box-sizing:border-box;" />
         <div id="saviour-flag-entry-autocomplete" class="autocomplete-list" style="display:none;"></div>
