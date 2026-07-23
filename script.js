@@ -1,3 +1,103 @@
+// --- Region Configuration ---
+let allRegions = [];
+let activeRegions = new Set();
+
+function normalizeRegions(regionValue) {
+  if (Array.isArray(regionValue)) {
+    const cleaned = regionValue.map(r => String(r).trim()).filter(Boolean);
+    return cleaned.length ? [...new Set(cleaned)] : ['Other'];
+  }
+  if (typeof regionValue === 'string') {
+    const value = regionValue.trim();
+    return value ? [value] : ['Other'];
+  }
+  return ['Other'];
+}
+
+function getRegionFilteredFlags() {
+  if (!activeRegions.size) return [...flags];
+  return flags.filter(flag => flag.region.some(region => activeRegions.has(region)));
+}
+
+function initializeRegionsFromFlags() {
+  flags = flags.map(flag => ({ ...flag, region: normalizeRegions(flag.region) }));
+  allRegions = Array.from(new Set(flags.flatMap(flag => flag.region))).sort((a, b) => a.localeCompare(b));
+
+  const savedRegions = loadRegionFilter();
+  if (savedRegions && savedRegions.size) {
+    const validSaved = new Set([...savedRegions].filter(region => allRegions.includes(region)));
+    activeRegions = validSaved.size ? validSaved : new Set(allRegions);
+  } else {
+    activeRegions = new Set(allRegions);
+  }
+  saveRegionFilter();
+}
+
+function setupRegionToggles() {
+  const togglesDiv = document.getElementById('region-toggles');
+  if (!togglesDiv) return;
+  togglesDiv.innerHTML = '';
+  
+  allRegions.forEach(region => {
+    const label = document.createElement('label');
+    label.style.cssText = 'display:flex;align-items:center;gap:0.4em;padding:0.5em 0.8em;background:#fff;border:1.5px solid #ddd;border-radius:0.4em;cursor:pointer;user-select:none;transition:all 0.2s;';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = activeRegions.has(region);
+    checkbox.onchange = (e) => {
+      if (e.target.checked) {
+        activeRegions.add(region);
+      } else {
+        activeRegions.delete(region);
+      }
+      if (activeRegions.size === 0) {
+        activeRegions = new Set(allRegions);
+        checkbox.checked = true;
+      }
+      updateRegionToggleStyles();
+      saveRegionFilter();
+    };
+    
+    const text = document.createElement('span');
+    text.textContent = region;
+    text.style.fontSize = '0.95em';
+    
+    label.appendChild(checkbox);
+    label.appendChild(text);
+    togglesDiv.appendChild(label);
+  });
+  updateRegionToggleStyles();
+}
+
+function updateRegionToggleStyles() {
+  const labels = document.querySelectorAll('#region-toggles label');
+  labels.forEach(label => {
+    const checkbox = label.querySelector('input');
+    if (checkbox.checked) {
+      label.style.background = '#1976d2';
+      label.style.color = '#fff';
+      label.style.borderColor = '#1976d2';
+    } else {
+      label.style.background = '#fff';
+      label.style.color = '#000';
+      label.style.borderColor = '#ddd';
+    }
+  });
+}
+
+function saveRegionFilter() {
+  const regions = Array.from(activeRegions).join(',');
+  localStorage.setItem('flagellum_active_regions', regions);
+}
+
+function loadRegionFilter() {
+  const saved = localStorage.getItem('flagellum_active_regions');
+  if (!saved) return null;
+  const regions = saved.split(',').map(s => s.trim()).filter(Boolean);
+  return new Set(regions);
+}
+
 // --- Saviour Mode (Daily) ---
 let saviourDailyDate = null; // MM/DD/YYYY string
 let saviourDailyCurrentScore = 0; // actions in current game
@@ -590,6 +690,7 @@ function updateMainMenuHighscores() {
 
 function showMainMenu() {
   updateMainMenuHighscores();
+  setupRegionToggles();
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
@@ -664,13 +765,13 @@ function showStudyPage() {
 }
 
 function renderStudyTable(sortKey, sortDir = 'asc') {
-  let sorted = [...flags];
+  let sorted = getRegionFilteredFlags();
   
-  // Apply filter
+  // Apply text filter
   const filterLower = studyFilterText.toLowerCase();
   if (filterLower) {
     sorted = sorted.filter(flag => {
-      const searchText = `${flag.country} ${flag.code} ${flag.wiki} ${flag.emoji}`.toLowerCase();
+      const searchText = `${flag.country} ${flag.code} ${flag.wiki} ${flag.emoji} ${flag.region.join(' ')}`.toLowerCase();
       return searchText.includes(filterLower);
     });
   }
@@ -707,7 +808,7 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
   // Show result count
   const resultCount = sorted.length;
   if (filterLower && resultCount === 0) {
-    tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;color:#999;padding:2em;">No countries match your search.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="14" style="text-align:center;color:#999;padding:2em;">No countries match your search.</td></tr>';
     return;
   } else if (filterLower) {
     const parentDiv = tbody.parentElement.parentElement;
@@ -729,6 +830,7 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
       <td style="font-size:1.5em;">${flag.emoji}</td>
       <td><a href="https://en.wikipedia.org/wiki/${flag.wiki}" target="_blank">Wiki</a></td>
       <td><img src="${flag.img}" alt="Flag of ${flag.country}" /></td>
+      <td>${flag.region.join(', ')}</td>
       <td>${flag.gdp ? (flag.gdp/1e6).toLocaleString(undefined, {maximumFractionDigits:0}) : ''}</td>
       <td>${flag.area ? flag.area.toLocaleString() : ''}</td>
       <td>${flag.coastline_km !== undefined ? flag.coastline_km.toLocaleString() : ''}</td>
@@ -778,10 +880,11 @@ function setupStudyScrollSync() {
 let lastEntryFlag = null;
 function pickRandomFlag() {
   if (!flags.length) return;
-  let possibleFlags = flags;
-  if (lastEntryFlag && flags.length > 1) {
-    possibleFlags = flags.filter(f => f !== lastEntryFlag);
+  let possibleFlags = getRegionFilteredFlags();
+  if (lastEntryFlag && possibleFlags.length > 1) {
+    possibleFlags = possibleFlags.filter(f => f !== lastEntryFlag);
   }
+  if (!possibleFlags.length) possibleFlags = flags;
   currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastEntryFlag = currentFlag;
   document.getElementById('flag-image-entry').innerHTML = `
@@ -869,10 +972,11 @@ function skipEntryFlag() {
 let lastMCFlag = null;
 function pickRandomFlagMC() {
   if (!flags.length) return;
-  let possibleFlags = flags;
-  if (lastMCFlag && flags.length > 1) {
-    possibleFlags = flags.filter(f => f !== lastMCFlag);
+  let possibleFlags = getRegionFilteredFlags();
+  if (lastMCFlag && possibleFlags.length > 1) {
+    possibleFlags = possibleFlags.filter(f => f !== lastMCFlag);
   }
+  if (!possibleFlags.length) possibleFlags = flags;
   // Pick correct flag
   currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastMCFlag = currentFlag;
@@ -880,7 +984,7 @@ function pickRandomFlagMC() {
   let options = [currentFlag];
   let used = new Set([currentFlag.country]);
   while (options.length < 4) {
-    let f = flags[Math.floor(Math.random() * flags.length)];
+    let f = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
     if (!used.has(f.country)) {
       options.push(f);
       used.add(f.country);
@@ -971,17 +1075,18 @@ function checkMCAnswer(idx, options, btns) {
 let lastRCFlag = null;
 function pickRandomFlagRC() {
   if (!flags.length) return;
-  let possibleFlags = flags;
-  if (lastRCFlag && flags.length > 1) {
-    possibleFlags = flags.filter(f => f !== lastRCFlag);
+  let possibleFlags = getRegionFilteredFlags();
+  if (lastRCFlag && possibleFlags.length > 1) {
+    possibleFlags = possibleFlags.filter(f => f !== lastRCFlag);
   }
+  if (!possibleFlags.length) possibleFlags = flags;
   rcCurrentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastRCFlag = rcCurrentFlag;
   // Pick 3 other random, unique countries
   rcOptions = [rcCurrentFlag];
   let used = new Set([rcCurrentFlag.country]);
   while (rcOptions.length < 4) {
-    let f = flags[Math.floor(Math.random() * flags.length)];
+    let f = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
     if (!used.has(f.country)) {
       rcOptions.push(f);
       used.add(f.country);
@@ -1286,86 +1391,13 @@ function addFlagClickHandlers() {
   }
 }
 
-// Ensure addFlagClickHandlers is called after every DOM update that changes flag images:
-function pickRandomFlag() {
-  if (!flags.length) return;
-  currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  document.getElementById('flag-image-entry').innerHTML = `
-    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;display:flex;flex-direction:column;align-items:center;margin:auto;">
-      <img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="max-width:220px;max-height:120px;object-fit:contain;background:#fff;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:0.5em;" />
-    </div>
-  `;
-  document.getElementById('guess').value = '';
-  document.getElementById('result').textContent = '';
-  document.getElementById('wiki-link').innerHTML = '';
-  document.getElementById('submit').textContent = 'Guess';
-  document.getElementById('submit').disabled = false;
-  document.getElementById('guess').disabled = false;
-  document.getElementById('hint').style.display = 'block';
-  document.getElementById('hint').textContent = 'Hint';
-  document.getElementById('hint').disabled = false;
-  document.getElementById('skip').style.display = 'inline-block';
-  document.getElementById('hint-text').textContent = '';
-  document.getElementById('submit').onclick = checkGuess;
-  addFlagClickHandlers(); // Ensure click handler is always set after DOM update
-}
-
-function pickRandomFlagMC() {
-  if (!flags.length) return;
-  // Pick correct flag
-  currentFlag = flags[Math.floor(Math.random() * flags.length)];
-  // Pick 3 other random, unique countries
-  let options = [currentFlag];
-  let used = new Set([currentFlag.country]);
-  while (options.length < 4) {
-    let f = flags[Math.floor(Math.random() * flags.length)];
-    if (!used.has(f.country)) {
-      options.push(f);
-      used.add(f.country);
-    }
-  }
-  // Shuffle options
-  for (let i = options.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [options[i], options[j]] = [options[j], options[i]];
-  }
-  mcCorrectIndex = options.findIndex(f => f.country === currentFlag.country);
-  mcAttempts = 0;
-  mcTried = [false, false, false, false];
-  // Show flag and options
-  document.getElementById('flag-image-mc').innerHTML = `
-    <div style="background:#fff;padding:1.5em 1.2em 1.2em 1.2em;border-radius:1.1em;max-width:95vw;box-shadow:0 2px 16px #0003;min-width:270px;position:relative;display:flex;flex-direction:column;align-items:center;margin:auto;">
-      <img src="${currentFlag.img}" alt="Flag of ${currentFlag.country}" style="max-width:220px;max-height:120px;object-fit:contain;background:#fff;border-radius:0.5em;border:1px solid #ccc;box-shadow:0 2px 8px #0002;margin-bottom:0.5em;" />
-    </div>
-  `;
-  const mcOptionsDiv = document.getElementById('mc-options');
-  mcOptionsDiv.innerHTML = '';
-  options.forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'mc-option-btn';
-    btn.textContent = `${opt.country} (${opt.code})`;
-    btn.disabled = false;
-    btn.onclick = () => checkMCAnswer(idx, options, btns);
-    mcOptionsDiv.appendChild(btn);
-  });
-  // Store buttons for disabling
-  let btns = Array.from(mcOptionsDiv.children);
-  btns.forEach((btn, idx) => {
-    btn.onclick = () => checkMCAnswer(idx, options, btns);
-  });
-  document.getElementById('result-mc').textContent = '';
-  document.getElementById('wiki-link-mc').innerHTML = '';
-  document.getElementById('hint-text-mc').textContent = '';
-  document.getElementById('next-mc').style.display = 'none';
-  addFlagClickHandlers(); // Ensure click handler is always set after DOM update
-}
-
 function startGame() {
   loadHighScores();
   fetch('flags.json')
     .then(res => res.json())
     .then(data => {
       flags = data;
+      initializeRegionsFromFlags();
       // Main menu event listeners
       document.getElementById('entry-mode-btn').addEventListener('click', showEntryMode);
       document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);

@@ -37,6 +37,10 @@
       </button>
       <div id="saviour-daily-calendar" class="main-menu-calendar" style="display:none;z-index:1001;"></div>
       <div id="congrats" style="display:none;"></div>
+      <div id="region-filter" style="background:#f5f5f5;padding:1.2em;border-radius:0.7em;margin-top:1.5em;text-align:center;">
+        <div style="font-weight:bold;margin-bottom:0.7em;">Filter by Region:</div>
+        <div id="region-toggles" style="display:flex;flex-wrap:wrap;gap:0.5em;justify-content:center;"></div>
+      </div>
     </div>
     <div id="study-page" style="display:none; max-width:100vw;">
       <button id="back-to-menu-study-top" class="back-to-menu-study" style="margin-bottom:1rem;">Back to Menu</button>
@@ -57,6 +61,7 @@
               <th><button class="sort-btn" data-sort="emoji">Unicode</button></th>
               <th><button class="sort-btn" data-sort="wiki">Wiki</button></th>
               <th><button class="sort-btn" data-sort="img">Image</button></th>
+              <th><button class="sort-btn" data-sort="region">Region</button></th>
               <th><button class="sort-btn" data-sort="gdp">GDP<br>(M USD)</button></th>
               <th><button class="sort-btn" data-sort="area">Area<br>(km²)</button></th>
               <th><button class="sort-btn" data-sort="coastline_km">Coastline<br>(km)</button></th>
