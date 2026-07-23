@@ -648,17 +648,33 @@ function showRCMode() {
   addFlagClickHandlers();
 }
 
+let studyFilterText = '';
+
 function showStudyPage() {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
   document.getElementById('study-page').style.display = 'block';
+  document.getElementById('study-filter').value = '';
+  studyFilterText = '';
   renderStudyTable('country');
   addFlagClickHandlers();
+  setupStudyScrollSync();
+  setupStudyFilter();
 }
 
 function renderStudyTable(sortKey, sortDir = 'asc') {
   let sorted = [...flags];
+  
+  // Apply filter
+  const filterLower = studyFilterText.toLowerCase();
+  if (filterLower) {
+    sorted = sorted.filter(flag => {
+      const searchText = `${flag.country} ${flag.code} ${flag.wiki} ${flag.emoji}`.toLowerCase();
+      return searchText.includes(filterLower);
+    });
+  }
+  
   // Determine if the column is numeric
   const numericCols = ['gdp', 'area', 'coastline_km', 'min_lat', 'max_lat', 'min_lng', 'max_lng'];
   sorted.sort((a, b) => {
@@ -687,6 +703,24 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
   });
   const tbody = document.getElementById('study-tbody');
   tbody.innerHTML = '';
+  
+  // Show result count
+  const resultCount = sorted.length;
+  if (filterLower && resultCount === 0) {
+    tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;color:#999;padding:2em;">No countries match your search.</td></tr>';
+    return;
+  } else if (filterLower) {
+    const parentDiv = tbody.parentElement.parentElement;
+    let countSpan = parentDiv.querySelector('.filter-count');
+    if (!countSpan) {
+      countSpan = document.createElement('div');
+      countSpan.className = 'filter-count';
+      countSpan.style.cssText = 'text-align:right;font-size:0.9em;color:#666;margin-bottom:0.3em;';
+      parentDiv.insertBefore(countSpan, parentDiv.querySelector('table'));
+    }
+    countSpan.textContent = `Showing ${resultCount} of ${flags.length} countries`;
+  }
+  
   for (const flag of sorted) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -715,6 +749,29 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
     };
   });
   addFlagClickHandlers(); // Ensure click handler is always set after DOM update
+}
+
+function setupStudyFilter() {
+  const filterInput = document.getElementById('study-filter');
+  if (!filterInput) return;
+  filterInput.addEventListener('input', (e) => {
+    studyFilterText = e.target.value;
+    renderStudyTable('country', 'asc');
+  });
+}
+
+function setupStudyScrollSync() {
+  const scrollTop = document.getElementById('study-scrollbar-top');
+  const scrollBottom = document.getElementById('study-scrollbar-bottom');
+  if (!scrollTop || !scrollBottom) return;
+  
+  scrollTop.addEventListener('scroll', () => {
+    scrollBottom.scrollLeft = scrollTop.scrollLeft;
+  });
+  
+  scrollBottom.addEventListener('scroll', () => {
+    scrollTop.scrollLeft = scrollBottom.scrollLeft;
+  });
 }
 
 // Prevent immediate repeats in Entry mode
