@@ -1,6 +1,59 @@
 // --- Region Configuration ---
 let allRegions = [];
 let activeRegions = new Set();
+let allSubnationalTypes = [];
+let activeSubnationalTypes = new Set();
+let datasetMode = 'national';
+
+const DATASET_MODE_NATIONAL = 'national';
+const DATASET_MODE_SUBNATIONAL = 'subnational';
+
+function formatEntityTypeLabel(entityType) {
+  if (!entityType) return 'Unknown';
+  const normalized = String(entityType).trim().toLowerCase();
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+}
+
+function normalizeEntityType(typeValue) {
+  const value = String(typeValue || '').trim().toLowerCase();
+  if (!value || value === 'nation' || value === 'country') return 'nation';
+  if (value === 'state' || value === 'province' || value === 'territory') return value;
+  return value;
+}
+
+function normalizeParentNation(parentValue, countryName, entityType) {
+  if (entityType === 'nation') return null;
+  const parent = String(parentValue || '').trim();
+  return parent || countryName;
+}
+
+function getCurrentModeBaseFlags() {
+  if (datasetMode === DATASET_MODE_SUBNATIONAL) {
+    return flags.filter(flag => flag.entity_type !== 'nation');
+  }
+  return flags.filter(flag => flag.entity_type === 'nation');
+}
+
+function getCurrentModeScopedFlags() {
+  const scoped = getCurrentModeBaseFlags();
+  if (datasetMode !== DATASET_MODE_SUBNATIONAL) return scoped;
+  if (!activeSubnationalTypes.size) return [];
+  return scoped.filter(flag => activeSubnationalTypes.has(flag.entity_type));
+}
+
+function refreshRegionsForCurrentMode() {
+  const scoped = getCurrentModeBaseFlags();
+  allRegions = Array.from(new Set(scoped.flatMap(flag => flag.region))).sort((a, b) => a.localeCompare(b));
+
+  const savedRegions = loadRegionFilter();
+  if (savedRegions && savedRegions.size) {
+    const validSaved = new Set([...savedRegions].filter(region => allRegions.includes(region)));
+    activeRegions = validSaved.size ? validSaved : new Set(allRegions);
+  } else {
+    activeRegions = new Set(allRegions);
+  }
+  saveRegionFilter();
+}
 
 function normalizeRegions(regionValue) {
   if (Array.isArray(regionValue)) {
@@ -16,91 +69,289 @@ function normalizeRegions(regionValue) {
 
 function getRegionFilteredFlags() {
   if (!activeRegions.size) return [];
-  return flags.filter(flag => flag.region.some(region => activeRegions.has(region)));
+  return getCurrentModeScopedFlags().filter(flag => flag.region.some(region => activeRegions.has(region)));
 }
 
 function requireActiveRegionsForGame() {
-  if (activeRegions.size > 0) return true;
-  alert('Please select at least one region, or use Select All.');
-  return false;
+  if (!activeRegions.size) {
+    alert('Please select at least one region, or use Select All.');
+    return false;
+  }
+  if (datasetMode === DATASET_MODE_SUBNATIONAL && !activeSubnationalTypes.size) {
+    alert('Please select at least one subnational type, or use All.');
+    return false;
+  }
+  return true;
 }
 
 function initializeRegionsFromFlags() {
-  flags = flags.map(flag => ({ ...flag, region: normalizeRegions(flag.region) }));
-  allRegions = Array.from(new Set(flags.flatMap(flag => flag.region))).sort((a, b) => a.localeCompare(b));
+  flags = flags.map(flag => {
+    const entityType = normalizeEntityType(flag.entity_type);
+    return {
+      ...flag,
+      region: normalizeRegions(flag.region),
+      entity_type: entityType,
+      parent_nation: normalizeParentNation(flag.parent_nation, flag.country, entityType)
+    };
+  });
 
-  const savedRegions = loadRegionFilter();
-  if (savedRegions && savedRegions.size) {
-    const validSaved = new Set([...savedRegions].filter(region => allRegions.includes(region)));
-    activeRegions = validSaved.size ? validSaved : new Set(allRegions);
-  } else {
-    activeRegions = new Set(allRegions);
+  allSubnationalTypes = Array.from(
+    new Set(
+      flags
+        .filter(flag => flag.entity_type !== 'nation')
+        .map(flag => flag.entity_type)
+    )
+  ).sort((a, b) => a.localeCompare(b));
+
+  datasetMode = loadDatasetMode();
+  if (datasetMode === DATASET_MODE_SUBNATIONAL && !allSubnationalTypes.length) {
+    datasetMode = DATASET_MODE_NATIONAL;
   }
-  saveRegionFilter();
+
+  const savedTypes = loadSubnationalTypeFilter();
+  if (savedTypes && savedTypes.size) {
+    const validTypes = new Set([...savedTypes].filter(type => allSubnationalTypes.includes(type)));
+    activeSubnationalTypes = validTypes.size ? validTypes : new Set(allSubnationalTypes);
+  } else {
+    activeSubnationalTypes = new Set(allSubnationalTypes);
+  }
+  saveDatasetMode();
+  saveSubnationalTypeFilter();
+  refreshRegionsForCurrentMode();
 }
 
 function setupRegionToggles() {
-  const togglesDiv = document.getElementById('region-toggles');
-  if (!togglesDiv) return;
-  togglesDiv.innerHTML = '';
-  
-  allRegions.forEach(region => {
-    const label = document.createElement('label');
-    label.style.cssText = 'display:flex;align-items:center;gap:0.4em;padding:0.5em 0.8em;background:#fff;border:1.5px solid #ddd;border-radius:0.4em;cursor:pointer;user-select:none;transition:all 0.2s;';
-    
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = activeRegions.has(region);
-    checkbox.onchange = (e) => {
-      if (e.target.checked) {
-        activeRegions.add(region);
-      } else {
-        activeRegions.delete(region);
-      }
-      updateRegionToggleStyles();
-      saveRegionFilter();
-    };
-    
-    const text = document.createElement('span');
-    text.textContent = region;
-    text.style.fontSize = '0.95em';
-    
-    label.appendChild(checkbox);
-    label.appendChild(text);
-    togglesDiv.appendChild(label);
+  const regionFilterSets = [
+    {
+      togglesId: 'region-toggles',
+      selectAllId: 'region-select-all',
+      clearAllId: 'region-clear-all'
+    },
+    {
+      togglesId: 'study-region-toggles-bottom',
+      selectAllId: 'study-region-select-all-bottom',
+      clearAllId: 'study-region-clear-all-bottom'
+    }
+  ];
+
+  regionFilterSets.forEach(setConfig => {
+    const togglesDiv = document.getElementById(setConfig.togglesId);
+    if (!togglesDiv) return;
+    togglesDiv.innerHTML = '';
+
+    allRegions.forEach(region => {
+      const label = document.createElement('label');
+      label.style.cssText = 'display:flex;align-items:center;gap:0.4em;padding:0.5em 0.8em;background:#fff;border:1.5px solid #ddd;border-radius:0.4em;cursor:pointer;user-select:none;transition:all 0.2s;';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = activeRegions.has(region);
+      checkbox.onchange = (e) => {
+        if (e.target.checked) {
+          activeRegions.add(region);
+        } else {
+          activeRegions.delete(region);
+        }
+        saveRegionFilter();
+        updateAllRegionFilterViews();
+        refreshVisibleStudyTable();
+      };
+
+      const text = document.createElement('span');
+      text.textContent = region;
+      text.style.fontSize = '0.95em';
+
+      label.appendChild(checkbox);
+      label.appendChild(text);
+      togglesDiv.appendChild(label);
+    });
+
+    const selectAllBtn = document.getElementById(setConfig.selectAllId);
+    if (selectAllBtn && selectAllBtn.dataset.regionActionSetup !== '1') {
+      selectAllBtn.dataset.regionActionSetup = '1';
+      selectAllBtn.addEventListener('click', () => {
+        activeRegions = new Set(allRegions);
+        saveRegionFilter();
+        updateAllRegionFilterViews();
+        refreshVisibleStudyTable();
+      });
+    }
+
+    const clearAllBtn = document.getElementById(setConfig.clearAllId);
+    if (clearAllBtn && clearAllBtn.dataset.regionActionSetup !== '1') {
+      clearAllBtn.dataset.regionActionSetup = '1';
+      clearAllBtn.addEventListener('click', () => {
+        activeRegions.clear();
+        saveRegionFilter();
+        updateAllRegionFilterViews();
+        refreshVisibleStudyTable();
+      });
+    }
   });
-
-  const selectAllBtn = document.getElementById('region-select-all');
-  if (selectAllBtn && selectAllBtn.dataset.regionActionSetup !== '1') {
-    selectAllBtn.dataset.regionActionSetup = '1';
-    selectAllBtn.addEventListener('click', () => {
-      activeRegions = new Set(allRegions);
-      togglesDiv.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        cb.checked = true;
-      });
-      updateRegionToggleStyles();
-      saveRegionFilter();
-    });
-  }
-
-  const clearAllBtn = document.getElementById('region-clear-all');
-  if (clearAllBtn && clearAllBtn.dataset.regionActionSetup !== '1') {
-    clearAllBtn.dataset.regionActionSetup = '1';
-    clearAllBtn.addEventListener('click', () => {
-      activeRegions.clear();
-      togglesDiv.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        cb.checked = false;
-      });
-      updateRegionToggleStyles();
-      saveRegionFilter();
-    });
-  }
 
   updateRegionToggleStyles();
 }
 
+function updateAllRegionFilterViews() {
+  document.querySelectorAll('#region-toggles input[type="checkbox"], #study-region-toggles-bottom input[type="checkbox"]').forEach(cb => {
+    const labelText = cb.parentElement && cb.parentElement.querySelector('span')
+      ? cb.parentElement.querySelector('span').textContent
+      : '';
+    cb.checked = activeRegions.has(labelText);
+  });
+  updateRegionToggleStyles();
+}
+
+function refreshVisibleStudyTable() {
+  const studyPage = document.getElementById('study-page');
+  if (!studyPage || studyPage.style.display === 'none') return;
+  renderStudyTable('country', 'asc');
+}
+
+function setupDatasetModeToggle() {
+  const nationalBtn = document.getElementById('dataset-mode-national');
+  const subnationalBtn = document.getElementById('dataset-mode-subnational');
+  if (!nationalBtn || !subnationalBtn) return;
+
+  if (nationalBtn.dataset.datasetModeSetup !== '1') {
+    nationalBtn.dataset.datasetModeSetup = '1';
+    nationalBtn.addEventListener('click', () => {
+      if (datasetMode === DATASET_MODE_NATIONAL) return;
+      datasetMode = DATASET_MODE_NATIONAL;
+      saveDatasetMode();
+      refreshRegionsForCurrentMode();
+      refreshMenuFiltersAndModeUI();
+    });
+  }
+
+  if (subnationalBtn.dataset.datasetModeSetup !== '1') {
+    subnationalBtn.dataset.datasetModeSetup = '1';
+    subnationalBtn.addEventListener('click', () => {
+      if (!allSubnationalTypes.length) {
+        alert('No state/province/territory entries are available in the dataset yet.');
+        return;
+      }
+      if (datasetMode === DATASET_MODE_SUBNATIONAL) return;
+      datasetMode = DATASET_MODE_SUBNATIONAL;
+      saveDatasetMode();
+      refreshRegionsForCurrentMode();
+      refreshMenuFiltersAndModeUI();
+    });
+  }
+
+  nationalBtn.style.background = datasetMode === DATASET_MODE_NATIONAL ? '#1976d2' : '#666';
+  subnationalBtn.style.background = datasetMode === DATASET_MODE_SUBNATIONAL ? '#1976d2' : '#666';
+}
+
+function setupSubnationalTypeToggles() {
+  const container = document.getElementById('subnational-type-toggles');
+  if (!container) return;
+  container.innerHTML = '';
+
+  allSubnationalTypes.forEach(type => {
+    const label = document.createElement('label');
+    label.style.cssText = 'display:flex;align-items:center;gap:0.4em;padding:0.5em 0.8em;background:#fff;border:1.5px solid #ddd;border-radius:0.4em;cursor:pointer;user-select:none;transition:all 0.2s;';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = activeSubnationalTypes.has(type);
+    checkbox.onchange = (e) => {
+      if (e.target.checked) {
+        activeSubnationalTypes.add(type);
+      } else {
+        activeSubnationalTypes.delete(type);
+      }
+      updateSubnationalTypeToggleStyles();
+      saveSubnationalTypeFilter();
+    };
+
+    const text = document.createElement('span');
+    text.textContent = formatEntityTypeLabel(type);
+    text.style.fontSize = '0.95em';
+
+    label.appendChild(checkbox);
+    label.appendChild(text);
+    container.appendChild(label);
+  });
+
+  const allBtn = document.getElementById('subnational-type-all');
+  if (allBtn) {
+    allBtn.disabled = !allSubnationalTypes.length;
+    allBtn.style.opacity = allSubnationalTypes.length ? '1' : '0.55';
+    allBtn.style.cursor = allSubnationalTypes.length ? 'pointer' : 'not-allowed';
+  }
+  if (allBtn && allBtn.dataset.subnationalTypeSetup !== '1') {
+    allBtn.dataset.subnationalTypeSetup = '1';
+    allBtn.addEventListener('click', () => {
+      activeSubnationalTypes = new Set(allSubnationalTypes);
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = true;
+      });
+      updateSubnationalTypeToggleStyles();
+      saveSubnationalTypeFilter();
+    });
+  }
+
+  updateSubnationalTypeToggleStyles();
+}
+
+function updateSubnationalTypeToggleStyles() {
+  const labels = document.querySelectorAll('#subnational-type-toggles label');
+  labels.forEach(label => {
+    const checkbox = label.querySelector('input');
+    if (checkbox && checkbox.checked) {
+      label.style.background = '#1976d2';
+      label.style.color = '#fff';
+      label.style.borderColor = '#1976d2';
+    } else {
+      label.style.background = '#fff';
+      label.style.color = '#000';
+      label.style.borderColor = '#ddd';
+    }
+  });
+}
+
+function updateSaviourAvailabilityForMode() {
+  const isNationalMode = datasetMode === DATASET_MODE_NATIONAL;
+  const saviourBtn = document.getElementById('saviour-mode-btn');
+  const saviourDailyBtn = document.getElementById('saviour-daily-mode-btn');
+
+  [saviourBtn, saviourDailyBtn].forEach(btn => {
+    if (!btn) return;
+    btn.disabled = !isNationalMode;
+    btn.title = isNationalMode ? '' : 'Saviour modes are available only in National mode.';
+    btn.style.opacity = isNationalMode ? '1' : '0.55';
+    btn.style.cursor = isNationalMode ? 'pointer' : 'not-allowed';
+  });
+}
+
+function refreshMenuFiltersAndModeUI() {
+  const regionTitle = document.getElementById('region-filter-title');
+  const studyRegionTitle = document.getElementById('study-region-filter-title');
+  const regionTitleText = datasetMode === DATASET_MODE_NATIONAL
+    ? 'Filter by Region (National):'
+    : 'Filter by Region (Subnational):';
+
+  if (regionTitle) {
+    regionTitle.textContent = regionTitleText;
+  }
+  if (studyRegionTitle) {
+    studyRegionTitle.textContent = regionTitleText;
+  }
+
+  const subnationalFilter = document.getElementById('subnational-type-filter');
+  if (subnationalFilter) {
+    subnationalFilter.style.display = (datasetMode === DATASET_MODE_SUBNATIONAL && allSubnationalTypes.length) ? 'block' : 'none';
+  }
+
+  setupDatasetModeToggle();
+  setupSubnationalTypeToggles();
+  setupRegionToggles();
+  updateSaviourAvailabilityForMode();
+}
+
 function updateRegionToggleStyles() {
-  const labels = document.querySelectorAll('#region-toggles label');
+  const labels = document.querySelectorAll('#region-toggles label, #study-region-toggles-bottom label');
   labels.forEach(label => {
     const checkbox = label.querySelector('input');
     if (checkbox.checked) {
@@ -117,14 +368,36 @@ function updateRegionToggleStyles() {
 
 function saveRegionFilter() {
   const regions = Array.from(activeRegions).join(',');
-  localStorage.setItem('flagellum_active_regions', regions);
+  localStorage.setItem(`flagellum_active_regions_${datasetMode}`, regions);
 }
 
 function loadRegionFilter() {
-  const saved = localStorage.getItem('flagellum_active_regions');
+  const saved = localStorage.getItem(`flagellum_active_regions_${datasetMode}`);
   if (!saved) return null;
   const regions = saved.split(',').map(s => s.trim()).filter(Boolean);
   return new Set(regions);
+}
+
+function saveDatasetMode() {
+  localStorage.setItem('flagellum_dataset_mode', datasetMode);
+}
+
+function loadDatasetMode() {
+  const saved = localStorage.getItem('flagellum_dataset_mode');
+  if (saved === DATASET_MODE_NATIONAL || saved === DATASET_MODE_SUBNATIONAL) return saved;
+  if (saved === 'nations') return DATASET_MODE_NATIONAL;
+  return DATASET_MODE_NATIONAL;
+}
+
+function saveSubnationalTypeFilter() {
+  const types = Array.from(activeSubnationalTypes).join(',');
+  localStorage.setItem('flagellum_active_subnational_types', types);
+}
+
+function loadSubnationalTypeFilter() {
+  const saved = localStorage.getItem('flagellum_active_subnational_types');
+  if (!saved) return null;
+  return new Set(saved.split(',').map(s => s.trim()).filter(Boolean));
 }
 
 // --- Saviour Mode (Daily) ---
@@ -335,6 +608,10 @@ updateMainMenuHighscores = function() {
 // --- In-Game UI: Show Saviour Daily stats if in daily mode ---
 let inSaviourDailyMode = false;
 function showSaviourModeDaily() {
+  if (datasetMode !== DATASET_MODE_NATIONAL) {
+    alert('Saviour modes are available only in National mode.');
+    return;
+  }
   inSaviourDailyMode = true;
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-entry').style.display = 'none';
@@ -719,7 +996,7 @@ function updateMainMenuHighscores() {
 
 function showMainMenu() {
   updateMainMenuHighscores();
-  setupRegionToggles();
+  refreshMenuFiltersAndModeUI();
   document.getElementById('main-menu').style.display = 'flex';
   document.getElementById('game-entry').style.display = 'none';
   document.getElementById('game-mc').style.display = 'none';
@@ -806,12 +1083,13 @@ function syncStudyScrollbarWidths() {
 
 function renderStudyTable(sortKey, sortDir = 'asc') {
   let sorted = getRegionFilteredFlags();
+  const totalModeEntries = getCurrentModeScopedFlags().length;
   
   // Apply text filter
   const filterLower = studyFilterText.toLowerCase();
   if (filterLower) {
     sorted = sorted.filter(flag => {
-      const searchText = `${flag.country} ${flag.code} ${flag.wiki} ${flag.emoji} ${flag.region.join(' ')}`.toLowerCase();
+      const searchText = `${flag.country} ${flag.code} ${flag.wiki} ${flag.emoji} ${flag.region.join(' ')} ${flag.entity_type || ''} ${flag.parent_nation || ''}`.toLowerCase();
       return searchText.includes(filterLower);
     });
   }
@@ -819,8 +1097,8 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
   // Determine if the column is numeric
   const numericCols = ['gdp', 'area', 'coastline_km', 'min_lat', 'max_lat', 'min_lng', 'max_lng'];
   sorted.sort((a, b) => {
-    let vA = a[sortKey];
-    let vB = b[sortKey];
+    let vA = sortKey === 'region' ? a.region.join(', ') : a[sortKey];
+    let vB = sortKey === 'region' ? b.region.join(', ') : b[sortKey];
     if (numericCols.includes(sortKey)) {
       vA = vA !== undefined && vA !== null ? Number(vA) : -Infinity;
       vB = vB !== undefined && vB !== null ? Number(vB) : -Infinity;
@@ -848,7 +1126,7 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
   // Show result count
   const resultCount = sorted.length;
   if (filterLower && resultCount === 0) {
-    tbody.innerHTML = '<tr><td colspan="14" style="text-align:center;color:#999;padding:2em;">No countries match your search.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="16" style="text-align:center;color:#999;padding:2em;">No entries match your search.</td></tr>';
     return;
   } else if (filterLower) {
     const parentDiv = tbody.parentElement.parentElement;
@@ -859,13 +1137,15 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
       countSpan.style.cssText = 'text-align:right;font-size:0.9em;color:#666;margin-bottom:0.3em;';
       parentDiv.insertBefore(countSpan, parentDiv.querySelector('table'));
     }
-    countSpan.textContent = `Showing ${resultCount} of ${flags.length} countries`;
+    countSpan.textContent = `Showing ${resultCount} of ${totalModeEntries} entries`;
   }
   
   for (const flag of sorted) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${flag.country}</td>
+      <td>${formatEntityTypeLabel(flag.entity_type)}</td>
+      <td>${flag.parent_nation || ''}</td>
       <td>${flag.code}</td>
       <td style="font-size:1.5em;">${flag.emoji}</td>
       <td><a href="https://en.wikipedia.org/wiki/${flag.wiki}" target="_blank">Wiki</a></td>
@@ -972,7 +1252,8 @@ function pickRandomFlag() {
   if (lastEntryFlag && possibleFlags.length > 1) {
     possibleFlags = possibleFlags.filter(f => f !== lastEntryFlag);
   }
-  if (!possibleFlags.length) possibleFlags = flags;
+  if (!possibleFlags.length) possibleFlags = getCurrentModeScopedFlags();
+  if (!possibleFlags.length) return;
   currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastEntryFlag = currentFlag;
   document.getElementById('flag-image-entry').innerHTML = `
@@ -1064,7 +1345,8 @@ function pickRandomFlagMC() {
   if (lastMCFlag && possibleFlags.length > 1) {
     possibleFlags = possibleFlags.filter(f => f !== lastMCFlag);
   }
-  if (!possibleFlags.length) possibleFlags = flags;
+  if (!possibleFlags.length) possibleFlags = getCurrentModeScopedFlags();
+  if (!possibleFlags.length) return;
   // Pick correct flag
   currentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastMCFlag = currentFlag;
@@ -1167,7 +1449,8 @@ function pickRandomFlagRC() {
   if (lastRCFlag && possibleFlags.length > 1) {
     possibleFlags = possibleFlags.filter(f => f !== lastRCFlag);
   }
-  if (!possibleFlags.length) possibleFlags = flags;
+  if (!possibleFlags.length) possibleFlags = getCurrentModeScopedFlags();
+  if (!possibleFlags.length) return;
   rcCurrentFlag = possibleFlags[Math.floor(Math.random() * possibleFlags.length)];
   lastRCFlag = rcCurrentFlag;
   // Pick 3 other random, unique countries
@@ -1294,10 +1577,11 @@ function setupAutocomplete() {
   function filterFlags(val) {
     if (!val) return [];
     const lowerVal = val.toLowerCase();
+    const candidateFlags = getRegionFilteredFlags();
     // First: exact code matches, then code contains, then country contains
-    let codeExact = flags.filter(f => f.code.toLowerCase() === lowerVal);
-    let codeContains = flags.filter(f => f.code.toLowerCase().includes(lowerVal) && f.code.toLowerCase() !== lowerVal);
-    let countryContains = flags.filter(f =>
+    let codeExact = candidateFlags.filter(f => f.code.toLowerCase() === lowerVal);
+    let codeContains = candidateFlags.filter(f => f.code.toLowerCase().includes(lowerVal) && f.code.toLowerCase() !== lowerVal);
+    let countryContains = candidateFlags.filter(f =>
       f.country.toLowerCase().includes(lowerVal) &&
       !codeExact.includes(f) &&
       !codeContains.includes(f)
@@ -1602,6 +1886,10 @@ window.showSaviourMode = showSaviourMode;
 
 // --- Saviour Mode ---
 function showSaviourMode() {
+  if (datasetMode !== DATASET_MODE_NATIONAL) {
+    alert('Saviour modes are available only in National mode.');
+    return;
+  }
   inSaviourDailyMode = false;
   saviourDailyDate = null;
   document.getElementById('main-menu').style.display = 'none';
@@ -1670,13 +1958,14 @@ function seededShuffle(array, seedStr) {
 }
 
 function setupSaviourGrid() {
-  if (flags.length < 25) return;
+  const nationFlags = flags.filter(flag => flag.entity_type === 'nation');
+  if (nationFlags.length < 25) return;
   let shuffled;
   if (inSaviourDailyMode && saviourDailyDate) {
     // Deterministic shuffle for daily mode
-    shuffled = seededShuffle(flags, saviourDailyDate);
+    shuffled = seededShuffle(nationFlags, saviourDailyDate);
   } else {
-    shuffled = [...flags].sort(() => Math.random() - 0.5);
+    shuffled = [...nationFlags].sort(() => Math.random() - 0.5);
   }
   saviourGrid = shuffled.slice(0, 25);
   saviourActive = Array(25).fill(true);
@@ -1833,10 +2122,11 @@ function setupSaviourFlagEntryAutocomplete(idx) {
   function filterFlags(val) {
     if (!val) return [];
     const lowerVal = val.toLowerCase();
+    const candidateFlags = saviourGrid.length ? saviourGrid : flags.filter(f => f.entity_type === 'nation');
     // First: exact code matches, then code contains, then country contains
-    let codeExact = flags.filter(f => f.code.toLowerCase() === lowerVal);
-    let codeContains = flags.filter(f => f.code.toLowerCase().includes(lowerVal) && f.code.toLowerCase() !== lowerVal);
-    let countryContains = flags.filter(f =>
+    let codeExact = candidateFlags.filter(f => f.code.toLowerCase() === lowerVal);
+    let codeContains = candidateFlags.filter(f => f.code.toLowerCase().includes(lowerVal) && f.code.toLowerCase() !== lowerVal);
+    let countryContains = candidateFlags.filter(f =>
       f.country.toLowerCase().includes(lowerVal) &&
       !codeExact.includes(f) &&
       !codeContains.includes(f)

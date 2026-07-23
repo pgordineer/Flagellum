@@ -15,7 +15,8 @@
     "nuclear_arms": true,
     "region": [
       "North America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "United Kingdom",
@@ -33,7 +34,8 @@
     "nuclear_arms": true,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "France",
@@ -51,7 +53,8 @@
     "nuclear_arms": true,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Germany",
@@ -69,7 +72,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Italy",
@@ -87,7 +91,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Spain",
@@ -105,7 +110,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Japan",
@@ -123,7 +129,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Brazil",
@@ -141,7 +148,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Canada",
@@ -159,7 +167,8 @@
     "nuclear_arms": false,
     "region": [
       "North America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Australia",
@@ -177,7 +186,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "India",
@@ -195,7 +205,8 @@
     "nuclear_arms": true,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "South Korea",
@@ -213,7 +224,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Mexico",
@@ -231,7 +243,8 @@
     "nuclear_arms": false,
     "region": [
       "North America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Russia",
@@ -250,7 +263,8 @@
     "region": [
       "Europe",
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "China",
@@ -268,7 +282,8 @@
     "nuclear_arms": true,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Sweden",
@@ -286,7 +301,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Norway",
@@ -304,7 +320,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Finland",
@@ -322,7 +339,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Denmark",
@@ -340,7 +358,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Argentina",
@@ -358,7 +377,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "South Africa",
@@ -376,7 +396,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Turkey",
@@ -396,7 +417,8 @@
       "Europe",
       "Asia",
       "Middle East"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Greece",
@@ -414,7 +436,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Switzerland",
@@ -432,7 +455,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Netherlands",
@@ -450,7 +474,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Belgium",
@@ -468,7 +493,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Portugal",
@@ -486,7 +512,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Poland",
@@ -504,7 +531,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Ukraine",
@@ -522,7 +550,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Egypt",
@@ -541,7 +570,8 @@
     "region": [
       "Africa",
       "Middle East"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Saudi Arabia",
@@ -559,7 +589,8 @@
     "nuclear_arms": false,
     "region": [
       "Middle East"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Indonesia",
@@ -577,7 +608,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Thailand",
@@ -595,7 +627,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Vietnam",
@@ -613,7 +646,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Philippines",
@@ -631,7 +665,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Pakistan",
@@ -649,7 +684,8 @@
     "nuclear_arms": true,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Bangladesh",
@@ -667,7 +703,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Nigeria",
@@ -685,7 +722,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Niger",
@@ -703,7 +741,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Ethiopia",
@@ -721,7 +760,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Kenya",
@@ -739,7 +779,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Morocco",
@@ -757,7 +798,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Chile",
@@ -775,7 +817,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Colombia",
@@ -793,7 +836,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Peru",
@@ -811,7 +855,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Venezuela",
@@ -829,7 +874,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Cuba",
@@ -847,7 +893,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "South Sudan",
@@ -865,7 +912,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Sudan",
@@ -883,7 +931,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Iraq",
@@ -901,7 +950,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Iran",
@@ -919,7 +969,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Israel",
@@ -937,7 +988,8 @@
     "nuclear_arms": true,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "New Zealand",
@@ -955,7 +1007,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Ireland",
@@ -973,7 +1026,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Austria",
@@ -991,7 +1045,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Hungary",
@@ -1009,7 +1064,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Romania",
@@ -1027,7 +1083,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Czech Republic",
@@ -1045,7 +1102,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Slovakia",
@@ -1063,7 +1121,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Croatia",
@@ -1081,7 +1140,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Slovenia",
@@ -1099,7 +1159,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Serbia",
@@ -1117,7 +1178,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Bulgaria",
@@ -1135,7 +1197,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Ghana",
@@ -1153,7 +1216,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Ivory Coast",
@@ -1171,7 +1235,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Algeria",
@@ -1189,7 +1254,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Tunisia",
@@ -1207,7 +1273,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Jordan",
@@ -1225,7 +1292,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Lebanon",
@@ -1243,7 +1311,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Qatar",
@@ -1261,7 +1330,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "United Arab Emirates",
@@ -1279,7 +1349,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Singapore",
@@ -1297,7 +1368,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Malaysia",
@@ -1315,7 +1387,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Eswatini",
@@ -1333,7 +1406,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Zimbabwe",
@@ -1351,7 +1425,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Botswana",
@@ -1369,7 +1444,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Namibia",
@@ -1387,7 +1463,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Mozambique",
@@ -1405,7 +1482,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Angola",
@@ -1423,7 +1501,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Cameroon",
@@ -1441,7 +1520,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Uganda",
@@ -1459,7 +1539,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Tanzania",
@@ -1477,7 +1558,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Zambia",
@@ -1495,7 +1577,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Afghanistan",
@@ -1513,7 +1596,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Albania",
@@ -1531,7 +1615,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Andorra",
@@ -1549,7 +1634,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Armenia",
@@ -1568,7 +1654,8 @@
     "region": [
       "Europe",
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Azerbaijan",
@@ -1587,7 +1674,8 @@
     "region": [
       "Europe",
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Bahrain",
@@ -1605,7 +1693,8 @@
     "nuclear_arms": false,
     "region": [
       "Middle East"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Barbados",
@@ -1623,7 +1712,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Belarus",
@@ -1641,7 +1731,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Belize",
@@ -1659,7 +1750,8 @@
     "nuclear_arms": false,
     "region": [
       "Central America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Benin",
@@ -1677,7 +1769,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Bhutan",
@@ -1695,7 +1788,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Bolivia",
@@ -1713,7 +1807,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Bosnia and Herzegovina",
@@ -1731,7 +1826,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Brunei",
@@ -1749,7 +1845,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Burkina Faso",
@@ -1767,7 +1864,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Burundi",
@@ -1785,7 +1883,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Cambodia",
@@ -1803,7 +1902,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Cape Verde",
@@ -1821,7 +1921,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Central African Republic",
@@ -1839,7 +1940,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Chad",
@@ -1857,7 +1959,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Comoros",
@@ -1875,7 +1978,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Congo",
@@ -1893,7 +1997,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Democratic Republic of the Congo",
@@ -1911,7 +2016,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Costa Rica",
@@ -1929,7 +2035,8 @@
     "nuclear_arms": false,
     "region": [
       "Central America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Djibouti",
@@ -1947,7 +2054,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Dominica",
@@ -1965,7 +2073,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Dominican Republic",
@@ -1983,7 +2092,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "East Timor",
@@ -2001,7 +2111,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Ecuador",
@@ -2019,7 +2130,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "El Salvador",
@@ -2037,7 +2149,8 @@
     "nuclear_arms": false,
     "region": [
       "Central America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Equatorial Guinea",
@@ -2055,7 +2168,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Eritrea",
@@ -2073,7 +2187,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Fiji",
@@ -2091,7 +2206,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Gabon",
@@ -2109,7 +2225,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Gambia",
@@ -2127,7 +2244,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Georgia",
@@ -2146,7 +2264,8 @@
     "region": [
       "Europe",
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Grenada",
@@ -2164,7 +2283,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Guatemala",
@@ -2182,7 +2302,8 @@
     "nuclear_arms": false,
     "region": [
       "Central America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Guinea",
@@ -2200,7 +2321,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Guinea-Bissau",
@@ -2218,7 +2340,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Guyana",
@@ -2236,7 +2359,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Haiti",
@@ -2254,7 +2378,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Honduras",
@@ -2272,7 +2397,8 @@
     "nuclear_arms": false,
     "region": [
       "Central America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Iceland",
@@ -2290,7 +2416,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Jamaica",
@@ -2308,7 +2435,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Kazakhstan",
@@ -2327,7 +2455,8 @@
     "region": [
       "Europe",
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Kuwait",
@@ -2345,7 +2474,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Kyrgyzstan",
@@ -2363,7 +2493,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Laos",
@@ -2381,7 +2512,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Latvia",
@@ -2399,7 +2531,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Lesotho",
@@ -2417,7 +2550,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Liberia",
@@ -2435,7 +2569,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Libya",
@@ -2453,7 +2588,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Liechtenstein",
@@ -2471,7 +2607,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Lithuania",
@@ -2489,7 +2626,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Luxembourg",
@@ -2507,7 +2645,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Madagascar",
@@ -2525,7 +2664,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Malawi",
@@ -2543,7 +2683,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Maldives",
@@ -2561,7 +2702,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Mali",
@@ -2579,7 +2721,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Malta",
@@ -2597,7 +2740,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Marshall Islands",
@@ -2615,7 +2759,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Mauritania",
@@ -2633,7 +2778,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Mauritius",
@@ -2651,7 +2797,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Micronesia",
@@ -2669,7 +2816,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Moldova",
@@ -2687,7 +2835,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Monaco",
@@ -2705,7 +2854,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Mongolia",
@@ -2723,7 +2873,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Montenegro",
@@ -2741,7 +2892,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Myanmar",
@@ -2759,7 +2911,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Nauru",
@@ -2777,7 +2930,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Nepal",
@@ -2795,7 +2949,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "North Korea",
@@ -2813,7 +2968,8 @@
     "nuclear_arms": true,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "North Macedonia",
@@ -2831,7 +2987,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Oman",
@@ -2849,7 +3006,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Palau",
@@ -2867,7 +3025,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Palestine",
@@ -2885,7 +3044,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Panama",
@@ -2903,7 +3063,8 @@
     "nuclear_arms": false,
     "region": [
       "Central America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Papua New Guinea",
@@ -2921,7 +3082,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Paraguay",
@@ -2939,7 +3101,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Rwanda",
@@ -2957,7 +3120,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Saint Kitts and Nevis",
@@ -2975,7 +3139,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Saint Lucia",
@@ -2993,7 +3158,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Saint Vincent and the Grenadines",
@@ -3011,7 +3177,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Samoa",
@@ -3029,7 +3196,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "San Marino",
@@ -3047,7 +3215,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Sao Tome and Principe",
@@ -3065,7 +3234,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Senegal",
@@ -3083,7 +3253,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Seychelles",
@@ -3101,7 +3272,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Sierra Leone",
@@ -3119,7 +3291,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Solomon Islands",
@@ -3137,7 +3310,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Somalia",
@@ -3155,7 +3329,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Suriname",
@@ -3173,7 +3348,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Syria",
@@ -3191,7 +3367,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Tajikistan",
@@ -3209,7 +3386,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Togo",
@@ -3227,7 +3405,8 @@
     "nuclear_arms": false,
     "region": [
       "Africa"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Tonga",
@@ -3245,7 +3424,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Trinidad and Tobago",
@@ -3263,7 +3443,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Turkmenistan",
@@ -3281,7 +3462,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Tuvalu",
@@ -3299,7 +3481,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Uruguay",
@@ -3317,7 +3500,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Uzbekistan",
@@ -3335,7 +3519,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Vanuatu",
@@ -3353,7 +3538,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Vatican City",
@@ -3371,7 +3557,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Yemen",
@@ -3389,7 +3576,8 @@
     "nuclear_arms": false,
     "region": [
       "Middle East"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Kosovo",
@@ -3407,7 +3595,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Taiwan",
@@ -3425,7 +3614,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Greenland",
@@ -3443,7 +3633,8 @@
     "nuclear_arms": false,
     "region": [
       "Territories/Other"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Gibraltar",
@@ -3461,7 +3652,8 @@
     "nuclear_arms": false,
     "region": [
       "Territories/Other"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Bermuda",
@@ -3479,7 +3671,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Falkland Islands",
@@ -3497,7 +3690,8 @@
     "nuclear_arms": false,
     "region": [
       "South America"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Hong Kong",
@@ -3515,7 +3709,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Macau",
@@ -3533,7 +3728,8 @@
     "nuclear_arms": false,
     "region": [
       "Asia"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Western Sahara",
@@ -3551,7 +3747,8 @@
     "nuclear_arms": false,
     "region": [
       "Territories/Other"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Puerto Rico",
@@ -3569,7 +3766,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Guam",
@@ -3587,7 +3785,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "U.S. Virgin Islands",
@@ -3605,7 +3804,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "British Virgin Islands",
@@ -3623,7 +3823,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Cayman Islands",
@@ -3641,7 +3842,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Montserrat",
@@ -3659,7 +3861,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Turks and Caicos Islands",
@@ -3677,7 +3880,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Saint Pierre and Miquelon",
@@ -3695,7 +3899,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "New Caledonia",
@@ -3713,7 +3918,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "French Polynesia",
@@ -3731,7 +3937,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Wallis and Futuna",
@@ -3749,7 +3956,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Saint Barthélemy",
@@ -3767,7 +3975,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Sint Maarten",
@@ -3785,7 +3994,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Aruba",
@@ -3803,7 +4013,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Curacao",
@@ -3821,7 +4032,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Bonaire",
@@ -3839,7 +4051,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Faroe Islands",
@@ -3857,7 +4070,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Isle of Man",
@@ -3875,7 +4089,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Jersey",
@@ -3893,7 +4108,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Guernsey",
@@ -3911,7 +4127,8 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Saint Helena",
@@ -3929,7 +4146,9 @@
     "nuclear_arms": false,
     "region": [
       "Territories/Other"
-    ]
+    ],
+    "entity_type": "territory",
+    "parent_nation": "United Kingdom"
   },
   {
     "country": "Anguilla",
@@ -3947,7 +4166,9 @@
     "nuclear_arms": false,
     "region": [
       "Caribbean"
-    ]
+    ],
+    "entity_type": "territory",
+    "parent_nation": "United Kingdom"
   },
   {
     "country": "Estonia",
@@ -3965,7 +4186,8 @@
     "nuclear_arms": false,
     "region": [
       "Europe"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Kiribati",
@@ -3983,7 +4205,8 @@
     "nuclear_arms": false,
     "region": [
       "Oceania"
-    ]
+    ],
+    "entity_type": "nation"
   },
   {
     "country": "Antarctica",
@@ -4001,7 +4224,9 @@
     "nuclear_arms": false,
     "region": [
       "Territories/Other"
-    ]
+    ],
+    "entity_type": "territory",
+    "parent_nation": "Unclaimed/International"
   },
   {
     "country": "Ascension Island",
@@ -4019,7 +4244,9 @@
     "nuclear_arms": false,
     "region": [
       "Territories/Other"
-    ]
+    ],
+    "entity_type": "territory",
+    "parent_nation": "United Kingdom"
   },
   {
     "country": "Tristan da Cunha",
@@ -4037,7 +4264,9 @@
     "nuclear_arms": false,
     "region": [
       "Territories/Other"
-    ]
+    ],
+    "entity_type": "territory",
+    "parent_nation": "United Kingdom"
   },
   {
     "country": "South Georgia and the South Sandwich Islands",
@@ -4055,6 +4284,1531 @@
     "nuclear_arms": false,
     "region": [
       "Territories/Other"
-    ]
+    ],
+    "entity_type": "territory",
+    "parent_nation": "United Kingdom"
+  },
+  {
+    "country": "California",
+    "code": "US-CA",
+    "emoji": "🇺🇸",
+    "wiki": "California",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg",
+    "gdp": 3890000000000,
+    "area": 423967,
+    "coastline_km": 1350,
+    "max_lat": 42.0095,
+    "min_lat": 32.5343,
+    "max_lng": -114.1312,
+    "min_lng": -124.4096,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Texas",
+    "code": "US-TX",
+    "emoji": "🇺🇸",
+    "wiki": "Texas",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg",
+    "gdp": 2700000000000,
+    "area": 695662,
+    "coastline_km": 591,
+    "max_lat": 36.5007,
+    "min_lat": 25.8371,
+    "max_lng": -93.5083,
+    "min_lng": -106.6456,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Florida",
+    "code": "US-FL",
+    "emoji": "🇺🇸",
+    "wiki": "Florida",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg",
+    "gdp": 1500000000000,
+    "area": 170312,
+    "coastline_km": 2170,
+    "max_lat": 31.0009,
+    "min_lat": 24.3963,
+    "max_lng": -79.9743,
+    "min_lng": -87.6349,
+    "nuclear_arms": false,
+    "region": [
+      "North America",
+      "Caribbean"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Alaska",
+    "code": "US-AK",
+    "emoji": "🇺🇸",
+    "wiki": "Alaska",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Alaska.svg",
+    "gdp": 63000000000,
+    "area": 1723337,
+    "coastline_km": 10686,
+    "max_lat": 71.5388,
+    "min_lat": 51.2142,
+    "max_lng": -129.9795,
+    "min_lng": -179.1489,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Ontario",
+    "code": "CA-ON",
+    "emoji": "🇨🇦",
+    "wiki": "Ontario",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/8/88/Flag_of_Ontario.svg",
+    "gdp": 900000000000,
+    "area": 1076395,
+    "coastline_km": 3210,
+    "max_lat": 56.856,
+    "min_lat": 41.6766,
+    "max_lng": -74.343,
+    "min_lng": -95.153,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Quebec",
+    "code": "CA-QC",
+    "emoji": "🇨🇦",
+    "wiki": "Quebec",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Flag_of_Quebec.svg",
+    "gdp": 420000000000,
+    "area": 1542056,
+    "coastline_km": 12800,
+    "max_lat": 62.585,
+    "min_lat": 44.991,
+    "max_lng": -57.105,
+    "min_lng": -79.763,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "British Columbia",
+    "code": "CA-BC",
+    "emoji": "🇨🇦",
+    "wiki": "British_Columbia",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Flag_of_British_Columbia.svg",
+    "gdp": 330000000000,
+    "area": 944735,
+    "coastline_km": 27000,
+    "max_lat": 60.0,
+    "min_lat": 48.301,
+    "max_lng": -114.054,
+    "min_lng": -139.058,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Yukon",
+    "code": "CA-YT",
+    "emoji": "🇨🇦",
+    "wiki": "Yukon",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/6/69/Flag_of_Yukon.svg",
+    "gdp": 3500000000,
+    "area": 482443,
+    "coastline_km": 0,
+    "max_lat": 69.65,
+    "min_lat": 59.99,
+    "max_lng": -123.8,
+    "min_lng": -141.0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "New South Wales",
+    "code": "AU-NSW",
+    "emoji": "🇦🇺",
+    "wiki": "New_South_Wales",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/0/00/Flag_of_New_South_Wales.svg",
+    "gdp": 680000000000,
+    "area": 809444,
+    "coastline_km": 2137,
+    "max_lat": -28.157,
+    "min_lat": -37.505,
+    "max_lng": 153.638,
+    "min_lng": 141.0,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "state",
+    "parent_nation": "Australia"
+  },
+  {
+    "country": "Queensland",
+    "code": "AU-QLD",
+    "emoji": "🇦🇺",
+    "wiki": "Queensland",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/0/04/Flag_of_Queensland.svg",
+    "gdp": 450000000000,
+    "area": 1851736,
+    "coastline_km": 6973,
+    "max_lat": -9.142,
+    "min_lat": -29.178,
+    "max_lng": 153.552,
+    "min_lng": 137.995,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "state",
+    "parent_nation": "Australia"
+  },
+  {
+    "country": "Puerto Rico",
+    "code": "PR",
+    "emoji": "🇵🇷",
+    "wiki": "Puerto_Rico",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/2/28/Flag_of_Puerto_Rico.svg",
+    "gdp": 120000000000,
+    "area": 9104,
+    "coastline_km": 501,
+    "max_lat": 18.52,
+    "min_lat": 17.89,
+    "max_lng": -65.22,
+    "min_lng": -67.28,
+    "nuclear_arms": false,
+    "region": [
+      "Caribbean",
+      "North America"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Greenland",
+    "code": "GL",
+    "emoji": "🇬🇱",
+    "wiki": "Greenland",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/0/09/Flag_of_Greenland.svg",
+    "gdp": 3400000000,
+    "area": 2166086,
+    "coastline_km": 44087,
+    "max_lat": 83.627,
+    "min_lat": 59.777,
+    "max_lng": -11.312,
+    "min_lng": -73.042,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "Denmark"
+  },
+  {
+    "country": "Hong Kong",
+    "code": "HK",
+    "emoji": "🇭🇰",
+    "wiki": "Hong_Kong",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Flag_of_Hong_Kong.svg",
+    "gdp": 383000000000,
+    "area": 1114,
+    "coastline_km": 733,
+    "max_lat": 22.561,
+    "min_lat": 22.153,
+    "max_lng": 114.429,
+    "min_lng": 113.835,
+    "nuclear_arms": false,
+    "region": [
+      "Asia"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "China"
+  },
+  {
+    "country": "French Polynesia",
+    "code": "PF",
+    "emoji": "🇵🇫",
+    "wiki": "French_Polynesia",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/d/db/Flag_of_French_Polynesia.svg",
+    "gdp": 5800000000,
+    "area": 4167,
+    "coastline_km": 2525,
+    "max_lat": -7.9,
+    "min_lat": -27.7,
+    "max_lng": -134.4,
+    "min_lng": -154.9,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "France"
+  },
+  {
+    "country": "Alabama",
+    "code": "US-AL",
+    "emoji": "🇺🇸",
+    "wiki": "Alabama",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Alabama.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Arizona",
+    "code": "US-AZ",
+    "emoji": "🇺🇸",
+    "wiki": "Arizona",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arizona.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Arkansas",
+    "code": "US-AR",
+    "emoji": "🇺🇸",
+    "wiki": "Arkansas",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arkansas.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Colorado",
+    "code": "US-CO",
+    "emoji": "🇺🇸",
+    "wiki": "Colorado",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/4/46/Flag_of_Colorado.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Connecticut",
+    "code": "US-CT",
+    "emoji": "🇺🇸",
+    "wiki": "Connecticut",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/9/96/Flag_of_Connecticut.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Delaware",
+    "code": "US-DE",
+    "emoji": "🇺🇸",
+    "wiki": "Delaware",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Flag_of_Delaware.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Georgia (US State)",
+    "code": "US-GA",
+    "emoji": "🇺🇸",
+    "wiki": "Georgia_(U.S._state)",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/5/54/Flag_of_Georgia_%28U.S._state%29.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Hawaii",
+    "code": "US-HI",
+    "emoji": "🇺🇸",
+    "wiki": "Hawaii",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Flag_of_Hawaii.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America",
+      "Oceania"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Idaho",
+    "code": "US-ID",
+    "emoji": "🇺🇸",
+    "wiki": "Idaho",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_Idaho.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Illinois",
+    "code": "US-IL",
+    "emoji": "🇺🇸",
+    "wiki": "Illinois",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_Illinois.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Indiana",
+    "code": "US-IN",
+    "emoji": "🇺🇸",
+    "wiki": "Indiana",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Flag_of_Indiana.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Iowa",
+    "code": "US-IA",
+    "emoji": "🇺🇸",
+    "wiki": "Iowa",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Flag_of_Iowa.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Kansas",
+    "code": "US-KS",
+    "emoji": "🇺🇸",
+    "wiki": "Kansas",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/d/da/Flag_of_Kansas.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Kentucky",
+    "code": "US-KY",
+    "emoji": "🇺🇸",
+    "wiki": "Kentucky",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Flag_of_Kentucky.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Louisiana",
+    "code": "US-LA",
+    "emoji": "🇺🇸",
+    "wiki": "Louisiana",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Flag_of_Louisiana.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Maine",
+    "code": "US-ME",
+    "emoji": "🇺🇸",
+    "wiki": "Maine",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_Maine.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Maryland",
+    "code": "US-MD",
+    "emoji": "🇺🇸",
+    "wiki": "Maryland",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Flag_of_Maryland.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Massachusetts",
+    "code": "US-MA",
+    "emoji": "🇺🇸",
+    "wiki": "Massachusetts",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Flag_of_Massachusetts.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Michigan",
+    "code": "US-MI",
+    "emoji": "🇺🇸",
+    "wiki": "Michigan",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Flag_of_Michigan.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Minnesota",
+    "code": "US-MN",
+    "emoji": "🇺🇸",
+    "wiki": "Minnesota",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Minnesota.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Mississippi",
+    "code": "US-MS",
+    "emoji": "🇺🇸",
+    "wiki": "Mississippi",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/4/42/Flag_of_Mississippi.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Missouri",
+    "code": "US-MO",
+    "emoji": "🇺🇸",
+    "wiki": "Missouri",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Flag_of_Missouri.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Montana",
+    "code": "US-MT",
+    "emoji": "🇺🇸",
+    "wiki": "Montana",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_Montana.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Nebraska",
+    "code": "US-NE",
+    "emoji": "🇺🇸",
+    "wiki": "Nebraska",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Flag_of_Nebraska.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Nevada",
+    "code": "US-NV",
+    "emoji": "🇺🇸",
+    "wiki": "Nevada",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Flag_of_Nevada.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "New Hampshire",
+    "code": "US-NH",
+    "emoji": "🇺🇸",
+    "wiki": "New_Hampshire",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/2/28/Flag_of_New_Hampshire.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "New Jersey",
+    "code": "US-NJ",
+    "emoji": "🇺🇸",
+    "wiki": "New_Jersey",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/9/92/Flag_of_New_Jersey.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "New Mexico",
+    "code": "US-NM",
+    "emoji": "🇺🇸",
+    "wiki": "New_Mexico",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_New_Mexico.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "New York",
+    "code": "US-NY",
+    "emoji": "🇺🇸",
+    "wiki": "New_York_(state)",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_New_York.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "North Carolina",
+    "code": "US-NC",
+    "emoji": "🇺🇸",
+    "wiki": "North_Carolina",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Flag_of_North_Carolina.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "North Dakota",
+    "code": "US-ND",
+    "emoji": "🇺🇸",
+    "wiki": "North_Dakota",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Flag_of_North_Dakota.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Ohio",
+    "code": "US-OH",
+    "emoji": "🇺🇸",
+    "wiki": "Ohio",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Ohio.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Oklahoma",
+    "code": "US-OK",
+    "emoji": "🇺🇸",
+    "wiki": "Oklahoma",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Flag_of_Oklahoma.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Oregon",
+    "code": "US-OR",
+    "emoji": "🇺🇸",
+    "wiki": "Oregon",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Oregon.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Pennsylvania",
+    "code": "US-PA",
+    "emoji": "🇺🇸",
+    "wiki": "Pennsylvania",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Pennsylvania.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Rhode Island",
+    "code": "US-RI",
+    "emoji": "🇺🇸",
+    "wiki": "Rhode_Island",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Rhode_Island.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "South Carolina",
+    "code": "US-SC",
+    "emoji": "🇺🇸",
+    "wiki": "South_Carolina",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/6/69/Flag_of_South_Carolina.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "South Dakota",
+    "code": "US-SD",
+    "emoji": "🇺🇸",
+    "wiki": "South_Dakota",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_South_Dakota.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Tennessee",
+    "code": "US-TN",
+    "emoji": "🇺🇸",
+    "wiki": "Tennessee",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Flag_of_Tennessee.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Utah",
+    "code": "US-UT",
+    "emoji": "🇺🇸",
+    "wiki": "Utah",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Flag_of_Utah.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Vermont",
+    "code": "US-VT",
+    "emoji": "🇺🇸",
+    "wiki": "Vermont",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Vermont.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Virginia",
+    "code": "US-VA",
+    "emoji": "🇺🇸",
+    "wiki": "Virginia",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/4/47/Flag_of_Virginia.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Washington",
+    "code": "US-WA",
+    "emoji": "🇺🇸",
+    "wiki": "Washington_(state)",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/5/54/Flag_of_Washington.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "West Virginia",
+    "code": "US-WV",
+    "emoji": "🇺🇸",
+    "wiki": "West_Virginia",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/2/22/Flag_of_West_Virginia.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Wisconsin",
+    "code": "US-WI",
+    "emoji": "🇺🇸",
+    "wiki": "Wisconsin",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/2/22/Flag_of_Wisconsin.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Wyoming",
+    "code": "US-WY",
+    "emoji": "🇺🇸",
+    "wiki": "Wyoming",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Wyoming.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "state",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "District of Columbia",
+    "code": "US-DC",
+    "emoji": "🇺🇸",
+    "wiki": "Flag_of_Washington,_D.C.",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Flag_of_Washington%2C_D.C..svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "United States"
+  },
+  {
+    "country": "Alberta",
+    "code": "CA-AB",
+    "emoji": "🇨🇦",
+    "wiki": "Alberta",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Alberta.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Manitoba",
+    "code": "CA-MB",
+    "emoji": "🇨🇦",
+    "wiki": "Manitoba",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Flag_of_Manitoba.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "New Brunswick",
+    "code": "CA-NB",
+    "emoji": "🇨🇦",
+    "wiki": "New_Brunswick",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Flag_of_New_Brunswick.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Newfoundland and Labrador",
+    "code": "CA-NL",
+    "emoji": "🇨🇦",
+    "wiki": "Newfoundland_and_Labrador",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Flag_of_Newfoundland_and_Labrador.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Nova Scotia",
+    "code": "CA-NS",
+    "emoji": "🇨🇦",
+    "wiki": "Nova_Scotia",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Flag_of_Nova_Scotia.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Prince Edward Island",
+    "code": "CA-PE",
+    "emoji": "🇨🇦",
+    "wiki": "Prince_Edward_Island",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Flag_of_Prince_Edward_Island.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Saskatchewan",
+    "code": "CA-SK",
+    "emoji": "🇨🇦",
+    "wiki": "Saskatchewan",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Flag_of_Saskatchewan.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "province",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Northwest Territories",
+    "code": "CA-NT",
+    "emoji": "🇨🇦",
+    "wiki": "Northwest_Territories",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Flag_of_the_Northwest_Territories.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "Nunavut",
+    "code": "CA-NU",
+    "emoji": "🇨🇦",
+    "wiki": "Nunavut",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/9/90/Flag_of_Nunavut.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "North America"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "Canada"
+  },
+  {
+    "country": "South Australia",
+    "code": "AU-SA",
+    "emoji": "🇦🇺",
+    "wiki": "South_Australia",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Flag_of_South_Australia.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "state",
+    "parent_nation": "Australia"
+  },
+  {
+    "country": "Tasmania",
+    "code": "AU-TAS",
+    "emoji": "🇦🇺",
+    "wiki": "Tasmania",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/4/46/Flag_of_Tasmania.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "state",
+    "parent_nation": "Australia"
+  },
+  {
+    "country": "Victoria",
+    "code": "AU-VIC",
+    "emoji": "🇦🇺",
+    "wiki": "Victoria_(state)",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/2/25/Flag_of_Victoria_%28Australia%29.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "state",
+    "parent_nation": "Australia"
+  },
+  {
+    "country": "Western Australia",
+    "code": "AU-WA",
+    "emoji": "🇦🇺",
+    "wiki": "Western_Australia",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Flag_of_Western_Australia.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "state",
+    "parent_nation": "Australia"
+  },
+  {
+    "country": "Australian Capital Territory",
+    "code": "AU-ACT",
+    "emoji": "🇦🇺",
+    "wiki": "Australian_Capital_Territory",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Flag_of_the_Australian_Capital_Territory.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "Australia"
+  },
+  {
+    "country": "Northern Territory",
+    "code": "AU-NT",
+    "emoji": "🇦🇺",
+    "wiki": "Northern_Territory",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Flag_of_the_Northern_Territory.svg",
+    "gdp": 0,
+    "area": 0,
+    "coastline_km": 0,
+    "max_lat": 0,
+    "min_lat": 0,
+    "max_lng": 0,
+    "min_lng": 0,
+    "nuclear_arms": false,
+    "region": [
+      "Oceania"
+    ],
+    "entity_type": "territory",
+    "parent_nation": "Australia"
   }
 ]
