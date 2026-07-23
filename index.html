@@ -39,6 +39,10 @@
       <div id="congrats" style="display:none;"></div>
       <div id="region-filter" style="background:#f5f5f5;padding:1.2em;border-radius:0.7em;margin-top:1.5em;text-align:center;">
         <div style="font-weight:bold;margin-bottom:0.7em;">Filter by Region:</div>
+        <div style="display:flex;justify-content:center;gap:0.5em;margin-bottom:0.7em;">
+          <button id="region-select-all" type="button" style="margin:0;padding:0.4em 0.8em;font-size:0.9em;min-width:90px;">Select All</button>
+          <button id="region-clear-all" type="button" style="margin:0;padding:0.4em 0.8em;font-size:0.9em;min-width:90px;background:#666;">Clear All</button>
+        </div>
         <div id="region-toggles" style="display:flex;flex-wrap:wrap;gap:0.5em;justify-content:center;"></div>
       </div>
     </div>
@@ -50,7 +54,7 @@
       </div>
       <div style="text-align:center; color:#555; font-size:0.98em; margin-bottom:0.5em;">Scroll horizontally to see more flag details &rarr;</div>
       <div id="study-scrollbar-top" style="overflow-x:auto; width:100%; border-bottom:2px solid #999; margin-bottom:0.2em;">
-        <div style="width:max-content; height:6px;"></div>
+        <div id="study-scrollbar-top-track" style="width:0; height:12px;"></div>
       </div>
       <div style="overflow-x:auto;" id="study-scrollbar-bottom">
         <table id="study-table" class="study-table">
@@ -159,51 +163,5 @@
     </footer>
   </div>
   <script src="script.js"></script>
-  <script>
-  // Sync top and bottom scrollbars for study table
-  (function() {
-    function syncScroll(e1, e2) {
-      e1.scrollLeft = e2.scrollLeft;
-    }
-    window.addEventListener('DOMContentLoaded', function() {
-      var table = document.getElementById('study-table');
-      var topDiv = document.getElementById('study-scrollbar-top');
-      var bottomDiv = document.getElementById('study-scrollbar-bottom');
-      if (table && topDiv && bottomDiv) {
-        // Clone table for top scrollbar only
-        var topTable = table.cloneNode(false);
-        topTable.style.visibility = 'hidden';
-        topTable.style.pointerEvents = 'none';
-        topTable.style.height = '1px';
-        topTable.style.margin = '0';
-        topTable.style.padding = '0';
-        topTable.style.border = 'none';
-        topDiv.appendChild(topTable);
-        // Sync scroll
-        topDiv.onscroll = function() { syncScroll(bottomDiv, topDiv); };
-        bottomDiv.onscroll = function() { syncScroll(topDiv, bottomDiv); };
-      }
-    });
-  })();
-  (function() {
-    window.addEventListener('DOMContentLoaded', function() {
-      var table = document.getElementById('study-table');
-      var topDiv = document.getElementById('study-scrollbar-top');
-      var bottomDiv = document.getElementById('study-scrollbar-bottom');
-      if (table && topDiv && bottomDiv) {
-        // Set the width of the top dummy div to match the table
-        function syncWidths() {
-          var dummy = topDiv.querySelector('div');
-          if (dummy) dummy.style.width = table.offsetWidth + 'px';
-        }
-        syncWidths();
-        window.addEventListener('resize', syncWidths);
-        // Sync scroll positions
-        topDiv.onscroll = function() { bottomDiv.scrollLeft = topDiv.scrollLeft; };
-        bottomDiv.onscroll = function() { topDiv.scrollLeft = bottomDiv.scrollLeft; };
-      }
-    });
-  })();
-  </script>
 </body>
 </html>

@@ -15,8 +15,14 @@ function normalizeRegions(regionValue) {
 }
 
 function getRegionFilteredFlags() {
-  if (!activeRegions.size) return [...flags];
+  if (!activeRegions.size) return [];
   return flags.filter(flag => flag.region.some(region => activeRegions.has(region)));
+}
+
+function requireActiveRegionsForGame() {
+  if (activeRegions.size > 0) return true;
+  alert('Please select at least one region, or use Select All.');
+  return false;
 }
 
 function initializeRegionsFromFlags() {
@@ -51,10 +57,6 @@ function setupRegionToggles() {
       } else {
         activeRegions.delete(region);
       }
-      if (activeRegions.size === 0) {
-        activeRegions = new Set(allRegions);
-        checkbox.checked = true;
-      }
       updateRegionToggleStyles();
       saveRegionFilter();
     };
@@ -67,6 +69,33 @@ function setupRegionToggles() {
     label.appendChild(text);
     togglesDiv.appendChild(label);
   });
+
+  const selectAllBtn = document.getElementById('region-select-all');
+  if (selectAllBtn && selectAllBtn.dataset.regionActionSetup !== '1') {
+    selectAllBtn.dataset.regionActionSetup = '1';
+    selectAllBtn.addEventListener('click', () => {
+      activeRegions = new Set(allRegions);
+      togglesDiv.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = true;
+      });
+      updateRegionToggleStyles();
+      saveRegionFilter();
+    });
+  }
+
+  const clearAllBtn = document.getElementById('region-clear-all');
+  if (clearAllBtn && clearAllBtn.dataset.regionActionSetup !== '1') {
+    clearAllBtn.dataset.regionActionSetup = '1';
+    clearAllBtn.addEventListener('click', () => {
+      activeRegions.clear();
+      togglesDiv.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+      });
+      updateRegionToggleStyles();
+      saveRegionFilter();
+    });
+  }
+
   updateRegionToggleStyles();
 }
 
@@ -764,6 +793,17 @@ function showStudyPage() {
   setupStudyFilter();
 }
 
+function syncStudyScrollbarWidths() {
+  const top = document.getElementById('study-scrollbar-top');
+  const bottom = document.getElementById('study-scrollbar-bottom');
+  const topTrack = document.getElementById('study-scrollbar-top-track');
+  if (!top || !bottom || !topTrack) return;
+  topTrack.style.width = `${bottom.scrollWidth}px`;
+  if (top.scrollLeft !== bottom.scrollLeft) {
+    top.scrollLeft = bottom.scrollLeft;
+  }
+}
+
 function renderStudyTable(sortKey, sortDir = 'asc') {
   let sorted = getRegionFilteredFlags();
   
@@ -851,11 +891,14 @@ function renderStudyTable(sortKey, sortDir = 'asc') {
     };
   });
   addFlagClickHandlers(); // Ensure click handler is always set after DOM update
+  requestAnimationFrame(syncStudyScrollbarWidths);
 }
 
 function setupStudyFilter() {
   const filterInput = document.getElementById('study-filter');
   if (!filterInput) return;
+  if (filterInput.dataset.studyFilterSetup === '1') return;
+  filterInput.dataset.studyFilterSetup = '1';
   filterInput.addEventListener('input', (e) => {
     studyFilterText = e.target.value;
     renderStudyTable('country', 'asc');
@@ -866,14 +909,59 @@ function setupStudyScrollSync() {
   const scrollTop = document.getElementById('study-scrollbar-top');
   const scrollBottom = document.getElementById('study-scrollbar-bottom');
   if (!scrollTop || !scrollBottom) return;
-  
-  scrollTop.addEventListener('scroll', () => {
-    scrollBottom.scrollLeft = scrollTop.scrollLeft;
-  });
-  
-  scrollBottom.addEventListener('scroll', () => {
-    scrollTop.scrollLeft = scrollBottom.scrollLeft;
-  });
+
+  if (scrollTop.dataset.studyScrollSetup !== '1') {
+    scrollTop.dataset.studyScrollSetup = '1';
+    let syncingFromTop = false;
+    let syncingFromBottom = false;
+
+    scrollTop.addEventListener('scroll', () => {
+      if (syncingFromBottom) return;
+      syncingFromTop = true;
+      scrollBottom.scrollLeft = scrollTop.scrollLeft;
+      syncingFromTop = false;
+    });
+
+    scrollBottom.addEventListener('scroll', () => {
+      if (syncingFromTop) return;
+      syncingFromBottom = true;
+      scrollTop.scrollLeft = scrollBottom.scrollLeft;
+      syncingFromBottom = false;
+    });
+
+    // Drag-to-pan support for mouse/trackpad users.
+    [scrollTop, scrollBottom].forEach((el) => {
+      let isDown = false;
+      let startX = 0;
+      let startScrollLeft = 0;
+
+      el.addEventListener('pointerdown', (e) => {
+        isDown = true;
+        startX = e.clientX;
+        startScrollLeft = el.scrollLeft;
+        el.style.cursor = 'grabbing';
+        el.setPointerCapture(e.pointerId);
+      });
+
+      el.addEventListener('pointermove', (e) => {
+        if (!isDown) return;
+        const delta = e.clientX - startX;
+        el.scrollLeft = startScrollLeft - delta;
+      });
+
+      const stopDrag = () => {
+        isDown = false;
+        el.style.cursor = 'grab';
+      };
+
+      el.addEventListener('pointerup', stopDrag);
+      el.addEventListener('pointercancel', stopDrag);
+      el.addEventListener('pointerleave', stopDrag);
+      el.style.cursor = 'grab';
+    });
+  }
+
+  syncStudyScrollbarWidths();
 }
 
 // Prevent immediate repeats in Entry mode
@@ -1190,14 +1278,18 @@ function nextRCFlag() {
 function setupAutocomplete() {
   const guessInput = document.getElementById('guess');
   const listDiv = document.getElementById('autocomplete-list');
+  if (guessInput.dataset.autocompleteSetup === '1') return;
+  guessInput.dataset.autocompleteSetup = '1';
   let currentFocus = -1;
   let lastFiltered = [];
+  let suppressOpenOnFocus = false;
 
   function closeList() {
     listDiv.style.display = 'none';
     listDiv.innerHTML = '';
     currentFocus = -1;
   }
+  guessInput.closeAutocompleteList = closeList;
 
   function filterFlags(val) {
     if (!val) return [];
@@ -1228,6 +1320,7 @@ function setupAutocomplete() {
       item.innerHTML = `${flag.country} <span style='color:#888;'>(${flag.code})</span>`;
       item.onclick = function() {
         guessInput.value = `${flag.country}`;
+        suppressOpenOnFocus = true;
         closeList();
         guessInput.focus();
       };
@@ -1253,6 +1346,10 @@ function setupAutocomplete() {
   });
 
   guessInput.addEventListener('focus', function() {
+    if (suppressOpenOnFocus) {
+      suppressOpenOnFocus = false;
+      return;
+    }
     if (!document.getElementById('autocomplete-toggle').checked) return;
     const val = this.value;
     const filtered = filterFlags(val);
@@ -1261,13 +1358,14 @@ function setupAutocomplete() {
 
   guessInput.addEventListener('keydown', function(e) {
     const items = listDiv.querySelectorAll('.autocomplete-item');
-    if (!items.length || listDiv.style.display === 'none') return;
     if (e.key === 'ArrowDown') {
+      if (!items.length || listDiv.style.display === 'none') return;
       currentFocus++;
       if (currentFocus >= items.length) currentFocus = 0;
       setActive(items, currentFocus);
       e.preventDefault();
     } else if (e.key === 'ArrowUp') {
+      if (!items.length || listDiv.style.display === 'none') return;
       currentFocus--;
       if (currentFocus < 0) currentFocus = items.length - 1;
       setActive(items, currentFocus);
@@ -1276,6 +1374,9 @@ function setupAutocomplete() {
       if (currentFocus > -1) {
         items[currentFocus].click();
         e.preventDefault();
+      } else {
+        // Close suggestions when submitting with Enter.
+        closeList();
       }
     } else if (e.key === 'Escape') {
       closeList();
@@ -1399,9 +1500,18 @@ function startGame() {
       flags = data;
       initializeRegionsFromFlags();
       // Main menu event listeners
-      document.getElementById('entry-mode-btn').addEventListener('click', showEntryMode);
-      document.getElementById('mc-mode-btn').addEventListener('click', showMCMode);
-      document.getElementById('rc-mode-btn').addEventListener('click', showRCMode);
+      document.getElementById('entry-mode-btn').addEventListener('click', () => {
+        if (!requireActiveRegionsForGame()) return;
+        showEntryMode();
+      });
+      document.getElementById('mc-mode-btn').addEventListener('click', () => {
+        if (!requireActiveRegionsForGame()) return;
+        showMCMode();
+      });
+      document.getElementById('rc-mode-btn').addEventListener('click', () => {
+        if (!requireActiveRegionsForGame()) return;
+        showRCMode();
+      });
       document.getElementById('study-btn').addEventListener('click', showStudyPage);
       document.getElementById('back-to-menu-study').onclick = showMainMenu;
       document.getElementById('back-to-menu-study-top').onclick = showMainMenu;
